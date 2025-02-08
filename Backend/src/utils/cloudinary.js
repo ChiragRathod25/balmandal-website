@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import 'dotenv/config'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -10,11 +11,13 @@ cloudinary.config({
 
 const uploadOnCloudinary = async (uploadFilePath) => {
   try {
+    console.log(uploadFilePath);
+    
     if (!uploadFilePath) return null;
     const responce = await cloudinary.uploader
       .upload(uploadFilePath, {
         resource_type: "auto",
-      })
+      })     
       .catch((error) =>
         console.log("Error while uploading !!\nError: ", error)
       );

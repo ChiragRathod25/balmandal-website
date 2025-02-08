@@ -1,14 +1,19 @@
 import { ApiResponce } from "../utils/ApiResponce.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
+import {
+  uploadOnCloudinary,
+  deleteFromCloudinary,
+} from "../utils/cloudinary.js";
 import { Balak } from "../models/balak.model.js";
+import jwt from "jsonwebtoken"
+
 
 const generateRefreshAccessToken = async (userId) => {
   const user = await Balak.findById(userId);
   if (!user) throw new ApiError(404, "user not exist");
-  console.log("User",user);
-  
+  console.log("User", user);
+
   try {
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
@@ -17,7 +22,7 @@ const generateRefreshAccessToken = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    console.error("Refreshing token error",error)
+    console.error("Refreshing token error", error);
     throw new ApiError(
       500,
       "Something went wrong while refreshing tokens !!",
@@ -38,9 +43,9 @@ const register = asyncHandler(async (req, res) => {
   const existedUser = await Balak.find({
     $and: [{ firstName }, { mobile }],
   });
-  console.log("Already existed user: \n",existedUser);
-  
-  if (existedUser && existedUser.length>0)
+  console.log("Already existed user: \n", existedUser);
+
+  if (existedUser && existedUser.length > 0)
     throw new ApiError(
       404,
       `User already exist with same name and mobile number`
@@ -74,9 +79,8 @@ const login = asyncHandler(async (req, res) => {
     const isPasswordValid = await user.isPasswordCorrect(password);
     if (!isPasswordValid) throw new ApiError(404, `Invalid user password !!`);
   } catch (error) {
-    
-    console.log("password",password)
-    console.log(error,)
+    console.log("password", password);
+    console.log(error);
     throw new ApiError(404, `Error while validating password`, error);
   }
   const { accessToken, refreshToken } = await generateRefreshAccessToken(
@@ -119,9 +123,9 @@ const logout = asyncHandler(async (req, res) => {
   };
 
   res
-    .stats(200)
-    .cookie("accessToken", options)
-    .cookie("refreshToken", options)
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
     .json(new ApiResponce(200, {}, `User logged out successfully !!`));
 });
 
@@ -160,16 +164,20 @@ const updateuserDetails = asyncHandler(async (req, res) => {
     );
     if (!updatedUser)
       throw new ApiError(404, `Error while updating user details`);
+
+    res
+      .status(200)
+      .json(
+        new ApiResponce(
+          200,
+          updatedUser,
+          `User details updated successfully !!`
+        )
+      );
   } catch (error) {
     console.log("Error while updating user details", error);
     throw new ApiError(404, `Error while updating user details`, error);
   }
-
-  res
-    .status(200)
-    .json(
-      new ApiResponce(200, updatedUser, `User details updated successfully !!`)
-    );
 });
 
 const updateAvatar = asyncHandler(async (req, res) => {
@@ -186,16 +194,18 @@ const updateAvatar = asyncHandler(async (req, res) => {
 
   //delete previouse avatar
   const oldAvatar = req.user.avatar;
-  try {
-    const deleteExistingAvatar = await deleteFromCloudinary(oldAvatar);
-    if (deleteExistingAvatar.result !== "ok")
-      throw new ApiError(404, `Error while deleting old avatar`);
-  } catch (error) {
-    console.log("Error while deleting old avatar", error);
-    throw new ApiError(404, `Error while deleting old avatar`, error);
+  if (oldAvatar && oldAvatar.length > 0) {
+    try {
+      const deleteExistingAvatar = await deleteFromCloudinary(oldAvatar);
+      if (deleteExistingAvatar.result !== "ok")
+        throw new ApiError(404, `Error while deleting old avatar`);
+    } catch (error) {
+      console.log("Error while deleting old avatar", error);
+      throw new ApiError(404, `Error while deleting old avatar`, error);
+    }
   }
-
   res
+  
     .status(200)
     .json(new ApiResponce(200, user, `User avatar updated successfully !!`));
 });
@@ -209,8 +219,7 @@ const updatePassword = asyncHandler(async (req, res) => {
     throw new ApiError(404, `Password and new password should not be same`);
   const user = await Balak.findById(req.user._id);
   const isValidPassword = await user.isPasswordCorrect(password);
-  if (!isValidPassword) 
-    throw new ApiError(404, `Invalid password`);
+  if (!isValidPassword) throw new ApiError(404, `Invalid password`);
   user.password = newPassword;
   await user.save({ validateBeforeSave: false });
 
@@ -221,44 +230,59 @@ const updatePassword = asyncHandler(async (req, res) => {
 
 //TODO: implement forget password
 const forgetPassword = asyncHandler(async (req, res) => {
-  const {email}=req.user._id
-  if(!email) throw new ApiError(404, `Email is required to reset password`);
-
+  const { email } = req.user._id;
+  if (!email) throw new ApiError(404, `Email is required to reset password`);
 });
 
-const getCurrentuser=asyncHandler(async(req,res)=>{
-  const user=await Balak.findById(req.user._id).select("-password -refreshToken");
-  if(!user) throw new ApiError(404, `Invalid user request`);
+const getCurrentuser = asyncHandler(async (req, res) => {
+  const user = await Balak.findById(req.user._id).select(
+    "-password -refreshToken"
+  );
+  if (!user) throw new ApiError(404, `Invalid user request`);
   res
-  .status(200)
-  .json(new ApiResponce(200,user,`User details fetched successfully !!`));
-})
+    .status(200)
+    .json(new ApiResponce(200, user, `User details fetched successfully !!`));
+});
 
-const refreshAceesToken=asyncHandler(async(req,res)=>{
-  const incomingRefreshToken=req.cookies.refreshToken || req.body.refreshToken
-  if(!incomingRefreshToken) throw new ApiError(404, `Refresh token is required`);
+const refreshAceesToken = asyncHandler(async (req, res) => {
+  const incomingRefreshToken =
+    req.cookies.refreshToken || req.body.refreshToken;
+  if (!incomingRefreshToken)
+    throw new ApiError(404, `Refresh token is required`);
+  const decodeToken = await jwt.verify(
+    incomingRefreshToken,
+    process.env.REFRESH_TOKEN_SECRET
+  );
+  
   try {
-    const decodeToken=await jwt.verify(incomingRefreshToken,process.env.REFRESH_TOKEN_SECRET);
-    const user=await Balak.findById(decodeToken._id);
-    if(!user) throw new ApiError(404, `Invalid refresh token`);
-    if(user.refreshToken!==incomingRefreshToken) throw new ApiError(404, `Invalid refresh token or token is expired`);
-
+    const user = await Balak.findById(decodeToken._id);
+    if (!user) throw new ApiError(404, `Invalid refresh token`);
+    if (user.refreshToken !== incomingRefreshToken)
+      throw new ApiError(404, `Invalid refresh token or token is expired`);
   } catch (error) {
-    console.log("Error while refreshing access token",error);
-    throw new ApiError(404, `Error while refreshing access token`,error);
+    console.log("Error while refreshing access token", error);
+    throw new ApiError(404, `Error while refreshing access token`, error);
   }
-  const {accessToken,refreshToken}=await generateRefreshAccessToken(decodeToken._id);
-  const options={
-    httpOnly:true,
-    secure:true,
-  }
+  const { accessToken, refreshToken } = await generateRefreshAccessToken(
+    decodeToken._id
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
   res
-  .status(200)
-  .cookie("accessToken",accessToken,options)
-  .cookie("refreshToken",refreshToken,options)
-  .json(new ApiResponce(200,{accessToken,refreshToken},`Access token refreshed successfully !!`));
-})
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponce(
+        200,
+        { accessToken, refreshToken },
+        `Access token refreshed successfully !!`
+      )
+    );
+});
 
 export {
   register,

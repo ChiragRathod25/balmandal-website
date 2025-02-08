@@ -11,6 +11,7 @@ import {
   refreshAceesToken,
 } from "../controllers/balak.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
@@ -19,10 +20,10 @@ router.post("/login", login);
 
 router.post("/logout", verifyJWT, logout);
 router.put("/updateuserDetails", verifyJWT, updateuserDetails);
-router.put("/updateAvatar", verifyJWT, updateAvatar);
+router.put("/updateAvatar", upload.single("avatar"), verifyJWT, updateAvatar);
 router.put("/updatePassword", verifyJWT, updatePassword);
-router.put("/forgetPassword", verifyJWT, forgetPassword);
+router.put("/forgetPassword", verifyJWT, forgetPassword);   //TODO
 router.get("/getCurrentuser", verifyJWT, getCurrentuser);
-router.get("/refreshAceesToken", verifyJWT, refreshAceesToken);
+router.post("/refreshAceesToken", verifyJWT, refreshAceesToken);
 
 export default router;

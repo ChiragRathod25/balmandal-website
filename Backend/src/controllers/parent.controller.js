@@ -5,10 +5,12 @@ import {Parent} from "../models/parent.model.js";
 
 const addParentDetails=asyncHandler(async(req,res,next)=>{
     const {role,email,mobileNumber,occupation}=req.body;
-    if([role,email,mobileNumber,occupation].some((field)=>(field?.trim() ??"")==="")){
+    if([role,email,mobileNumber,occupation].some((field)=>(  field?.trim() ??"")==="")){
         return next(new ApiError(400,"Please provide all the details"));
     }
-    const parent=Parent.create({role,email,mobileNumber,occupation,balakId:req.balak._id});
+    const parent=await Parent.create({role,email,mobileNumber,occupation,balakId:req.user._id});
+ 
+    
     if(!parent){
         return next(new ApiError(500,"Failed to add parent details"));
     }
@@ -44,7 +46,7 @@ const deleteParentDetails=asyncHandler(async(req,res,next)=>{
     if(!deletedParent){
         return next(new ApiError(500,"Failed to delete parent details"));
     }
-    res.status(200).json(new ApiResponce(200,deletedParent,"Parent details deleted successfully"));
+    res.status(200).json(new ApiResponce(200,{},"Parent details deleted successfully"));
 })
 
 const getParentDetailsById=asyncHandler(async(req,res,next)=>{
@@ -60,7 +62,8 @@ const getParentDetailsById=asyncHandler(async(req,res,next)=>{
 })
 
 const getUserParents=asyncHandler(async(req,res,next)=>{
-    const parents=await Parent.find({balakId:req.balak._id});
+
+    const parents=await Parent.find({balakId:req.user._id});
     if(!parents){
         return next(new ApiError(404,"No parent details found"));
     }

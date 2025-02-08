@@ -4,7 +4,7 @@
   "description": "Node.js example server starter project",
   "license": "MIT",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "nodemon src/index.js"
   },
