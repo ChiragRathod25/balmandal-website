@@ -86,7 +86,7 @@ const getUserAchivements = asyncHandler(async (req, res) => {
     );
 });
 
-const getAchivementById = asyncHandler(async (req, res) => {
+const getAchievementById = asyncHandler(async (req, res) => {
   const achivementId = req.params.id;
   if (!achivementId) throw new ApiError(400, `Achivement id is required`);
   const achivement = await Achivement.findById(achivementId);
@@ -110,6 +110,6 @@ export {
   addAchivement,
   updateAchivement,
   getUserAchivements,
-  getAchivementById,
+  getAchievementById,
   deleteAchivement,
 };

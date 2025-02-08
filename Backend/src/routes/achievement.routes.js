@@ -3,7 +3,7 @@ import {
     addAchivement,
   updateAchivement,
   getUserAchivements,
-  getAchivementById,
+  getAchievementById,
   deleteAchivement,
 } from "../controllers/achivement.controller.js";
 
@@ -11,6 +11,6 @@ const router = Router();
 
 
 router.route("/").get(getUserAchivements).post(addAchivement);
-router.route("/:id").put(updateAchivement).delete(deleteAchivement).get(getAchivementById);
+router.route("/:id").put(updateAchivement).delete(deleteAchivement).get(getAchievementById);
 
 export default router;

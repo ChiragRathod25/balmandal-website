@@ -7,6 +7,8 @@ import { Balak } from "../models/balak.model.js";
 const generateRefreshAccessToken = async (userId) => {
   const user = await Balak.findById(userId);
   if (!user) throw new ApiError(404, "user not exist");
+  console.log("User",user);
+  
   try {
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
@@ -15,6 +17,7 @@ const generateRefreshAccessToken = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
+    console.error("Refreshing token error",error)
     throw new ApiError(
       500,
       "Something went wrong while refreshing tokens !!",
@@ -35,7 +38,9 @@ const register = asyncHandler(async (req, res) => {
   const existedUser = await Balak.find({
     $and: [{ firstName }, { mobile }],
   });
-  if (existedUser)
+  console.log("Already existed user: \n",existedUser);
+  
+  if (existedUser && existedUser.length>0)
     throw new ApiError(
       404,
       `User already exist with same name and mobile number`
@@ -46,7 +51,7 @@ const register = asyncHandler(async (req, res) => {
     lastName,
     mobile,
     password,
-  }).select("-passwrod -refreshToken");
+  });
   if (!user)
     throw new ApiError(404, `Something went wrong while creating account`);
 
@@ -61,7 +66,7 @@ const login = asyncHandler(async (req, res) => {
     [firstName, mobile, password].some((field) => (field?.trim() ?? "") === "")
   )
     throw new ApiError(404, `All fields are required`);
-  const user = await find({
+  const user = await Balak.findOne({
     $and: [{ firstName }, { mobile }],
   });
   if (!user) throw new ApiError(404, `invalid user request`);
@@ -69,6 +74,9 @@ const login = asyncHandler(async (req, res) => {
     const isPasswordValid = await user.isPasswordCorrect(password);
     if (!isPasswordValid) throw new ApiError(404, `Invalid user password !!`);
   } catch (error) {
+    
+    console.log("password",password)
+    console.log(error,)
     throw new ApiError(404, `Error while validating password`, error);
   }
   const { accessToken, refreshToken } = await generateRefreshAccessToken(
@@ -82,7 +90,7 @@ const login = asyncHandler(async (req, res) => {
     secure: true,
   };
   res
-    .stats(200)
+    .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(

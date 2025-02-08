@@ -3,14 +3,24 @@ import { useForm } from "react-hook-form";
 import { Input, Button,FileUploader } from "../../index";
 import databaseService from "../../../services/database.services";
 
-function AchievementForm({ achivement }) {
+function AchievementForm({ achievement }) {
+
+  console.log("Component",achievement)
   const { register, handleSubmit,watch } = useForm({
     defaultValues: {
-      title: achivement?.title || "",
-      description: achivement?.achivement || "",
-      image: achivement?.image || "",
+      title: achievement?.title || "",
+      description: achievement?.description || "",
+      image: achievement?.image || "",
     },
   });
+
+  useEffect(() => {
+    console.log("Default values:", {
+      title: achievement?.title || "",
+      description: achievement?.description || "",
+      image: achievement?.image || "",
+    });
+  }, [achievement]);
 
   
   const files=watch('image')
@@ -48,10 +58,10 @@ function AchievementForm({ achivement }) {
 
         <Button
           type="submit"
-          bgColor={achivement ? "bg-green-400" : undefined}
+          bgColor={achievement ? "bg-green-400" : undefined}
           className="w-full"
         >
-          {achivement ? "Update" : "Add"}
+          {achievement ? "Update" : "Add"}
         </Button>
 
       </form>

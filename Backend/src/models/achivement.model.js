@@ -9,7 +9,8 @@ const achivementSchema = new mongoose.Schema(
       type: String,
     },
     balakId:{
-      type: mongoose.Schema.Types.ObjectId,
+      // type: mongoose.Schema.Types.ObjectId,
+      type:String,
       ref: "Balak",
       required: true
     },
