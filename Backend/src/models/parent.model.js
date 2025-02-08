@@ -6,6 +6,10 @@ const parentSchema = new mongoose.Schema(
       enum: ["Father", "Mother"],
       required: true,
     },
+    fullName: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -18,7 +22,7 @@ const parentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    balakId:{
+    balakId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Balak",
       required: true,
