@@ -7,6 +7,7 @@ import { login, logout } from "./slices/userSlice/authSlice";
 function App() {
   const [loading, setLoading] = useState("");
   const dispatch = useDispatch();
+  
   useEffect(() => {
     databaseService
       .getCurrentuser()
