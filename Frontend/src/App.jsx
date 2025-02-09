@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { login, logout } from "./slices/userSlice/authSlice";
 
 function App() {
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   
   useEffect(() => {

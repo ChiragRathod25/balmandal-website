@@ -1,37 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input, Button,FileUploader } from "../../index";
+import { Input, Button, FileUploader } from "../../index";
 import databaseService from "../../../services/database.services";
 
 function AchievementForm({ achievement }) {
-
-  console.log("Component",achievement)
-  const { register, handleSubmit,watch } = useForm({
+  console.log("Component", achievement);
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       title: achievement?.title || "",
       description: achievement?.description || "",
-      image: achievement?.image || "",
+      image: achievement?.images || "",
     },
   });
 
-  useEffect(() => {
-    console.log("Default values:", {
-      title: achievement?.title || "",
-      description: achievement?.description || "",
-      image: achievement?.image || "",
-    });
-  }, [achievement]);
-
-  
-  const files=watch('image')
-  
   const submit = async (data) => {
-    console.log(data)
-    console.log(files);
-    console.log(Array.from(files));
-    databaseService.addAchievement(data)
-
-   
+    if (achievement) {
+      await databaseService.updateAchivement(data);
+    } else {
+      await databaseService.addAchievement(data);
+    }
   };
   return (
     <>
@@ -48,13 +35,13 @@ function AchievementForm({ achievement }) {
           placeholder="Description about achievement"
           {...register("description")}
         />
-       
-       <FileUploader
-       accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
-       register={register}
-       name="image"
-       watch={watch}
-       />
+
+        <FileUploader
+          accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
+          register={register}
+          name="image"
+          watch={watch}
+        />
 
         <Button
           type="submit"
@@ -63,7 +50,6 @@ function AchievementForm({ achievement }) {
         >
           {achievement ? "Update" : "Add"}
         </Button>
-
       </form>
     </>
   );

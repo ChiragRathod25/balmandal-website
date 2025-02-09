@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,12 +7,15 @@ import databaseService from "../services/database.services";
 import { login } from "../slices/userSlice/authSlice";
 
 function Login() {
-  const { register, getValues, setValue, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm();
   const [error, setError] = useState(null);
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
-  if (authStatus) navigate("/");
   const dispatch=useDispatch()
+  
+  useEffect(()=>{
+    if (authStatus) navigate("/");
+  },[authStatus,navigate])
 
   const submit = async (data) => {
     try {
@@ -28,6 +31,7 @@ function Login() {
       }
 
     } catch (error) {
+      console.log("Login Component Error",error)
       setError(error.message)
     }
   };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Input } from "./";
 import "./temp.css"
+
 function MultipleFilesInputPreview({ register, name, accept, watch }) {
   const [preview, setPreview] = useState([]);
   const files = watch(name);

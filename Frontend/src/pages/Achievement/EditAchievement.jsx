@@ -10,7 +10,7 @@ function EditAchievement() {
   useEffect(() => {
     if (achievementId)
       databaseService
-        .getAchivementById({achievementId})
+        .getAchievementById({achievementId})
         .then((achievement) => setAchievement(achievement));
         else 
             navigate('/')

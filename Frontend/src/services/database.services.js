@@ -107,7 +107,7 @@ export class DatabaseService {
       "getAchievementById"
     );
   }
-  async addAchivement({ title, description, image }) {
+  async addAchievement({ title, description, image }) {
     return handleApiRequest(
       () =>
         axiosInstace.post(
@@ -119,7 +119,7 @@ export class DatabaseService {
             },
           }
         ),
-      "addAchivement"
+      "addAchievement"
     );
   }
   async updateAchivement({ title, description, image }, achievementId) {
