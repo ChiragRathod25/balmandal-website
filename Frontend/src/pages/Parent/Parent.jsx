@@ -4,28 +4,38 @@ import databaseService from "../../services/database.services";
 import { Button } from "../../components";
 
 function Parent() {
+  console.log("Parent Component");
   const { parentId } = useParams();
+  const [parent, setParent] = useState(null);
 
-  const [parent, setParent] = useState({});
-
+  const navigate=useNavigate()
   useEffect(() => {
-    if (parentId)
-      databaseService
-        .getParentDetailsById(parentId)
-        .then((response) => setParent(response.data));
+      if (parentId) {
+         databaseService
+          .getParentDetailsById({ parentId })
+          .then((response) => setParent(response.data));
+      }
+      else
+        navigate('/')
+
   }, [parentId]);
-  const navigate = useNavigate();
+
   return parent ? (
     <>
       <div key={parent?._id}>
         <div>
           <p>{parent.rol}</p>
         </div>
+
         <div>
-          <p>{parent.role}</p>
+          <p>{parent.fullName}</p>
+        </div>
+
+        <div>
+          <p>{parent.email}</p>
         </div>
         <div>
-          <p>{parent.mobile}</p>
+          <p>{parent.mobileNumber}</p>
         </div>
         <div>
           <p>{parent.occupation}</p>
@@ -35,7 +45,7 @@ function Parent() {
         </Button>
       </div>
     </>
-  ) : null;
+  ) : <h2>Loading...</h2>;
 }
 
 export default Parent;

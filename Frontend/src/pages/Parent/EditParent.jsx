@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import databaseService from "../../services/database.services";
 import { ParentForm } from "../../components";
 
 function EditParent() {
   const { parentId } = useParams();
 
-  const [parent, setParent] = useState({});
-
+  const [parent, setParent] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     if (parentId)
       databaseService
-        .getParentDetailsById(parentId)
+        .getParentDetailsById({ parentId })
         .then((response) => setParent(response.data));
-  }, [parentId]);
-  return (
+    else navigate("/parent");
+    
+  }, [parentId, navigate]);
+  return parent ? (
     <div>
       <ParentForm parent={parent} />
     </div>
-  );
+  ) : null;
 }
 
 export default EditParent;

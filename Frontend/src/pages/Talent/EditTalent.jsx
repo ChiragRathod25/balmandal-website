@@ -12,11 +12,11 @@ function EditTalent() {
         .getTalentById({ talentId })
         .then((response) => setTalent(response.data));
   }, [talentId]);
-  return (
+  return talent ? (
     <div>
       <TalentForm talent={talent} />
     </div>
-  );
+  ):<h2>Loading</h2>
 }
 
 export default EditTalent;

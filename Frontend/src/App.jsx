@@ -7,20 +7,26 @@ import { login, logout } from "./slices/userSlice/authSlice";
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    databaseService
-      .getCurrentuser()
-      .then((response) => {
-        if (response.data) {
-          dispatch(login(response.data));
-        } else {
-          dispatch(logout());
-        }
-      })
-      .finally(() => setLoading(false));
-  }, []);
 
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      await databaseService
+        .getCurrentuser()
+        .then((response) => {
+          if (response.data) {
+            dispatch(login(response.data));
+          } else {
+            dispatch(logout());
+          }
+        })
+        .finally(() => setLoading(false));
+    };
+    getCurrentUser();
+  }, []);
+  
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
   return (
     <div className="bg-gray-700">
       <Outlet />

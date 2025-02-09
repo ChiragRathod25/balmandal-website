@@ -1,17 +1,14 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from "react";
+import { useSelector } from "react-redux";
 
 function Home() {
-  const authStatus=useSelector((store)=>store.auth.status)
+  const authStatus = useSelector((store) => store.auth.status);
   console.log(authStatus);
   return (
     <>
-    <div>
-
-    {authStatus}
-    </div>
+      <div>{authStatus ? <h2>Authorized</h2> : <h2>Unauthorized</h2>}</div>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

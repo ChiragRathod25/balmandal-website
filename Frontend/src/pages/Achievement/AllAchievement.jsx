@@ -7,21 +7,32 @@ import { useNavigate } from "react-router-dom";
 function AllAchievement() {
   const [achievements, setAchievements] = useState(null);
   const navigate = useNavigate();
+  const [isAchievementUpdated, setIsAchievementUpdated] = useState(null);
+
   useEffect(() => {
     databaseService
       .getUserAchivements()
       .then((response) => setAchievements(response.data))
       .catch((error) => {
         console.error("Error fetching achievements:", error);
-        setAchievements([]);
+        setIsAchievementUpdated(true);
       });
     console.log(achievements);
-  }, []);
+  }, [isAchievementUpdated]);
+
+  const handleDelete = async (achievementId) => {
+    const response = databaseService
+      .deleteAchivement({ achievementId })
+      .then((response) => response.data);
+    if (response) {
+      setIsAchievementUpdated(false);
+      console.log("Achievement Deleted");
+    }
+  };
 
   const user = useSelector((state) => state.auth.userData?.firstName);
 
-  return Array.isArray(achievements) && 
-  achievements.length > 0 ? (
+  return achievements ? (
     <>
       <h2>{`${user}'s Achievements`}</h2>
 
@@ -44,13 +55,21 @@ function AllAchievement() {
             >
               Edit Achievement
             </Button>
+            <Button onClick={() => handleDelete(achievement?._id)}>
+              Delete Achievement
+            </Button>
           </div>
         ))}
+        
       <Button onClick={() => navigate("/achievement/add")}>
         Add Achievement
       </Button>
     </>
-  ) : null;
+  ) : (
+    <>
+      <h2>Loading...</h2>
+    </>
+  );
 }
 
 export default AllAchievement;

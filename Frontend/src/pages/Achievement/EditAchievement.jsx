@@ -11,10 +11,10 @@ function EditAchievement() {
     if (achievementId)
       databaseService
         .getAchievementById({achievementId})
-        .then((achievement) => setAchievement(achievement));
+        .then((achievement) => setAchievement(achievement.data));
         else 
             navigate('/')
-    console.log("EditPost",achievement);
+    console.log("Edit Achievement",achievement);
     
   },[achievementId,navigate]);
 

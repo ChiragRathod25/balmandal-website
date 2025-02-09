@@ -10,13 +10,16 @@ function AuthLayout({ children, authentication = true }) {
   const authStatus = useSelector((state) => state.auth.status);  
   useEffect(() => {
 
-    console.log("AuthLayout authStatus: ",authStatus);
-
+    
     if(authentication===false){
       console.log("Authentication is not required !")
     }
-    else if (authentication && authStatus !== authentication) 
-        navigate("/login");
+    else if (authentication && authStatus !== authentication){
+      console.log("AuthLayout authStatus: ",authStatus);
+      console.log("Authentication ",authentication)
+      navigate("/login");
+
+    } 
     
     // else if (!authentication && authStatus !== authentication) 
     //     navigate("/");

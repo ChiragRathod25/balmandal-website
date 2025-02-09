@@ -108,32 +108,36 @@ export class DatabaseService {
     );
   }
   async addAchievement({ title, description, image }) {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    if (image && image.length > 0) {
+      Array.from(image).forEach((img) => formData.append("image", img));
+    }
     return handleApiRequest(
       () =>
-        axiosInstace.post(
-          "/api/v1/achievement",
-          { title, description, image },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        ),
+        axiosInstace.post("/api/v1/achievement", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }),
       "addAchievement"
     );
   }
   async updateAchivement({ title, description, image }, achievementId) {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    if (image && image.length > 0) {
+      Array.from(image).forEach((img) => formData.append("image", img));
+    }
     return handleApiRequest(
       () =>
-        axiosInstace.post(
-          `/api/v1/achievement/${achievementId}`,
-          { title, description, image },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        ),
+        axiosInstace.put(`/api/v1/achievement/${achievementId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }),
       "updateAchivement"
     );
   }
@@ -151,6 +155,8 @@ export class DatabaseService {
     );
   }
   async addParentDetails({ role, fullName, email, mobileNumber, occupation }) {
+    console.log({ role, fullName, email, mobileNumber, occupation });
+
     return handleApiRequest(
       () =>
         axiosInstace.post("/api/v1/parent", {
@@ -205,23 +211,41 @@ export class DatabaseService {
     );
   }
   async addTalent({ heading, description, image }) {
+    const formData = new FormData();
+    formData.append("heading", heading);
+    formData.append("description", description);
+    if (image && image.length > 0) {
+      Array.from(image).forEach((img) => formData.append("image", img));
+    }
     return handleApiRequest(
       () =>
-        axiosInstace.post("/api/v1/talent", { heading, description, image }),
+        axiosInstace.post("/api/v1/talent", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }),
       "addTalent"
     );
   }
   async updateTalent({ heading, description, image }, talentId) {
+    const formData = new FormData();
+    formData.append("heading", heading);
+    formData.append("description", description);
+    if (image && image.length > 0) {
+      Array.from(image).forEach((img) => formData.append("image", img));
+    }
+
     return handleApiRequest(
       () =>
-        axiosInstace.put(`/api/v1/talent/${talentId}`, {
-          heading,
-          description,
-          image,
+        axiosInstace.put(`/api/v1/talent/${talentId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }),
       "updateTalent"
     );
   }
+  
   async deleteTalent({ talentId }) {
     return handleApiRequest(
       () => axiosInstace.delete(`/api/v1/talent/${talentId}`),

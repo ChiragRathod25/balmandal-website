@@ -10,7 +10,7 @@ const addParentDetails = asyncHandler(async (req, res, next) => {
       (field) => (field?.trim() ?? "") === ""
     )
   ) {
-    return next(new ApiError(400, "Please provide all the details"));
+    throw new ApiError(400, "Please provide all the details");
   }
   const parent = await Parent.create({
     role,

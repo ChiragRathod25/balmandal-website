@@ -9,12 +9,25 @@ function Achievement() {
   const navigate = useNavigate();
   useEffect(() => {
     if (achievementId)
-      databaseService
-        .getAchievementById({ achievementId })
-        .then((achievement) => setAchievement(achievement));
+    {
+        databaseService
+      .getAchievementById({ achievementId })
+      .then((achievement) => setAchievement(achievement.data));
+    }
     else navigate("/");
-    console.log("EditPost", achievement);
+    console.log("Achievement", achievement);
   }, [achievementId, navigate]);
+  
+  const handleDelete = async (achievementId) => {
+    const response = databaseService
+      .deleteAchivement({ achievementId })
+      .then((response) => response.data);
+    if (response) {
+      navigate('/achievement')
+      console.log("Achievement Deleted");
+    }
+  };
+
   return achievement ? (
     <>
       <div key={achievement._id}>
@@ -23,7 +36,9 @@ function Achievement() {
         <div>
           <p>{achievement.description}</p>
         </div>
-        {achievement.images.map((img, index) => (
+        {
+          achievement?.images && achievement.images.length>0 &&
+        achievement.images.map((img, index) => (
           <div key={index} className={`flex`}>
             <img src={img} alt={achievement.title} />
           </div>
@@ -33,9 +48,14 @@ function Achievement() {
         >
           Edit Achievement
         </Button>
+        <Button onClick={() => handleDelete(achievement?._id)}>
+              Delete Achievement
+          </Button>
       </div>
     </>
-  ) : null;
+  ) : (
+    <h2>Loading...</h2>
+  );
 }
 
 export default Achievement;
