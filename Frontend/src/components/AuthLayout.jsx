@@ -9,29 +9,27 @@ function AuthLayout({ children, authentication = true }) {
 
   const authStatus = useSelector((state) => state.auth.status);  
   useEffect(() => {
-
-    
-    if(authentication===false){
-      console.log("Authentication is not required !")
+    if(authentication === false){
+      console.log("Authentication is not required !");
     }
     else if (authentication && authStatus !== authentication){
-      console.log("AuthLayout authStatus: ",authStatus);
-      console.log("Authentication ",authentication)
+      console.log("AuthLayout authStatus: ", authStatus);
+      console.log("Authentication ", authentication);
       navigate("/login");
-
     } 
-    
-    // else if (!authentication && authStatus !== authentication) 
-    //     navigate("/");
-
     setLoading(false);
   }, [authStatus, navigate, authentication]);
+
   return loading ? (
-    <>
-      <h2>Loading...</h2>
-    </>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <h2 className="text-2xl font-semibold text-gray-700">Loading...</h2>
+    </div>
   ) : (
-    <>{children}</>
+    <div className="min-h-screen bg-gray-100 p-4">
+      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+        {children}
+      </div>
+    </div>
   );
 }
 

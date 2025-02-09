@@ -13,10 +13,16 @@ function EditTalent() {
         .then((response) => setTalent(response.data));
   }, [talentId]);
   return talent ? (
-    <div>
-      <TalentForm talent={talent} />
+    <div className="container mx-auto p-4">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <TalentForm talent={talent} />
+      </div>
     </div>
-  ):<h2>Loading</h2>
+  ) : (
+    <div className="flex justify-center items-center h-screen">
+      <h2 className="text-xl font-semibold">Loading...</h2>
+    </div>
+  );
 }
 
 export default EditTalent;

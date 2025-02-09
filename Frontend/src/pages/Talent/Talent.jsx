@@ -33,35 +33,44 @@ function Talent() {
 
   return talent ? (
     <>
-      <div key={talent._id}>
-        <h3>{talent.heading}</h3>
-        <hr />
-        <div>
-          <p>{talent.description}</p>
+      <div key={talent._id} className="p-4 md:p-8 bg-white shadow-md rounded-lg">
+        <h3 className="text-2xl font-bold mb-4">{talent.heading}</h3>
+        <hr className="mb-4" />
+        <div className="mb-4">
+          <p className="text-gray-700">{talent.description}</p>
         </div>
 
         {Array.isArray(talent?.images) &&
           talent.images.length > 0 &&
           talent.images.map((img, index) => (
-            <div key={index} className="flex">
+            <div key={index} className="flex justify-center mb-4">
               <img
                 src={img}
                 alt={talent.heading}
+                className="max-w-full h-auto rounded-lg"
                 onError={(e) => (e.target.src = "/fallback-image.jpg")}
               />
             </div>
           ))}
 
-        <Button onClick={() => navigate(`/talent/edit/${talent._id}`)}>
-          Edit Talent
-        </Button>
-        <Button onClick={() => handleDelete(talent?._id)}>
-          Delete Achievement
-        </Button>
+        <div className="flex space-x-4">
+          <Button
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            onClick={() => navigate(`/talent/edit/${talent._id}`)}
+          >
+            Edit Talent
+          </Button>
+          <Button
+            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+            onClick={() => handleDelete(talent?._id)}
+          >
+            Delete Achievement
+          </Button>
+        </div>
       </div>
     </>
   ) : (
-    <h1>Loading...</h1>
+    <h1 className="text-center text-2xl">Loading...</h1>
   );
 }
 

@@ -16,7 +16,8 @@ import Parent from "./Parent/Parent";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
-
+import Header from "./Header";
+import Footer from "./Footer";
 
 export {
     AddAchievement,
@@ -34,4 +35,6 @@ export {
     Home,
     Login,
     Register,
+    Header,
+    Footer
 }

@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import databaseService from "./services/database.services";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./slices/userSlice/authSlice";
+import { Header, Footer } from "./pages";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -23,13 +24,17 @@ function App() {
     };
     getCurrentUser();
   }, []);
-  
+
   if (loading) {
     return <h2>Loading...</h2>;
   }
   return (
     <div className="bg-gray-700">
-      <Outlet />
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
     </div>
   );
 }

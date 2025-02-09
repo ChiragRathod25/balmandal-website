@@ -35,54 +35,67 @@ function AchievementForm({ achievement }) {
     }
   };
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
+    <div className="max-w-2xl mx-auto p-4">
+      <form onSubmit={handleSubmit(submit)} className="space-y-4">
         <Input
           type="text"
           label="Title: "
           placeholder="Achievement Title e.g. 'All India skating first rank'"
           {...register("title", { required: true })}
+          className="w-full"
         />
         <Input
           type="text"
           label="Description: "
           placeholder="Description about achievement"
           {...register("description")}
+          className="w-full"
         />
-        {
-          cloudImages &&
+        {cloudImages &&
           cloudImages.length > 0 &&
-          cloudImages.map((img) => {
+          cloudImages.map((img, index) => {
             return img.includes("image") !== -1 ? (
-              <img src={img} className="preview-image" />
+              <img
+                key={index}
+                src={img}
+                className="preview-image w-full h-auto my-2"
+              />
             ) : (
-              <video controls className="preview-video">
+              <video
+                key={index}
+                controls
+                className="preview-video w-full h-auto my-2"
+              >
                 <source src={img} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             );
           })}
 
-        
-          <FileUploader
-            accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
-            register={register}
-            name="image"
-            watch={watch}
-          />
-        
+        <FileUploader
+          accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
+          register={register}
+          name="image"
+          watch={watch}
+          className="w-full"
+        />
 
         <Button
           type="submit"
-          bgColor={achievement ? "bg-green-400" : undefined}
-          className="w-full"
+          bgColor={achievement ? "bg-green-400" : "bg-blue-500"}
+          className="w-full py-2 text-white rounded"
         >
           {achievement ? "Update" : "Add"}
         </Button>
-        
-         <Button onClick={()=>navigate(`/achievement/`)}>Cancel</Button>
+
+        <Button
+          onClick={() => navigate(`/achievement/`)}
+          className="w-full py-2 text-white bg-gray-500 rounded"
+        >
+          Cancel
+        </Button>
       </form>
-    </>
+    </div>
   );
 }
 

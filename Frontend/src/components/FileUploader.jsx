@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Input } from "./";
-import "./temp.css"
+
 
 function MultipleFilesInputPreview({ register, name, accept, watch }) {
   const [preview, setPreview] = useState([]);
@@ -20,25 +20,26 @@ function MultipleFilesInputPreview({ register, name, accept, watch }) {
   }, [files]);
 
   return (
-    <div className="file-preview-container">
+    <div className="p-4">
       <Input
         type="file"
         label="Images and Videos"
         accept={accept}
         {...register(name)}
         multiple
+        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
       />
 
       {preview.length > 0 && (
-        <div className="preview-section">
-          <h4>Selected Files:</h4>
-          <ul className="preview-list">
+        <div className="mt-4">
+          <h4 className="text-lg font-semibold mb-2">Selected Files:</h4>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {preview.map(({ url, type }, index) => (
-              <li key={index} className="preview-item">
+              <li key={index} className="relative">
                 {type === "image" ? (
-                  <img src={url} className="preview-image" alt={`Preview ${index}`} />
+                  <img src={url} className="w-full h-auto rounded-lg shadow-md" alt={`Preview ${index}`} />
                 ) : (
-                  <video  controls className="preview-video">
+                  <video controls className="w-full h-auto rounded-lg shadow-md">
                     <source src={url} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>

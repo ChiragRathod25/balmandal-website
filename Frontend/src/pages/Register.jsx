@@ -30,40 +30,50 @@ function Register() {
       setError(error.message);
     }
   };
+
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form 
+        onSubmit={handleSubmit(submit)} 
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <Input
           label="First name : "
           placeholder="Enter your first name"
           {...register("firstName", { required: true })}
+          className="mb-4"
         />
         <Input
           label="Last name : "
           placeholder="Enter your last name"
           {...register("lastName", { required: true })}
+          className="mb-4"
         />
         <Input
           type="tel"
           label="Mobile Number"
           placeholder="Enter your mobile number"
           {...register("mobile", { required: true })}
+          className="mb-4"
         />
         <Input
           type="password"
           label="Password"
           placeholder="Enter password (new)"
           {...register("password", { required: true })}
+          className="mb-4"
         />
         <Input
           type="password"
           label="Confirm Password"
           placeholder="Confirm password"
+          className="mb-4"
         />
-        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-        <Button type="Submit">Submit</Button>
+        {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
+        <Button type="Submit" className="w-full mt-4">Submit</Button>
       </form>
-    </>
+    </div>
   );
 }
 

@@ -7,56 +7,58 @@ import { useNavigate } from "react-router-dom";
 function AllTalent() {
   const [talents, setTalents] = useState([]);
 
-
   useEffect(() => {
-
     databaseService
       .getUserTalents()
       .then((response) => setTalents(response.data));
-
   }, []);
-  const user = useSelector((state) => state.auth.userData.firstName);
 
+  const user = useSelector((state) => state.auth.userData.firstName);
   const navigate = useNavigate();
 
   const handleDelete = async (talentId) => {
- 
-    const response = databaseService
+    const response = await databaseService
       .deleteTalent({ talentId })
-      .then((response) => response.data)
+      .then((response) => response.data);
     if (response) {
-     navigate('/talent')
+        setTalents((prevTalents)=>prevTalents.filter((talent)=>talent._id!==talentId))
       console.log("Talent Deleted");
     }
   };
+
   return (
-    <>
-      <h2>{`${user}'s Talents`}</h2>
-      <></>
-      {Array.isArray(talents) &&
-        talents.length > 0 &&
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-4">{`${user}'s Talents`}</h2>
+      {Array.isArray(talents) && talents.length > 0 ? (
         talents.map((talent) => (
-          <div key={talent._id}>
-            <h3>{talent.heading}</h3>
-            <hr />
-            <div>
+          <div key={talent._id} className="mb-8 p-4 border rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">{talent.heading}</h3>
+            <hr className="mb-2" />
+            <div className="mb-4">
               <p>{talent.description}</p>
             </div>
-            {talent.images.map((img, index) => (
-              <div key={index} className={`flex`}>
-                <img src={img} alt={talent.title} />
-              </div>
-            ))}
-            <Button onClick={() => navigate(`/talent/edit/${talent._id}`)}>
-              Edit Talent
-            </Button>
-            <Button onClick={() => handleDelete(talent?._id)}>
-              Delete Achievement
-            </Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+              {talent.images.map((img, index) => (
+                <div key={index} className="flex justify-center">
+                  <img src={img} alt={talent.title} className="max-w-full h-auto rounded-lg" />
+                </div>
+              ))}
+            </div>
+            <div className="flex space-x-4">
+              <Button onClick={() => navigate(`/talent/edit/${talent._id}`)}>
+                Edit Talent
+              </Button>
+              <Button onClick={() => handleDelete(talent?._id)}>
+                Delete Achievement
+              </Button>
+            </div>
           </div>
-        ))}
+        ))
+      ) : (
+        <p>No talents found.</p>
+      )}
       <Button onClick={() => navigate("/talent/add")}>Add Talent</Button>
-    </>
+    </div>
   );
 }
 

@@ -17,8 +17,10 @@ function EditParent() {
     
   }, [parentId, navigate]);
   return parent ? (
-    <div>
-      <ParentForm parent={parent} />
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-2xl">
+        <ParentForm parent={parent} />
+      </div>
     </div>
   ) : null;
 }
