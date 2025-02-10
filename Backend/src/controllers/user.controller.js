@@ -5,12 +5,12 @@ import {
   uploadOnCloudinary,
   deleteFromCloudinary,
 } from "../utils/cloudinary.js";
-import { Balak } from "../models/balak.model.js";
+import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken"
 
 
 const generateRefreshAccessToken = async (userId) => {
-  const user = await Balak.findById(userId);
+  const user = await User.findById(userId);
   if (!user) throw new ApiError(404, "user not exist");
   console.log("User", user);
 
@@ -40,7 +40,7 @@ const register = asyncHandler(async (req, res) => {
   )
     throw new ApiError(404, "All fields are required");
 
-  const existedUser = await Balak.find({
+  const existedUser = await User.find({
     $and: [{ firstName }, { mobile }],
   });
   console.log("Already existed user: \n", existedUser);
@@ -51,7 +51,7 @@ const register = asyncHandler(async (req, res) => {
       `User already exist with same name and mobile number`
     );
 
-  const user = await Balak.create({
+  const user = await User.create({
     firstName,
     lastName,
     mobile,
@@ -71,7 +71,7 @@ const login = asyncHandler(async (req, res) => {
     [firstName, mobile, password].some((field) => (field?.trim() ?? "") === "")
   )
     throw new ApiError(404, `All fields are required`);
-  const user = await Balak.findOne({
+  const user = await User.findOne({
     $and: [{ firstName }, { mobile }],
   });
   if (!user) throw new ApiError(404, `invalid user request`);
@@ -107,7 +107,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-  await Balak.findByIdAndUpdate(
+  await User.findByIdAndUpdate(
     req.user._id,
     {
       $set: {
@@ -143,11 +143,11 @@ const updateuserDetails = asyncHandler(async (req, res) => {
     mediumOfStudy,
   } = req.body;
 
-  const user = await Balak.findById(id);
+  const user = await User.findById(id);
   if (!user) throw new ApiError(404, `invalid user request`);
 
   try {
-    const updatedUser = await Balak.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       id,
       {
         firstName,
@@ -187,7 +187,7 @@ const updateAvatar = asyncHandler(async (req, res) => {
   if (!avatar || !avatar.url)
     throw new ApiError(404, `Error while uploading avatar`);
 
-  const user = await Balak.findById(req.user._id);
+  const user = await User.findById(req.user._id);
   if (!user) throw new ApiError(404, `invalid user request`);
   user.avatar = avatar.url;
   await user.save({ validateBeforeSave: false });
@@ -217,7 +217,7 @@ const updatePassword = asyncHandler(async (req, res) => {
 
   if (password === newPassword)
     throw new ApiError(404, `Password and new password should not be same`);
-  const user = await Balak.findById(req.user._id);
+  const user = await User.findById(req.user._id);
   const isValidPassword = await user.isPasswordCorrect(password);
   if (!isValidPassword) throw new ApiError(404, `Invalid password`);
   user.password = newPassword;
@@ -235,7 +235,7 @@ const forgetPassword = asyncHandler(async (req, res) => {
 });
 
 const getCurrentuser = asyncHandler(async (req, res) => {
-  const user = await Balak.findById(req.user._id).select(
+  const user = await User.findById(req.user._id).select(
     "-password -refreshToken"
   );
   if (!user) throw new ApiError(404, `Invalid user request`);
@@ -255,7 +255,7 @@ const refreshAceesToken = asyncHandler(async (req, res) => {
   );
   
   try {
-    const user = await Balak.findById(decodeToken._id);
+    const user = await User.findById(decodeToken._id);
     if (!user) throw new ApiError(404, `Invalid refresh token`);
     if (user.refreshToken !== incomingRefreshToken)
       throw new ApiError(404, `Invalid refresh token or token is expired`);

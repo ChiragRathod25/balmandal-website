@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const balakSchema = mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -54,7 +54,7 @@ const balakSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-balakSchema.methods.generateAccessToken = function() {
+userSchema.methods.generateAccessToken = function() {
   
   return jwt.sign(
     { _id: this._id, email: this.email, firstName:this.firstName },
@@ -64,7 +64,7 @@ balakSchema.methods.generateAccessToken = function() {
     }
   );
 };
-balakSchema.methods.generateRefreshToken =function ()  {
+userSchema.methods.generateRefreshToken =function ()  {
   console.log(this?._id);
   console.log(this?.id);
   
@@ -72,7 +72,7 @@ balakSchema.methods.generateRefreshToken =function ()  {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
   });
 };
-balakSchema.methods.isPasswordCorrect = async function (password) {
+userSchema.methods.isPasswordCorrect = async function (password) {
   try {
     if (!this.password) throw new Error("Password is missing");
     return await bcrypt.compare(password, this.password);
@@ -82,10 +82,10 @@ balakSchema.methods.isPasswordCorrect = async function (password) {
   }
 };
 
-balakSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   return next();
 });
 
-export const Balak = mongoose.model("Balak", balakSchema);
+export const User = mongoose.model("User", userSchema);

@@ -37,7 +37,7 @@ const addAchivement = asyncHandler(async (req, res) => {
   const achivement = await Achivement.create({
     title,
     description,
-    balakId: id,
+    userId: id,
     images:userImages,
   });
   res
@@ -95,7 +95,7 @@ const updateAchivement = asyncHandler(async (req, res) => {
 
 const getUserAchivements = asyncHandler(async (req, res) => {
   console.log(req.user);
-  const achivements = await Achivement.find({ balakId: req?.user?._id });
+  const achivements = await Achivement.find({ userId: req?.user?._id });
   if (!achivements) throw new ApiError(404, `No achivements found for user`);
 
   res

@@ -9,9 +9,9 @@ const talentSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    balakId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Balak",
+      ref: "User",
       required: true,
     },
     images: [

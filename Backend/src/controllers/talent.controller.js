@@ -31,7 +31,7 @@ const addTalent = asyncHandler(async (req, res) => {
   const talent = await Talent.create({
     heading,
     description,
-    balakId: id,
+    userId: id,
     images,
   });
   if (!talent) throw new ApiError(400, `Error while adding talent`);
@@ -94,7 +94,7 @@ const deleteTalent = asyncHandler(async (req, res) => {
 
 const getUserTalents = asyncHandler(async (req, res) => {
   const id = req.user._id;
-  const talents = await Talent.find({ balakId: id });
+  const talents = await Talent.find({ userId: id });
   if (!talents) throw new ApiError(404, `No talent found`);
   res
     .status(200)

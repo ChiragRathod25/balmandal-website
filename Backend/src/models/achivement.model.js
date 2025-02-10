@@ -8,10 +8,9 @@ const achivementSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    balakId:{
-      // type: mongoose.Schema.Types.ObjectId,
-      type:String,
-      ref: "Balak",
+    userId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true
     },
     images: [

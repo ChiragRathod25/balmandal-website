@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Input, Button, FileUploader } from "../../index";
 import databaseService from "../../../services/database.services";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function AchievementForm({ achievement }) {
   console.log("AchievementForm Component", achievement);
@@ -25,7 +26,7 @@ function AchievementForm({ achievement }) {
         .then((response) => response.data);
       if (response) {
         console.log("Updated", response);
-        navigate(`/achievement/${response._id}`);
+        navigate(`/achievement/${response._id}`)
       }
     } else {
       const response = await databaseService

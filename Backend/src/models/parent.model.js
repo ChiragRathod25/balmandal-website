@@ -22,9 +22,9 @@ const parentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    balakId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Balak",
+      ref: "User",
       required: true,
     },
     businessId: {

@@ -18,7 +18,7 @@ const addParentDetails = asyncHandler(async (req, res, next) => {
     email,
     mobileNumber,
     occupation,
-    balakId: req.user._id,
+    userId: req.user._id,
   });
 
   if (!parent) {
@@ -90,7 +90,7 @@ const getParentDetailsById = asyncHandler(async (req, res, next) => {
 });
 
 const getUserParents = asyncHandler(async (req, res, next) => {
-  const parents = await Parent.find({ balakId: req.user._id });
+  const parents = await Parent.find({ userId: req.user._id });
   if (!parents) {
     return next(new ApiError(404, "No parent details found"));
   }
