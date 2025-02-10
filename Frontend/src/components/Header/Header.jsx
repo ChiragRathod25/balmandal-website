@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Header() {
+  const authStatus = useSelector(state => state.auth.status);
   return (
     <header className="bg-blue-600 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -11,6 +13,8 @@ function Header() {
           <Link to="/parent" className="hover:underline">Parent</Link>
           <Link to="/achievement" className="hover:underline">Achievement</Link>
           <Link to="/talent" className="hover:underline">Talent</Link>
+          <Link to={authStatus ? "/logout" : "/login"} className="hover:underline">{authStatus ? "logout" : "login"}</Link>
+
         </nav>
       </div>
     </header>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, Button } from "../components";
 import databaseService from "../services/database.services";
@@ -56,7 +56,7 @@ function Login() {
           <Input
             type="password"
             label="Password"
-            placeholder="Enter password (new)"
+            placeholder="Enter password"
             {...register("password", { required: true })}
             className="w-full px-4 py-2 border rounded-md"
           />
@@ -65,6 +65,12 @@ function Login() {
             Submit
           </Button>
         </form>
+        <p className="text-center">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-blue-500 hover:underline">
+            Register
+          </Link>
+        </p>
       </div>
     </div>
   );

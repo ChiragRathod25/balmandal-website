@@ -22,6 +22,7 @@ import {
   Home,
   Login,
   Register,
+  Logout,
 } from "./pages/index.js";
 import { AuthLayout } from "./components";
 
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path : "/logout",
+        element : <Logout />
       },
       {
         path: "/achievement",

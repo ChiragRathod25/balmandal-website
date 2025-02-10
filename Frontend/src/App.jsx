@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import databaseService from "./services/database.services";
-import { useDispatch } from "react-redux";
-import { login, logout } from "./slices/userSlice/authSlice";
-import { Header, Footer } from "./pages";
+import React, { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import databaseService from './services/database.services';
+import { useDispatch } from 'react-redux';
+import { login, logout } from './slices/userSlice/authSlice';
+import { Header, Footer } from './pages';
 
 function App() {
   const [loading, setLoading] = useState(true);

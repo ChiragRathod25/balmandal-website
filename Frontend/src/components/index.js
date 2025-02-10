@@ -9,7 +9,9 @@ import FileUploader from "./FileUploader";
 import AuthLayout from "./AuthLayout";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
+import QueryHandler from "./QueryHandler";
 export {
+  QueryHandler,
   Input,
   Select,
   Button,

@@ -18,6 +18,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Header from "./Header";
 import Footer from "./Footer";
+import Logout from "./Logout";
 
 export {
     AddAchievement,
@@ -36,5 +37,6 @@ export {
     Login,
     Register,
     Header,
-    Footer
+    Footer,
+    Logout
 }
