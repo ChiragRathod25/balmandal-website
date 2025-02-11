@@ -2,9 +2,16 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import databaseService from "../../../services/database.services";
 import { Button, Input, FileUploader } from "../../";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditableUserTalent } from "../../../slices/dashboard/dashboardSlice";
 
-function TalentForm({ talent }) {
+function TalentForm({ talent ,setAdd}) {
+  console.log("TalentForm Component", talent);
+  const isAdmin=useSelector((state)=>state.auth.userData.isAdmin);
+  const dispatch=useDispatch();
+  const {userId}=useParams();
+
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       heading: talent?.heading || "",
@@ -12,24 +19,55 @@ function TalentForm({ talent }) {
       image: null,
     },
   });
+
   const navigate = useNavigate();
+
   const cloudImages = talent?.images || [];
   const submit = async (data) => {
-    if (talent) {
-      const response = await databaseService
+    if(isAdmin && userId){
+        if(talent){
+            const response = await databaseService.updateTalent(data, talent?._id,userId).then((response) => response.data).catch((error)=>console.log("error while updating talent",error));
+            if(response){
+                console.log("Updated", response);
+                dispatch(setEditableUserTalent(null));
+                navigate(`/dashboard/user/${userId}`);
+            }
+        }else{
+            const response = await databaseService.addTalent(data,userId).then((response) => response.data);
+            if(response){
+                dispatch(setEditableUserTalent(null));
+                navigate(`/dashboard/user/${userId}`);
+                setAdd(false);
+            }
+        }
+    }else{
+
+      if (talent) {
+        const response = await databaseService
         .updateTalent(data, talent?._id)
         .then((response) => response.data);
-      if (response) {
-        console.log("Updated", response);
-        navigate(`/talent/${response._id}`);
-      }
-    } else {
-      const response = await databaseService
+        if (response) {
+          console.log("Updated", response);
+          navigate(`/talent/${response._id}`);
+        }
+      } else {
+        const response = await databaseService
         .addTalent(data)
         .then((response) => response.data);
-      if (response) navigate(`/talent/${response._id}`);
+        if (response) navigate(`/talent/${response._id}`);
+      }
     }
   };
+
+  const handleCancel = () => {
+    if(isAdmin && userId){
+      dispatch(setEditableUserTalent(null));
+      navigate(`/dashboard/user/${userId}`);
+      setAdd(false);
+    }else
+    navigate(`/talent`);  
+  }
+
   return (
     <div className="max-w-2xl mx-auto p-4">
       <form onSubmit={handleSubmit(submit)} className="space-y-4">
@@ -74,7 +112,7 @@ function TalentForm({ talent }) {
           </Button>
           <Button
             type="button"
-            onClick={() => navigate(`/talent`)}
+            onClick={() => handleCancel()}
             className="bg-gray-500 text-white px-4 py-2 rounded"
           >
             Cancel

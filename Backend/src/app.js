@@ -39,7 +39,7 @@ import userRoutes from "./routes/user.routes.js";
 import parentRoutes from "./routes/parent.routes.js";
 import achievementRoutes from "./routes/achievement.routes.js";
 import talentRoutes from "./routes/talent.routes.js";
-import adminRoutes from "./routes/sanchalak.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/parent", parentRoutes);

@@ -20,6 +20,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Logout from "./Logout";
 
+import AdminDashboard from "./dashboard/AdminDashboard";
+import UserData from "./dashboard/UserData";
+
 export {
     AddAchievement,
     EditAchievement,
@@ -38,5 +41,7 @@ export {
     Register,
     Header,
     Footer,
-    Logout
+    Logout,
+    AdminDashboard,
+    UserData
 }

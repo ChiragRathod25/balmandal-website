@@ -9,16 +9,17 @@ const addAchivement = asyncHandler(async (req, res) => {
   console.log(req.body);
   console.log(req.files);
 
-  
   const { title, description } = req.body;
   if (!title) throw new ApiError(400, `Title is required`);
 
-  const userImages = []
+  const userImages = [];
 
-  if(req.files){
-    const imagesArray = Array.isArray(req.files) ? req.files : [req.files.image];
-    console.log("Image Array",imagesArray);
-    
+  if (req.files) {
+    const imagesArray = Array.isArray(req.files)
+      ? req.files
+      : [req.files.image];
+    console.log("Image Array", imagesArray);
+
     for (const img of imagesArray) {
       const path = img.path;
       console.log(img);
@@ -38,7 +39,7 @@ const addAchivement = asyncHandler(async (req, res) => {
     title,
     description,
     userId: id,
-    images:userImages,
+    images: userImages,
   });
   res
     .status(200)
@@ -48,21 +49,26 @@ const addAchivement = asyncHandler(async (req, res) => {
 });
 
 const updateAchivement = asyncHandler(async (req, res) => {
+
+  
+ try {
   const { title, description } = req.body;
   const achivementId = req.params.id;
   const achivement = await Achivement.findById(achivementId);
   if (!achivement) throw new ApiError(404, `Invalid achivement request`);
 
   const userImages = achivement.images;
-
-  if(req.files?.image){
+  
+  if (req.files?.image) {
     for (const img of req.files?.image) {
       const path = img.path;
       console.log(img);
       try {
         const image = await uploadOnCloudinary(path);
-        if (!image || !image.url)
+        if (!image || !image.url){
+          console.log('here');
           throw new ApiError(400, `Error while uploading image`);
+        }
         userImages.push(image.url);
       } catch (error) {
         console.error(`Error while uploading image`, error);
@@ -70,7 +76,6 @@ const updateAchivement = asyncHandler(async (req, res) => {
       }
     }
   }
-
   const updatedAchivement = await Achivement.findByIdAndUpdate(
     achivementId,
     {
@@ -80,21 +85,21 @@ const updateAchivement = asyncHandler(async (req, res) => {
     },
     { new: true }
   );
-  if (!updatedAchivement)
+  if (!updatedAchivement){
     throw new ApiError(404, `Error while updating achivement`);
-  res
-    .status(200)
+  }
+  
+  console.log('here')
+   res.status(200)
     .json(
-      new ApiResponce(
-        200,
-        updatedAchivement,
-        `Achivement updated successfully !!`
-      )
+      new ApiResponce(200, updatedAchivement, `Achievement updated successfully !!`)
     );
+ } catch (error) {
+  console.error(`Error while updating achivement`, error);
+ }
 });
 
 const getUserAchivements = asyncHandler(async (req, res) => {
-  console.log(req.user);
   const achivements = await Achivement.find({ userId: req?.user?._id });
   if (!achivements) throw new ApiError(404, `No achivements found for user`);
 

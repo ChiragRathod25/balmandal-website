@@ -23,6 +23,8 @@ import {
   Login,
   Register,
   Logout,
+ AdminDashboard,
+  UserData,
 } from "./pages/index.js";
 import { AuthLayout } from "./components";
 
@@ -153,6 +155,27 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "dashboard",
+        children: [
+          {
+            path: "",
+            element: (
+              <AuthLayout>
+                <AdminDashboard />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "user/:userId",
+            element: (
+              <AuthLayout>
+                <UserData />
+              </AuthLayout>
+            ),
+          }
+        ]
+      }
     ],
   },
 ]);

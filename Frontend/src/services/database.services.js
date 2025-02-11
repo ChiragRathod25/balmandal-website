@@ -1,7 +1,6 @@
 import axiosInstace from '../utils/axios';
 import { handleApiRequest } from '../utils/apiHelper';
-import { useSelector } from 'react-redux';
-const isAdmin = useSelector((state) => state.auth?.userData?.isAdmin);
+
 export class DatabaseService {
   async register({ firstName, lastName, mobile, password }) {
     return handleApiRequest(
@@ -26,17 +25,27 @@ export class DatabaseService {
       'login'
     );
   }
-  async updateUserDetails({
-    firstName,
-    lastName,
-    middleName,
-    email,
-    mobile,
-    DOB,
-    school,
-    std,
-    mediumOfStudy,
-  }) {
+  async updateUserDetails(
+    { firstName, lastName, middleName, email, mobile, DOB, school, std, mediumOfStudy },
+    userId = null
+  ) {
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/admin/updateuserDetails?userId=${userId}`, {
+            firstName,
+            lastName,
+            middleName,
+            email,
+            mobile,
+            DOB,
+            school,
+            std,
+            mediumOfStudy,
+          }),
+        'updateUserDetails'
+      );
+    }
     return handleApiRequest(
       () =>
         axiosInstace.put('/api/v1/user/updateuserDetails', {
@@ -53,7 +62,22 @@ export class DatabaseService {
       'updateUserDetails'
     );
   }
-  async updateAvatar({ avatar }) {
+  async updateAvatar({ avatar }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.put(
+            `/api/v1/admin/updateAvatar?userId=${userId}`,
+            { avatar },
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          ),
+        'updateAvatar'
+      );
+    }
     return handleApiRequest(
       () =>
         axiosInstace.put(
@@ -68,7 +92,17 @@ export class DatabaseService {
       'updateAvatar'
     );
   }
-  async updatePassword({ password, newPassword }) {
+  async updatePassword({ password, newPassword }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/admin/updatePassword?userId=${userId}`, {
+            password,
+            newPassword,
+          }),
+        'updatePassword'
+      );
+    }
     return handleApiRequest(
       () =>
         axiosInstace.put('/api/v1/user/updatePassword', {
@@ -95,30 +129,48 @@ export class DatabaseService {
   }
 
   async getUserAchivements(userId = null) {
-    //if userId is passed then it will return all achievements of the user 
+    //if userId is passed then it will return all achievements of the user
     //and also check if the user is admin or not
-    if (userId && isAdmin) {
+    if (userId != null) {
       return handleApiRequest(
-        () => axiosInstace.get(`/api/v1/admin/achievement/${userId}`),
+        () => axiosInstace.get(`/api/v1/admin/achievement?userId=${userId}`),
         'getUserAchivements'
       );
     }
-    
+
     //if userId is not passed then it will return all achievements of the logged in user
     return handleApiRequest(() => axiosInstace.get('/api/v1/achievement'), 'getUserAchivements');
   }
-  async getAchievementById({ achievementId }) {
+  async getAchievementById({ achievementId }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/achievement/${achievementId}?userId=${userId}`),
+        'getAchievementById'
+      );
+    }
     return handleApiRequest(
       () => axiosInstace.get(`/api/v1/achievement/${achievementId}`),
       'getAchievementById'
     );
   }
-  async addAchievement({ title, description, image }) {
+
+  async addAchievement({ title, description, image }, userId = null) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
+    }
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/admin/achievement?userId=${userId}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+        'addAchievement'
+      );
     }
     return handleApiRequest(
       () =>
@@ -130,13 +182,30 @@ export class DatabaseService {
       'addAchievement'
     );
   }
-  async updateAchivement({ title, description, image }, achievementId) {
+
+  async updateAchivement({ title, description, image }, achievementId, userId = null) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.put(
+            `/api/v1/admin/achievement/${achievementId}?userId=${userId}`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          ),
+        'updateAchivement'
+      );
+    }
+    
     return handleApiRequest(
       () =>
         axiosInstace.put(`/api/v1/achievement/${achievementId}`, formData, {
@@ -147,18 +216,43 @@ export class DatabaseService {
       'updateAchivement'
     );
   }
-  async deleteAchivement({ achievementId }) {
+  async deleteAchivement({ achievementId }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/admin/achievement/${achievementId}?userId=${userId}`),
+        'deleteAchivement'
+      );
+    }
+
     return handleApiRequest(
       () => axiosInstace.delete(`/api/v1/achievement/${achievementId}`),
       'deleteAchivement'
     );
   }
 
-  async getUserParents() {
+  async getUserParents(userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/parent?userId=${userId}`),
+        'getUserParents'
+      );
+    }
     return handleApiRequest(() => axiosInstace.get('/api/v1/parent'), 'getUserParents');
   }
-  async addParentDetails({ role, fullName, email, mobileNumber, occupation }) {
-    console.log({ role, fullName, email, mobileNumber, occupation });
+  async addParentDetails({ role, fullName, email, mobileNumber, occupation }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/admin/parent?userId=${userId}`, {
+            role,
+            fullName,
+            email,
+            mobileNumber,
+            occupation,
+          }),
+        'addParentDetails'
+      );
+    }
 
     return handleApiRequest(
       () =>
@@ -172,7 +266,26 @@ export class DatabaseService {
       'addParentDetails'
     );
   }
-  async updateParentDetails({ role, fullName, email, mobileNumber, occupation }, parentId) {
+
+  async updateParentDetails(
+    { role, fullName, email, mobileNumber, occupation },
+    parentId,
+    userId = null
+  ) 
+  {
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/admin/parent/${parentId}?userId=${userId}`, {
+            role,
+            fullName,
+            email,
+            mobileNumber,
+            occupation,
+          }),
+        'updateParentDetails'
+      );
+    }
     return handleApiRequest(
       () =>
         axiosInstace.put(`/api/v1/parent/${parentId}`, {
@@ -185,32 +298,75 @@ export class DatabaseService {
       'updateParentDetails'
     );
   }
-  async getParentDetailsById({ parentId }) {
+  
+  async getParentDetailsById({ parentId }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/parent/${parentId}?userId=${userId}`),
+        'getParentDetailsById'
+      );
+    }
+
     return handleApiRequest(
       () => axiosInstace.get(`/api/v1/parent/${parentId}`),
       'getParentDetailsById'
     );
   }
-  async deleteParentDetails({ parentId }) {
+  async deleteParentDetails({ parentId }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/admin/parent/${parentId}?userId=${userId}`),
+        'deleteParentDetails'
+      );
+    }
+
     return handleApiRequest(
       () => axiosInstace.delete(`/api/v1/parent/${parentId}`),
       'deleteParentDetails'
     );
   }
 
-  async getUserTalents() {
+  async getUserTalents(userId = null) {
+    console.log("userId",userId);
+    console.log("userId",typeof userId);
+    
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/talent?userId=${userId}`),
+        'getUserTalents'
+      );
+    }
+
     return handleApiRequest(() => axiosInstace.get('/api/v1/talent'), 'getUserTalents');
   }
-  async getTalentById({ talentId }) {
+  async getTalentById({ talentId }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
+        'getTalentById'
+      );
+    }
     return handleApiRequest(() => axiosInstace.get(`/api/v1/talent/${talentId}`), 'getTalentById');
   }
-  async addTalent({ heading, description, image }) {
+  async addTalent({ heading, description, image }, userId = null) {
     const formData = new FormData();
     formData.append('heading', heading);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`, {
+            heading,
+            description,
+            image,
+          }),
+        'addTalent'
+      );
+    }
+
     return handleApiRequest(
       () =>
         axiosInstace.post('/api/v1/talent', formData, {
@@ -221,14 +377,24 @@ export class DatabaseService {
       'addTalent'
     );
   }
-  async updateTalent({ heading, description, image }, talentId) {
+  async updateTalent({ heading, description, image }, talentId, userId = null) {
     const formData = new FormData();
     formData.append('heading', heading);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
-
+    if (userId) {
+      return handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/admin/talent/${talentId}?userId=${userId}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+        'updateTalent'
+      );
+    }
     return handleApiRequest(
       () =>
         axiosInstace.put(`/api/v1/talent/${talentId}`, formData, {
@@ -240,7 +406,13 @@ export class DatabaseService {
     );
   }
 
-  async deleteTalent({ talentId }) {
+  async deleteTalent({ talentId }, userId = null) {
+    if (userId) {
+      return handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
+        'deleteTalent'
+      );
+    }
     return handleApiRequest(
       () => axiosInstace.delete(`/api/v1/talent/${talentId}`),
       'deleteTalent'

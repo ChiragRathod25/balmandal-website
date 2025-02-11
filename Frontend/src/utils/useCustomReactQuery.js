@@ -5,20 +5,21 @@ function customReactQuery(apiCall) {
   const [error, setError] = useState('');
   const [data, setData] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError('');
-        const response = await apiCall();
-        setData(response.data);
-        console.log('Received Data: ', response.data);
-      } catch (error) {
-        setError(error.message);
-      }
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const response = await apiCall();
+      setData(response.data);
+      console.log('Received Data: ', response.data);
+    } catch (error) {
+      setError(error.message);
+    } finally{
       setLoading(false);
-    };
+    }
+  }
 
+  useEffect(() => {
     fetchData();
   }, [apiCall]);
 
@@ -26,6 +27,7 @@ function customReactQuery(apiCall) {
     error,
     data,
     loading,
+    refetch: ()=>fetchData(),
   };
 }
 

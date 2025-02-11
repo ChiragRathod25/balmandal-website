@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Talent } from "../models/talent.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import mongoose from "mongoose";
 
 const addTalent = asyncHandler(async (req, res) => {
   const id = req.user._id;
@@ -85,7 +86,9 @@ const updateTalent = asyncHandler(async (req, res) => {
 
 const deleteTalent = asyncHandler(async (req, res) => {
   const talentId = req.params.id;
-  const talent = await Talent.findByIdAndDelete(talentId);
+  console.log(talentId);
+  
+  const talent = await Talent.findByIdAndDelete(new mongoose.Types.ObjectId(talentId));
   if (!talent) throw new ApiError(404, `Invalid talent request`);
   res
     .status(200)
@@ -93,6 +96,7 @@ const deleteTalent = asyncHandler(async (req, res) => {
 });
 
 const getUserTalents = asyncHandler(async (req, res) => {
+  console.log("get user talents called");
   const id = req.user._id;
   const talents = await Talent.find({ userId: id });
   if (!talents) throw new ApiError(404, `No talent found`);
