@@ -58,7 +58,7 @@ function ParentForm({ parent, setAdd }) {
   };
 
   const handleCancel = () => {
-    if (isAdmin) {
+    if (isAdmin && userId) {
       dispatch(setEditableUserParent(null));
       setAdd(false);
       return;

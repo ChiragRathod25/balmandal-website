@@ -61,8 +61,9 @@ function AchievementForm({ achievement, setAdd }) {
   };
 
   const handleCancel = () => {
-    if (isAdmin) {
+    if (isAdmin && userId) {
       dispatch(setEditableUserAchievement(null));
+      if(setAdd)
       setAdd(false);
       return;
     }
@@ -70,7 +71,7 @@ function AchievementForm({ achievement, setAdd }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-2xl mx-auto p-2">
       <form onSubmit={handleSubmit(submit)} className="space-y-4">
         <Input
           type="text"

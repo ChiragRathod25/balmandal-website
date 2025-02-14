@@ -29,7 +29,7 @@ function App() {
     return <h2>Loading...</h2>;
   }
   return (
-    <div className="bg-gray-700">
+    <div className="bg-gray-100">
       <Header />
       <main>
         <Outlet />

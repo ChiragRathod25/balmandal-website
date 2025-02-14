@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import { AchievementForm, QueryHandler, Button } from '../../components';
 import useCustomReactQuery from '../../utils/useCustomReactQuery.js';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,9 +9,9 @@ import databaseService from '../../services/database.services';
 function UserAchievement() {
   const { userId } = useParams();
   const dispatch = useDispatch();
-
   const [achievements, setAchievements] = useState(null);
   const [add, setAdd] = useState(false);
+  const navigate=useNavigate();
 
   const userName = useSelector((state) => state.dashboard?.editableUser?.firstName);
   const editableAchievement = useSelector((state) => state.dashboard.editableUserAchievement);
@@ -53,6 +53,8 @@ function UserAchievement() {
     setAdd(true);
   };
 
+  
+
   if (add) {
     return (
       <div className="container mx-auto p-4">
@@ -71,29 +73,50 @@ function UserAchievement() {
 
   return (
     <QueryHandler queries={[{ loading, error }]}>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto ">
         {Array.isArray(achievements) && achievements.length > 0 && (
           <>
-            <h2 className="text-2xl font-bold mb-4">{`${userName}'s Achievements`}</h2>
-            <div className="w-full">
+            <h2 className="text-3xl font-bold text-center text-[#C30E59] mb-6">{`${userName}'s Achievements`}</h2>
+            <div className="w-full space-y-4">
               {achievements.map((achievement) => (
                 <div
                   key={achievement?._id}
-                  className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md mb-4"
+                  className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-lg shadow-md hover:bg-gray-100 transition-all"
                 >
-                  <div className="flex items-center gap-4">
+                  {/* Image & Title */}
+                  <div className="flex items-center gap-4 w-full sm:w-auto">
                     {achievement?.images?.length > 0 && (
                       <img
                         src={achievement?.images[0]}
                         alt={achievement?.title}
-                        className="w-16 h-16 object-cover rounded-lg"
+                        className="w-14 h-14 object-cover rounded-md border border-gray-300"
                       />
                     )}
-                    <p className="font-semibold">{achievement?.title}</p>
+                    <p className="font-semibold text-lg text-center sm:text-left">
+                      {achievement?.title}
+                    </p>
                   </div>
-                  <div className="flex gap-2">
-                    <Button onClick={() => handleEdit(achievement)}>Edit</Button>
-                    <Button onClick={() => handleDelete(achievement?._id)}>Delete</Button>
+
+                  {/* Buttons */}
+                  <div className="flex gap-2 w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-end">
+                  <Button
+                                            onClick={() => navigate(`/achievement/${achievement._id}`)}
+                                            className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                                        >
+                                            View
+                                        </Button>
+                    <Button
+                      onClick={() => handleEdit(achievement)}
+                      className="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md"
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(achievement?._id)}
+                      className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-md"
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -101,8 +124,11 @@ function UserAchievement() {
           </>
         )}
 
-        <div className="w-full flex justify-center">
-          <Button onClick={handleAdd} className="bottom-4 right-4">
+        <div className="w-full flex justify-center mt-6">
+          <Button
+            onClick={handleAdd}
+            className="bg-[#10B981] text-white hover:bg-[#059669] px-6 py-3 rounded-lg shadow-md transition-all duration-300"
+          >
             Add Achievement
           </Button>
         </div>

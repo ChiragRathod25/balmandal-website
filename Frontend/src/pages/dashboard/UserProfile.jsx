@@ -38,8 +38,12 @@ function UserData() {
   return (
     <>
       <UserDetails userId={userId} />
+         <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
       <UserAchievement userId={userId} />
+         <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
+
       <UserTalent userId={userId} />
+         <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
       <UserParent userId={userId} />
     </>
   );

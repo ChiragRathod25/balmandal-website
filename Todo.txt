@@ -2,3 +2,6 @@ dashboard display all bakak,
 edit parent job/businees details
 Fix ui and make it responsive
 Home page steps setup
+Fix Edit parent details
+Achievement Add BTn
+Displaying Video

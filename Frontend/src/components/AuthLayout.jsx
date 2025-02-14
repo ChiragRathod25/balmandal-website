@@ -23,11 +23,11 @@ function AuthLayout({ children, authentication = true }) {
       <h2 className="text-2xl font-semibold text-gray-700">Loading...</h2>
     </div>
   ) : (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <div className="min-h-screen bg-gray-100  ">
+      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-1  sm:mt-8"> 
         {children}
       </div>
-    </div>
+     </div>
   );
 }
 

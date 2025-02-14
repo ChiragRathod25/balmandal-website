@@ -15,8 +15,8 @@ function UserParent() {
   const [parents, setParents] = useState(null);
   const [add, setAdd] = useState(false);
   const editableParent = useSelector((state) => state.dashboard.editableUserParent);
-
   const navigate = useNavigate();
+
   useEffect(() => {
     refetch();
   }, [userId, editableParent, add]);
@@ -42,8 +42,9 @@ function UserParent() {
       </div>
     );
   }
+
   const handleDelete = async (parentId) => {
-    if (!window.confirm('Are you sure want to delete parent?')) {
+    if (!window.confirm('Are you sure you want to delete this parent?')) {
       return;
     }
     try {
@@ -53,44 +54,47 @@ function UserParent() {
       console.error('Error deleting parent:', error);
     }
   };
+
   const handleEdit = (parent) => {
     dispatch(setEditableUserParent(parent));
   };
+
   const handleAdd = () => {
     dispatch(setEditableUserParent(null));
     setAdd(true);
   };
+
   return (
     <QueryHandler queries={[{ loading, error }]}>
       <div className="container mx-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">{`${userName}'s Parent Details`}</h2>
+        <h2 className="text-2xl font-bold mb-6">{`${userName}'s Parent Details`}</h2>
 
         {Array.isArray(parents) && parents.length > 0 && (
-          <div className="w-full">
+          <div className="w-full space-y-6">
             {parents.map((parent) => (
-              <div key={parent._id} className="container mx-auto p-4 bg-white shadow-md rounded-lg">
-                <h3 className="text-2xl font-bold mb-4">Parent Details</h3>
+              <div key={parent._id} className="bg-white shadow-lg rounded-xl p-6">
+                <h3 className="text-xl font-semibold mb-2">Parent Details</h3>
                 <hr className="mb-4" />
-                <div className="mb-4">
-                  <p className="text-gray-700 font-semibold">Role: {parent.role}</p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <p className="text-gray-700 font-semibold">Role: <span className="font-normal">{parent.role}</span></p>
+                  <p className="text-gray-700">Full Name: <span className="font-normal">{parent.fullName}</span></p>
+                  <p className="text-gray-700">Email: <span className="font-normal">{parent.email}</span></p>
+                  <p className="text-gray-700">Mobile: <span className="font-normal">{parent.mobileNumber}</span></p>
+                  <p className="text-gray-700">Occupation: <span className="font-normal">{parent.occupation}</span></p>
                 </div>
-                <div className="mb-4">
-                  <p className="text-gray-700">Full Name: {parent.fullName}</p>
-                </div>
-                <div className="mb-4">
-                  <p className="text-gray-700">Email: {parent.email}</p>
-                </div>
-                <div className="mb-4">
-                  <p className="text-gray-700">Mobile: {parent.mobileNumber}</p>
-                </div>
-                <div className="mb-4">
-                  <p className="text-gray-700">Occupation: {parent.occupation}</p>
-                </div>
-                <div className="flex space-x-4">
-                  <Button className="bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={() => handleEdit(parent)}>
+
+                <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4 mt-6">
+                  <Button
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => handleEdit(parent)}
+                  >
                     Edit Parent
                   </Button>
-                  <Button className="bg-red-500 text-white px-4 py-2 rounded-lg" onClick={() => handleDelete(parent._id)}>
+                  <Button
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => handleDelete(parent._id)}
+                  >
                     Delete Parent
                   </Button>
                 </div>
@@ -99,9 +103,11 @@ function UserParent() {
           </div>
         )}
 
-        <Button className="bg-green-500 text-white px-4 py-2 rounded mt-4 w-full md:w-auto" onClick={handleAdd}>
-          Add Parent
-        </Button>
+        <div className="mt-6 flex justify-center sm:justify-start">
+          <Button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md" onClick={handleAdd}>
+            Add Parent
+          </Button>
+        </div>
       </div>
     </QueryHandler>
   );

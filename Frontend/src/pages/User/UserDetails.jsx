@@ -30,10 +30,10 @@ function UserDetails({ userId }) {
   }, [isEditing]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center py-10 text-lg font-semibold">Loading...</div>;
   }
   if (error) {
-    return <div>Error</div>;
+    return <div className="text-center py-10 text-lg text-red-500">Error fetching user data</div>;
   }
 
   if (isEditing) {
@@ -48,32 +48,60 @@ function UserDetails({ userId }) {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="bg-white shadow-md rounded-lg p-14">
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">User Details</h2>
-          <button
-            onClick={() => setEditing(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-          >
-            Edit
-          </button>
-        </div>
-        <div className="flex flex-row items-center justify-around mt-4 space-x-4">
-          <div className="flex flex-col items-center ">
-            <UserAvatar avatar={user?.avatar} />
-          </div>
-          <div className="mt-4">
-            <p><span className="font-semibold">First Name:</span> {user?.firstName}</p>
-            <p><span className="font-semibold">Last Name:</span> {user?.lastName}</p>
-            <p><span className="font-semibold">Middle Name:</span> {user?.middleName}</p>
-            <p><span className="font-semibold">Email:</span> {user?.email}</p>
-            <p><span className="font-semibold">Mobile:</span> {user?.mobile}</p>
-            <p><span className="font-semibold">DOB:</span> {user?.DOB}</p>
-            <p><span className="font-semibold">School:</span> {user?.school}</p>
-            <p><span className="font-semibold">Standard:</span> {user?.std}</p>
-            <p><span className="font-semibold">Medium of Study:</span> {user?.mediumOfStudy}</p>
+      <div className="bg-white shadow-md rounded-lg p-6 sm:p-10">
+        {/* Header Section - Aligned in One Line */}
+        <div className="flex justify-between items-center border-b pb-4 mb-6">
+          <h2 className="text-2xl font-bold  ">User Details</h2>
+          <div className="flex justify-cente align-center">
+            <Button
+              onClick={() => setEditing(true)}
+              className="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md"
+            >
+              Edit
+            </Button>
           </div>
         </div>
+
+        {/* User Info Section */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+          {/* Avatar Section with More Space */}
+          <div className="flex-shrink-0 w-52 h-52 sm:w-64 sm:h-64 flex justify-center">
+            <UserAvatar avatar={user?.avatar} className="w-full h-full rounded-full shadow-md" />
+          </div>
+
+          {/* User Details - Compact Layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-2 w-full">
+            <p>
+              <span className="font-semibold">First Name:</span> {user?.firstName}
+            </p>
+            <p>
+              <span className="font-semibold">Last Name:</span> {user?.lastName}
+            </p>
+            <p>
+              <span className="font-semibold">Middle Name:</span> {user?.middleName}
+            </p>
+            <p>
+              <span className="font-semibold">Email:</span> {user?.email}
+            </p>
+            <p>
+              <span className="font-semibold">Mobile:</span> {user?.mobile}
+            </p>
+            <p>
+              <span className="font-semibold">DOB:</span> {user?.DOB}
+            </p>
+            <p>
+              <span className="font-semibold">Standard:</span> {user?.std}
+            </p>
+            <p>
+              <span className="font-semibold">Medium of Study:</span> {user?.mediumOfStudy}
+            </p>
+            <p>
+              <span className="font-semibold">School:</span> {user?.school}
+            </p>
+          </div>
+        </div>
+
+        
       </div>
     </div>
   );

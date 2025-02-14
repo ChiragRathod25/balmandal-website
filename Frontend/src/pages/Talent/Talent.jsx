@@ -28,12 +28,12 @@ function Talent() {
   }, [talent, talentId, data, navigate]);
 
   const handleDelete = async (talentId) => {
-    if (!prompt(`Delete talent ?`)) {
+    if (!confirm(`Delete talent ?`)) {
       return;
     }
     try {
       const response = await databaseService
-        .deleteAchivement({ talentId })
+        .deleteTalent({talentId})
         .then((response) => response.data);
       if (response) {
         navigate('/talent');
