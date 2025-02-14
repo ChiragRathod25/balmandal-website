@@ -1,10 +1,10 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App.jsx";
-import "./index.css";
-import { Provider } from "react-redux";
-import store from "./store/store.js";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import App from './App.jsx';
+import './index.css';
+import { Provider } from 'react-redux';
+import store from './store/store.js';
 
 import {
   AddAchievement,
@@ -23,34 +23,43 @@ import {
   Login,
   Register,
   Logout,
- AdminDashboard,
+  AdminDashboard,
   UserData,
-} from "./pages/index.js";
-import { AuthLayout } from "./components";
+  UserProfile,
+} from './pages/index.js';
+import { AuthLayout } from './components';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <Home />,
       },
       {
-        path: "/login",
+        path: '/login',
         element: <Login />,
       },
       {
-        path: "/register",
+        path: '/register',
         element: <Register />,
       },
       {
-        path : "/logout",
-        element : <Logout />
+        path: '/logout',
+        element: <Logout />,
       },
       {
-        path: "/achievement",
+        path: '/profile',
+        element: (
+          <AuthLayout>
+            <UserProfile />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: '/achievement',
         element: (
           <AuthLayout>
             <AlltAchievement />
@@ -58,7 +67,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/achievement/:achievementId",
+        path: '/achievement/:achievementId',
         element: (
           <AuthLayout>
             <Achievement />
@@ -66,7 +75,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/achievement/edit/:achievementId",
+        path: '/achievement/edit/:achievementId',
         element: (
           <AuthLayout>
             <EditAchievement />
@@ -74,7 +83,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/achievement/add",
+        path: '/achievement/add',
         element: (
           <AuthLayout>
             <AddAchievement />
@@ -82,10 +91,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "parent",
+        path: 'parent',
         children: [
           {
-            path: "",
+            path: '',
             element: (
               <AuthLayout>
                 <AllParent />
@@ -93,7 +102,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "add",
+            path: 'add',
             element: (
               <AuthLayout>
                 <AddParent />
@@ -101,7 +110,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: ":parentId",
+            path: ':parentId',
             element: (
               <AuthLayout>
                 <Parent />
@@ -109,7 +118,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "edit/:parentId",
+            path: 'edit/:parentId',
             element: (
               <AuthLayout>
                 <EditParent />
@@ -119,10 +128,10 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "talent",
+        path: 'talent',
         children: [
           {
-            path: "",
+            path: '',
             element: (
               <AuthLayout>
                 <AllTalent />
@@ -130,7 +139,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "add",
+            path: 'add',
             element: (
               <AuthLayout>
                 <AddTalent />
@@ -138,7 +147,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: ":talentId",
+            path: ':talentId',
             element: (
               <AuthLayout>
                 <Talent />
@@ -146,7 +155,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "edit/:talentId",
+            path: 'edit/:talentId',
             element: (
               <AuthLayout>
                 <EditTalent />
@@ -156,10 +165,10 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "dashboard",
+        path: 'dashboard',
         children: [
           {
-            path: "",
+            path: '',
             element: (
               <AuthLayout>
                 <AdminDashboard />
@@ -167,19 +176,19 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "user/:userId",
+            path: 'user/:userId',
             element: (
               <AuthLayout>
                 <UserData />
               </AuthLayout>
             ),
-          }
-        ]
-      }
+          },
+        ],
+      },
     ],
   },
 ]);
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />

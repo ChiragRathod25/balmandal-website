@@ -21,8 +21,9 @@ import Footer from "./Footer";
 import Logout from "./Logout";
 
 import AdminDashboard from "./dashboard/AdminDashboard";
-import UserData from "./dashboard/UserData";
-
+import UserData from "./dashboard/UserProfile";
+import UserDetails from "./User/UserDetails";
+import UserProfile from "./User/UserProfile";
 export {
     AddAchievement,
     EditAchievement,
@@ -43,5 +44,7 @@ export {
     Footer,
     Logout,
     AdminDashboard,
-    UserData
+    UserData,
+    UserDetails,
+    UserProfile
 }

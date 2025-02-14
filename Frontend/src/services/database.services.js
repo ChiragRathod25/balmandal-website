@@ -32,7 +32,7 @@ export class DatabaseService {
     if (userId) {
       return handleApiRequest(
         () =>
-          axiosInstace.put(`/api/v1/admin/updateuserDetails?userId=${userId}`, {
+          axiosInstace.put(`/api/v1/admin/user/updateuserDetails?userId=${userId}`, {
             firstName,
             lastName,
             middleName,
@@ -63,12 +63,17 @@ export class DatabaseService {
     );
   }
   async updateAvatar({ avatar }, userId = null) {
+    const formData=new FormData();
+    formData.append('avatar',avatar[0]);
+
+
     if (userId) {
       return handleApiRequest(
         () =>
           axiosInstace.put(
-            `/api/v1/admin/updateAvatar?userId=${userId}`,
-            { avatar },
+            `/api/v1/admin/user/updateAvatar?userId=${userId}`,
+            formData
+            ,
             {
               headers: {
                 'Content-Type': 'multipart/form-data',
@@ -82,7 +87,7 @@ export class DatabaseService {
       () =>
         axiosInstace.put(
           '/api/v1/user/updateAvatar',
-          { avatar },
+         formData,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -127,6 +132,13 @@ export class DatabaseService {
   async logout() {
     return handleApiRequest(() => axiosInstace.post('/api/v1/user/logout'), 'logout');
   }
+
+  async getUserById(userId=null) {
+    if(userId){
+      return handleApiRequest(() => axiosInstace.get(`/api/v1/admin/user/${userId}`), 'getUserById');
+    }
+  }
+
 
   async getUserAchivements(userId = null) {
     //if userId is passed then it will return all achievements of the user
@@ -417,6 +429,10 @@ export class DatabaseService {
       () => axiosInstace.delete(`/api/v1/talent/${talentId}`),
       'deleteTalent'
     );
+  }
+
+  async fetchAllUsers() {
+    return handleApiRequest(() => axiosInstace.get('/api/v1/admin/all-users'), 'fetchAllUsers');
   }
 }
 const databaseService = new DatabaseService();

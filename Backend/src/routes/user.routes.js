@@ -9,6 +9,7 @@ import {
   forgetPassword,
   getCurrentuser,
   refreshAceesToken,
+  getUserById
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -25,5 +26,7 @@ router.put("/updatePassword", verifyJWT, updatePassword);
 router.put("/forgetPassword", verifyJWT, forgetPassword);   //TODO
 router.get("/getCurrentuser", verifyJWT, getCurrentuser);
 router.post("/refreshAceesToken", verifyJWT, refreshAceesToken);
+router.get("/:id", verifyJWT, getUserById);
+
 
 export default router;

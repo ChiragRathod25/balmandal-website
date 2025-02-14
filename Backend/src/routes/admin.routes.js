@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { verifyJWT, verifyAdmin } from "../middlewares/auth.middleware.js";
-import { justCheck } from "../controllers/admin.controller.js";
-
-
+import { justCheck, getAllUsers } from "../controllers/admin.controller.js";
 
 import userRoutes from "./user.routes.js";
 import parentRoutes from "./parent.routes.js";
@@ -14,11 +12,9 @@ const router = Router();
 
 router.use(verifyJWT, verifyAdmin);
 router.route("/").get(justCheck);
-
-
 router.use("/user", userRoutes);
 router.use("/parent", parentRoutes);
 router.use("/talent", talentRoutes);
 router.use("/achievement", achievementRoutes);
-
+router.use("/all-users", getAllUsers);
 export default router;

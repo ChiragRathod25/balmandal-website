@@ -6,11 +6,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardSlice';
 
-function AchievementForm({ achievement,setAdd }) {
+function AchievementForm({ achievement, setAdd }) {
   console.log('AchievementForm Component', achievement);
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
-  const {userId}=useParams();
+  const { userId } = useParams();
 
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
@@ -31,22 +31,22 @@ function AchievementForm({ achievement,setAdd }) {
       if (achievement) {
         console.log('Updating Achievement', data);
         const response = await databaseService
-          .updateAchivement(data, achievement?._id,userId)
-        .then((response) => response.data).catch((error)=>console.log("error while updating achievement",error));
+          .updateAchivement(data, achievement?._id, userId)
+          .then((response) => response.data)
+          .catch((error) => console.log('error while updating achievement', error));
         if (response) {
           console.log('Updated', response);
           dispatch(setEditableUserAchievement(null));
           navigate(`/dashboard/user/${userId}`);
         }
       } else {
-        
         const response = await databaseService
-          .addAchievement(data,userId)
+          .addAchievement(data, userId)
           .then((response) => response.data);
         if (response) {
           dispatch(setEditableUserAchievement(null));
-          navigate(`/dashboard/user/${userId}`);
           setAdd(false);
+          navigate(`/dashboard/user/${userId}`);
         }
       }
     }

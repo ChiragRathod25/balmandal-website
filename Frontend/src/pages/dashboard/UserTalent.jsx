@@ -8,6 +8,7 @@ import databaseService from '../../services/database.services';
 
 function UserTalent() {
   const { userId } = useParams();
+  const userName=useSelector((state)=>state.dashboard.editableUser?.firstName)
   const fetchUserTalents = useCallback(() => databaseService.getUserTalents(userId), [userId]);
   const { data, error, loading, refetch } = useCustomReactQuery(fetchUserTalents);
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ function UserTalent() {
     <>
       <QueryHandler queries={[{ loading, error }]}>
         <div className="container mx-auto p-4">
-          <h2 className="text-2xl font-bold mb-4">Talents</h2>
+          <h2 className="text-2xl font-bold mb-4">{`${userName}'s Talents`}</h2>
           
           {Array.isArray(talents) && talents.length > 0 && (
             <div className="w-full">

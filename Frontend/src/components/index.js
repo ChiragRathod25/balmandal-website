@@ -10,8 +10,12 @@ import AuthLayout from "./AuthLayout";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import QueryHandler from "./QueryHandler";
+import UserDetailsForm from "./Forms/User/UserDetailsForm";
+import UserCard from "./Dashbord/UserCard";
+import UserAvatar from "./Forms/User/UserAvatar";
 export {
   QueryHandler,
+  UserDetailsForm,
   Input,
   Select,
   Button,
@@ -23,4 +27,6 @@ export {
   ParentForm,
   Header as HeaderComponent,
   Footer as FooterComponent,
+  UserCard,
+  UserAvatar
 };

@@ -17,13 +17,18 @@ function Register() {
 
   const submit = async (data) => {
     try {
-      const user = await databaseService.register(data);
+      const user = await databaseService.register(data).then((response) => response.data);
       if (user) {
         console.log('Registered user', user);
-        const createduser = await databaseService.getCurrentuser();
-        if (createduser) {
-          dispatch(authLogin({ createduser }));
-          navigate('/');
+        const session = await databaseService.login(data);
+        if (session) {
+          const user = await databaseService.getCurrentuser();
+          console.log("Login User :", user);
+  
+          if (user) {
+            dispatch(authLogin(user.data));
+          }
+          navigate("/");
         }
       }
     } catch (error) {
@@ -35,10 +40,7 @@ function Register() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-8">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center">Register</h2>
-        <form
-          onSubmit={handleSubmit(submit)}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit(submit)} className="space-y-4">
           <Input
             label="First name : "
             placeholder="Enter your first name"

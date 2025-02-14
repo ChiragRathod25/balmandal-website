@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react';
-import {useParam} from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { UserDetails as UserDetailsComponent} from '../';
 
-const UserDetails = () => {
-    const {userId}=useParam()
-    useEffect(() => {
-        console.log(userId)
-
-    }
-    , [userId])
-    return (
-        <div>
-            
-        </div>
-    );
+const UserDetails = ({userId}) => {
+  return (
+    <div>
+      <UserDetailsComponent userId={userId} />
+    </div>
+  );
 };
 
 export default UserDetails;

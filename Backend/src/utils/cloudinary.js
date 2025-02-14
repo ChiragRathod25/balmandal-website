@@ -1,6 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import 'dotenv/config'
+import { extractPublicId } from 'cloudinary-build-url';
+
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -36,8 +38,12 @@ const uploadOnCloudinary = async (uploadFilePath) => {
 const deleteFromCloudinary = async (deleteFileURL) => {
     try {
       if (!deleteFileURL) return null;
+      const publicId = extractPublicId(
+        deleteFileURL
+      );
+      console.log("publicId: ", publicId);
       const responce = await cloudinary.uploader
-        .destroy(deleteFileURL)
+        .destroy(publicId)
         .catch((error) =>
           console.log("Error while deleting !!\nError: ", error)
         );

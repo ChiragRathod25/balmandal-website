@@ -6,8 +6,8 @@ import {
   deleteFromCloudinary,
 } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
-import jwt from "jsonwebtoken"
-
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateRefreshAccessToken = async (userId) => {
   const user = await User.findById(userId);
@@ -196,7 +196,10 @@ const updateAvatar = asyncHandler(async (req, res) => {
   const oldAvatar = req.user.avatar;
   if (oldAvatar && oldAvatar.length > 0) {
     try {
+      console.log("Old avatar", oldAvatar);
       const deleteExistingAvatar = await deleteFromCloudinary(oldAvatar);
+      console.log("deleteExistingAvatar", deleteExistingAvatar);
+      
       if (deleteExistingAvatar.result !== "ok")
         throw new ApiError(404, `Error while deleting old avatar`);
     } catch (error) {
@@ -205,7 +208,7 @@ const updateAvatar = asyncHandler(async (req, res) => {
     }
   }
   res
-  
+
     .status(200)
     .json(new ApiResponce(200, user, `User avatar updated successfully !!`));
 });
@@ -253,7 +256,7 @@ const refreshAceesToken = asyncHandler(async (req, res) => {
     incomingRefreshToken,
     process.env.REFRESH_TOKEN_SECRET
   );
-  
+
   try {
     const user = await User.findById(decodeToken._id);
     if (!user) throw new ApiError(404, `Invalid refresh token`);
@@ -284,6 +287,18 @@ const refreshAceesToken = asyncHandler(async (req, res) => {
     );
 });
 
+const getUserById = asyncHandler(async (req, res) => {
+  console.log("getUserById :: User id", req.params.id);
+  console.log(req.params)
+  const user = await User.findById(req.params.id).select(
+    "-password -refreshToken"
+  );
+  if (!user) throw new ApiError(404, `User not found`);
+  res
+    .status(200)
+    .json(new ApiResponce(200, user, `User fetched successfully !!`));
+});
+
 export {
   register,
   login,
@@ -294,4 +309,5 @@ export {
   forgetPassword,
   getCurrentuser,
   refreshAceesToken,
+  getUserById
 };
