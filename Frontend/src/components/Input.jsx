@@ -11,7 +11,7 @@ function Input({ type = "text", label, className = "", ...props }, ref) {
       )}
       <input
         type={type}
-        className={`block w-full px-4 py-2 text-base text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${className}`}
+        className={`block w-full px-4 py-2 text-base text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C30E59] focus:border-[#C30E59] ${className}`}
         id={id}
         ref={ref}
         {...props}

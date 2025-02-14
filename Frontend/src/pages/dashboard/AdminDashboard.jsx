@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect,useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import databaseService from '../../services/database.services';
 import customReactQuery from '../../utils/useCustomReactQuery';
 import { UserCard } from '../../components';
+
 function AdminDashboard() {
   const fetchAllUsers = useCallback(() => databaseService.fetchAllUsers(), []);
   const { data, loading, error, refetch } = customReactQuery(fetchAllUsers);
@@ -26,13 +27,11 @@ function AdminDashboard() {
   }
 
   return (
-    <>
-      <div className="container">
-        <div className="users flex flex-wrap gap-8">
-          {users && users.map((user) => <UserCard key={user._id} user={user} />)}
-        </div>
+    <div className="container mx-auto p-4">
+      <div className="flex flex-wrap gap-8">
+        {users && users.map((user) => <UserCard key={user._id} user={user} />)}
       </div>
-    </>
+    </div>
   );
 }
 

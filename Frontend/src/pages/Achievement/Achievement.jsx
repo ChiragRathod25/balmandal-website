@@ -90,7 +90,6 @@ function Achievement() {
           </div>
         </div>
       ) : null}
-
     </QueryHandler>
   );
 }

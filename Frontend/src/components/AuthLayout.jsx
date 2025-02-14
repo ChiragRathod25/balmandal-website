@@ -4,15 +4,13 @@ import { useEffect, useState } from "react";
 
 function AuthLayout({ children, authentication = true }) {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const authStatus = useSelector((state) => state.auth.status);  
   useEffect(() => {
-    if(authentication === false){
-      console.log("Authentication is not required !");
-    }
-    else if (authentication && authStatus !== authentication){
+    if (authentication === false) {
+      console.log("Authentication is not required!");
+    } else if (authentication && authStatus !== authentication) {
       console.log("AuthLayout authStatus: ", authStatus);
       console.log("Authentication ", authentication);
       navigate("/login");

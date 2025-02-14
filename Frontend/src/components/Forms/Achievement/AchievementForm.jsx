@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, Button, FileUploader } from '../../index';
 import databaseService from '../../../services/database.services';
@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardSlice';
 
 function AchievementForm({ achievement, setAdd }) {
-  console.log('AchievementForm Component', achievement);
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
   const { userId } = useParams();
@@ -25,17 +24,12 @@ function AchievementForm({ achievement, setAdd }) {
   const navigate = useNavigate();
 
   const submit = async (data) => {
-    //if you are an admin and editing user achievement
     if (isAdmin && userId) {
-      // if achievement is present then update it
       if (achievement) {
-        console.log('Updating Achievement', data);
         const response = await databaseService
           .updateAchivement(data, achievement?._id, userId)
-          .then((response) => response.data)
-          .catch((error) => console.log('error while updating achievement', error));
+          .then((response) => response.data);
         if (response) {
-          console.log('Updated', response);
           dispatch(setEditableUserAchievement(null));
           navigate(`/dashboard/user/${userId}`);
         }
@@ -49,15 +43,12 @@ function AchievementForm({ achievement, setAdd }) {
           navigate(`/dashboard/user/${userId}`);
         }
       }
-    }
-    //if you are a user and adding your own achievement
-    else {
+    } else {
       if (achievement) {
         const response = await databaseService
           .updateAchivement(data, achievement?._id)
           .then((response) => response.data);
         if (response) {
-          console.log('Updated', response);
           navigate(`/achievement/${response._id}`);
         }
       } else {
@@ -69,7 +60,7 @@ function AchievementForm({ achievement, setAdd }) {
     }
   };
 
-  const handleCancle = () => {
+  const handleCancel = () => {
     if (isAdmin) {
       dispatch(setEditableUserAchievement(null));
       setAdd(false);
@@ -118,14 +109,13 @@ function AchievementForm({ achievement, setAdd }) {
 
         <Button
           type="submit"
-          bgColor={achievement ? 'bg-green-400' : 'bg-blue-500'}
-          className="w-full py-2 text-white rounded"
+          className={`w-full py-2 text-white rounded ${achievement ? 'bg-green-400' : 'bg-blue-500'}`}
         >
           {achievement ? 'Update' : 'Add'}
         </Button>
 
         <Button
-          onClick={() => handleCancle()}
+          onClick={() => handleCancel()}
           className="w-full py-2 text-white bg-gray-500 rounded"
         >
           Cancel

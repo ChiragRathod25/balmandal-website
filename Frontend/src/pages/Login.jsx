@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate,Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Input, Button } from "../components";
-import databaseService from "../services/database.services";
-import { login } from "../slices/userSlice/authSlice";
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Input, Button } from '../components';
+import databaseService from '../services/database.services';
+import { login } from '../slices/userSlice/authSlice';
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -14,7 +14,7 @@ function Login() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (authStatus) navigate("/");
+    if (authStatus) navigate('/');
   }, [authStatus, navigate]);
 
   const submit = async (data) => {
@@ -22,16 +22,13 @@ function Login() {
       const session = await databaseService.login(data);
       if (session) {
         const user = await databaseService.getCurrentuser();
-        console.log("Login User :", user);
-
         if (user) {
           dispatch(login(user.data));
         }
-        navigate("/");
+        navigate('/');
       }
     } catch (error) {
-      console.log("Login Component Error", error);
-      setError(error.message);
+      setError(error.message);       
     }
   };
 
@@ -43,30 +40,30 @@ function Login() {
           <Input
             label="First name : "
             placeholder="Enter your first name"
-            {...register("firstName", { required: true })}
+            {...register('firstName', { required: true })}
             className="w-full px-4 py-2 border rounded-md"
           />
           <Input
             type="tel"
             label="Mobile Number"
             placeholder="Enter your mobile number"
-            {...register("mobile", { required: true })}
+            {...register('mobile', { required: true })}
             className="w-full px-4 py-2 border rounded-md"
           />
           <Input
             type="password"
             label="Password"
             placeholder="Enter password"
-            {...register("password", { required: true })}
+            {...register('password', { required: true })}
             className="w-full px-4 py-2 border rounded-md"
           />
           {error && <p className="text-red-600 mt-2 text-center">{error}</p>}
           <Button type="Submit" className="w-full py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-            Submit
+            Login
           </Button>
         </form>
         <p className="text-center">
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <Link to="/register" className="text-blue-500 hover:underline">
             Register
           </Link>

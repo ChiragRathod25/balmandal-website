@@ -13,24 +13,20 @@ function UserAchievement() {
   const [achievements, setAchievements] = useState(null);
   const [add, setAdd] = useState(false);
 
-  const userName=useSelector((state)=>state.dashboard?.editableUser?.firstName)
+  const userName = useSelector((state) => state.dashboard?.editableUser?.firstName);
   const editableAchievement = useSelector((state) => state.dashboard.editableUserAchievement);
-  console.log('Editable Achievement', editableAchievement);
 
   const fetchUserAchievements = useCallback(
     () => databaseService.getUserAchivements(userId),
     [userId]
   );
   const { data, error, loading, refetch } = useCustomReactQuery(fetchUserAchievements);
-  
+
   useEffect(() => {
-    console.log(userId);
-    console.log('Refetching');
     refetch();
   }, [userId, editableAchievement, add]);
 
   useEffect(() => {
-    console.log('Data updation:', data);
     if (data) {
       setAchievements(data);
     }
@@ -41,14 +37,13 @@ function UserAchievement() {
       return;
     }
     try {
-      
       await databaseService.deleteAchivement({ achievementId }, userId);
       setAchievements((prev) => prev.filter((ach) => ach._id !== achievementId));
-      console.log('Achievement Deleted');
     } catch (error) {
       console.error('Error deleting achievement:', error);
     }
   };
+
   const handleEdit = (achievement) => {
     dispatch(setEditableUserAchievement(achievement));
   };
@@ -59,7 +54,6 @@ function UserAchievement() {
   };
 
   if (add) {
-    console.log('Add', add);
     return (
       <div className="container mx-auto p-4">
         <AchievementForm setAdd={setAdd} />
@@ -68,7 +62,6 @@ function UserAchievement() {
   }
 
   if (editableAchievement) {
-    console.log('Editable Achievement', editableAchievement);
     return (
       <div className="container mx-auto p-4">
         <AchievementForm achievement={editableAchievement} />
@@ -99,14 +92,7 @@ function UserAchievement() {
                     <p className="font-semibold">{achievement?.title}</p>
                   </div>
                   <div className="flex gap-2">
-                    <Button
-                      onClick={() => {
-                        console.log('Edit clicked');
-                        return handleEdit(achievement);
-                      }}
-                    >
-                      Edit
-                    </Button>
+                    <Button onClick={() => handleEdit(achievement)}>Edit</Button>
                     <Button onClick={() => handleDelete(achievement?._id)}>Delete</Button>
                   </div>
                 </div>
@@ -116,16 +102,9 @@ function UserAchievement() {
         )}
 
         <div className="w-full flex justify-center">
-          <Button
-            onClick={() => {
-              console.log('Add clicked');
-              return handleAdd();
-            }}
-            className=" bottom-4 right-4"
-          >
+          <Button onClick={handleAdd} className="bottom-4 right-4">
             Add Achievement
           </Button>
-          
         </div>
       </div>
     </QueryHandler>

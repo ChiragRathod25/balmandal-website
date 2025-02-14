@@ -1,8 +1,8 @@
-import React, { use, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import databaseService from '../../services/database.services';
 import { AchievementForm, Container } from '../../components';
-import  useCustomeReactQuery  from '../../utils/useCustomReactQuery';
+import useCustomeReactQuery from '../../utils/useCustomReactQuery';
 import { QueryHandler } from '../../components';
 
 function EditAchievement() {
@@ -25,7 +25,7 @@ function EditAchievement() {
       setAchievement(data);
     }
     console.log('Edit Achievement', achievement);
-  }, [achievementId, data,navigate]);
+  }, [achievementId, data, navigate]);
 
   return (
     <QueryHandler queries={[{ loading, error }]}>
@@ -38,8 +38,7 @@ function EditAchievement() {
             </div>
           </Container>
         </div>
-      ) : null
-      }
+      ) : null}
     </QueryHandler>
   );
 }

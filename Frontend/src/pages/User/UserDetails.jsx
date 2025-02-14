@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import databaseService from '../../services/database.services';
 import customReactQuery from '../../utils/useCustomReactQuery';
-import { Button, UserDetailsForm,UserAvatar} from '../../components';
+import { Button, UserDetailsForm, UserAvatar } from '../../components';
 import { useParams } from 'react-router-dom';
 import { setEditableUser } from '../../slices/dashboard/dashboardSlice';
 
@@ -19,20 +19,16 @@ function UserDetails({ userId }) {
   const editableUser = useSelector((state) => state.dashboard.editableUser);
 
   useEffect(() => {
-    console.log('useEffect called', userId);
-
     if (data) {
-      console.log('set Editable User:', data);
-
       setUser(data);
       dispatch(setEditableUser(data));
     }
   }, [data, editableUser]);
 
   useEffect(() => {
-    console.log('useEffect called for isEditing', userId);
     refetch();
   }, [isEditing]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -50,16 +46,6 @@ function UserDetails({ userId }) {
     );
   }
 
-  // firstName: user.firstName || '',
-  // lastName: user.lastName || '',
-  // middleName: user.middleName || '',
-  // email: user.email || '',
-  // mobile: user.mobile || '',
-  // DOB: user.DOB || '',
-  // school: user.school || '',
-  // std: user.std || '',
-  // mediumOfStudy: user.mediumOfStudy || '',
-
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-md rounded-lg p-14">
@@ -74,39 +60,18 @@ function UserDetails({ userId }) {
         </div>
         <div className="flex flex-row items-center justify-around mt-4 space-x-4">
           <div className="flex flex-col items-center ">
-            
-            <UserAvatar
-              avatar={user?.avatar}
-              />
+            <UserAvatar avatar={user?.avatar} />
           </div>
           <div className="mt-4">
-            <p>
-              <span className="font-semibold">First Name:</span> {user?.firstName}
-            </p>
-            <p>
-              <span className="font-semibold">Last Name:</span> {user?.lastName}
-            </p>
-            <p>
-              <span className="font-semibold">Middle Name:</span> {user?.middleName}
-            </p>
-            <p>
-              <span className="font-semibold">Email:</span> {user?.email}
-            </p>
-            <p>
-              <span className="font-semibold">Mobile:</span> {user?.mobile}
-            </p>
-            <p>
-              <span className="font-semibold">DOB:</span> {user?.DOB}
-            </p>
-            <p>
-              <span className="font-semibold">School:</span> {user?.school}
-            </p>
-            <p>
-              <span className="font-semibold">Standard:</span> {user?.std}
-            </p>
-            <p>
-              <span className="font-semibold">Medium of Study:</span> {user?.mediumOfStudy}
-            </p>
+            <p><span className="font-semibold">First Name:</span> {user?.firstName}</p>
+            <p><span className="font-semibold">Last Name:</span> {user?.lastName}</p>
+            <p><span className="font-semibold">Middle Name:</span> {user?.middleName}</p>
+            <p><span className="font-semibold">Email:</span> {user?.email}</p>
+            <p><span className="font-semibold">Mobile:</span> {user?.mobile}</p>
+            <p><span className="font-semibold">DOB:</span> {user?.DOB}</p>
+            <p><span className="font-semibold">School:</span> {user?.school}</p>
+            <p><span className="font-semibold">Standard:</span> {user?.std}</p>
+            <p><span className="font-semibold">Medium of Study:</span> {user?.mediumOfStudy}</p>
           </div>
         </div>
       </div>

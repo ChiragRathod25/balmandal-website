@@ -2,15 +2,24 @@ import React from 'react';
 
 function Button({
   children,
-  bgColor = 'bg-blue-600',
-  textColor = 'text-white',
   className = '',
+  onClick,
+  variant = 'primary', // New prop for variant
   ...props
 }) {
+  // Define color classes based on the variant prop
+  const colorClasses = {
+    primary: 'bg-[#C30E59] text-white hover:bg-[#E82561]', // Dark Pink
+    secondary: 'bg-[#F2AE66] text-black hover:bg-[#E8E7AB]', // Light Yellow
+    success: 'bg-[#E82561] text-white hover:bg-[#F2AE66]', // Bright Pink
+    danger: 'bg-[#C30E59] text-white hover:bg-[#E82561]', // Dark Pink
+  };
+
   return (
     <div className="w-full flex justify-center">
       <button
-        className={`px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-lg ${bgColor} ${textColor} ${className} transition duration-300 ease-in-out transform hover:scale-105 hover:cursor-pointer`}
+        className={`rounded-lg px-4 py-2 transition duration-300 ease-in-out transform ${colorClasses[variant]} ${className} hover:scale-105 hover:cursor-pointer`}
+        onClick={onClick}
         {...props}
       >
         {children}

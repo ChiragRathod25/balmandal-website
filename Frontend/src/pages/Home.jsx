@@ -1,9 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 function Home() {
   const authStatus = useSelector((store) => store.auth.status);
-  console.log(authStatus);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="p-6 bg-white rounded-lg shadow-lg">

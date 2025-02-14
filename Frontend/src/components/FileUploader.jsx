@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import { Input } from "./";
 
-
 function MultipleFilesInputPreview({ register, name, accept, watch }) {
   const [preview, setPreview] = useState([]);
   const files = watch(name);
-
-  console.log("Files", files);
 
   useEffect(() => {
     if (files && files.length > 0) {

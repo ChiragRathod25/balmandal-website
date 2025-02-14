@@ -1,33 +1,18 @@
 import React from 'react';
 
 const Footer = () => {
-    return (
-        <footer className="footer">
-            <div className="footer-content">
-                <div className="footer-section about">
-                    <h2>About Us</h2>
-                    <p>We are a team of passionate developers building awesome websites.</p>
-                </div>
-                <div className="footer-section links">
-                    <h2>Quick Links</h2>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="#about">About</a></li>
-                    </ul>
-                </div>
-                <div className="footer-section contact">
-                    <h2>Contact Us</h2>
-                    <p>Email: info@example.com</p>
-                    <p>Phone: +123 456 7890</p>
-                </div>
-            </div>
-            <div className="footer-bottom">
-                &copy; 2023 Your Company. All rights reserved.
-            </div>
-        </footer>
-    );
+  return (
+    <footer className="bg-[#C30E59] text-white py-4">
+      <div className="container mx-auto text-center">
+        <p>&copy; 2023 Your Company. All rights reserved.</p>
+        <div className="flex justify-center space-x-4 mt-2">
+          <a href="#" className="hover:text-[#F2AE66] transition-colors">Privacy Policy</a>
+          <a href="#" className="hover:text-[#F2AE66] transition-colors">Terms of Service</a>
+          <a href="#" className="hover:text-[#F2AE66] transition-colors">Contact Us</a>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { UserDetails as UserDetailsComponent} from '../';
+import React, { useEffect } from 'react';
+import { UserDetails as UserDetailsComponent } from '../';
 
-const UserDetails = ({userId}) => {
+const UserDetails = ({ userId }) => {
   return (
     <div>
       <UserDetailsComponent userId={userId} />

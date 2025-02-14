@@ -7,7 +7,7 @@ import databaseService from '../services/database.services';
 import { login as authLogin } from '../slices/userSlice/authSlice';
 
 function Register() {
-  const { register, getValues, setValue, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm();
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,16 +19,13 @@ function Register() {
     try {
       const user = await databaseService.register(data).then((response) => response.data);
       if (user) {
-        console.log('Registered user', user);
         const session = await databaseService.login(data);
         if (session) {
           const user = await databaseService.getCurrentuser();
-          console.log("Login User :", user);
-  
           if (user) {
             dispatch(authLogin(user.data));
           }
-          navigate("/");
+          navigate('/');
         }
       }
     } catch (error) {
@@ -75,7 +72,7 @@ function Register() {
           />
           {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
           <Button type="Submit" className="w-full mt-4">
-            Submit
+            Create Account
           </Button>
         </form>
 
