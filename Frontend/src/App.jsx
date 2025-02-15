@@ -45,7 +45,13 @@ function App() {
       <Header />
 
       <main>
-        <Toaster position="top-right" duration="5000" reverseOrder={false} />
+      <Toaster
+  position="top-right"
+  duration={3000}
+  reverseOrder={false}
+/>
+
+
         <Outlet />
       </main>
       <Footer />

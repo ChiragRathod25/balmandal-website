@@ -12,7 +12,7 @@ const justCheck=asyncHandler(async(req,res,next)=>{
 )
 const getAllUsers=asyncHandler(async(req,res,next)=>{
     // get all users
-    const users=await User.find();
+    const users=await User.find().select("-password -refreshToken");  
     if(!users)
         throw new ApiError(404,"No user found");
     res.status(200).json(new ApiResponce(200,users,"All users fetched successfully"));    

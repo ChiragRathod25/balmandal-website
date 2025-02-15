@@ -1,8 +1,9 @@
 dashboard display all bakak,  => done
 edit parent job/businees details => Done
 Fix ui and make it responsive =>done
-Home page steps setup
+Home page steps setup => Done
 Fix Edit parent details =>done
 Achievement Add BTn =>done
-Displaying Video
+Displaying Video 
 introduce react-hot-toast => Done
+Search Functionality - Dashboard => 

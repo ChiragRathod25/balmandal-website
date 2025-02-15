@@ -34,8 +34,8 @@ function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-8">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+    <div className="flex items-center justify-center items-start min-h-screen bg-gray-100 p-4 py-16">
+      <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center">Register</h2>
         <form onSubmit={handleSubmit(submit)} className="space-y-4">
           <Input

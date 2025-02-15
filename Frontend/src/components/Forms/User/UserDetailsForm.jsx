@@ -90,7 +90,7 @@ function UserDetailsForm({ user,setEditing }) {
         <Input label="Email" placeholder="Email" className="w-full" {...register('email')} />
         <Input label="Mobile" placeholder="Mobile" className="w-full" {...register('mobile')} />
         <Input label="DOB" placeholder="DOB" className="w-full" {...register('DOB')} />
-      <div className="flex justify-center w-full max-w-md mx-auto p-4">
+      <div className="flex justify-center w-full max-w-md mx-auto gap-4">
 
         <Select
           label="Std"

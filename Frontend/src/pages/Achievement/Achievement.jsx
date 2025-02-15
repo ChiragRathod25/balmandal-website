@@ -83,19 +83,19 @@ function Achievement() {
                         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center sm:justify-start">
                             <Button
                                 onClick={() => navigate(`/achievement/edit/${achievement._id}`)}
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                                className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md"
                             >
                                 Edit Achievement
                             </Button>
                             <Button
                                 onClick={() => handleDelete(achievement?._id)}
-                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                                className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md"
                             >
                                 Delete Achievement
                             </Button>
                             <Button
                                 onClick={() => navigate('/achievement')}
-                                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
+                                className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md"
                             >
                                 Manage Achievements
                             </Button>
