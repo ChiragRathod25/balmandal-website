@@ -26,11 +26,15 @@ function EditTalent() {
   return (
     <QueryHandler queries={[{ loading, error }]}>
       {talent ? (
-        <div className="container mx-auto p-4">
-          <div className="bg-white shadow-md rounded-lg p-6">
+
+       
+        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+                Edit Talent
+              </h2>
             <TalentForm talent={talent} />
           </div>
-        </div>
+       
       ) : null}
     </QueryHandler>
   );

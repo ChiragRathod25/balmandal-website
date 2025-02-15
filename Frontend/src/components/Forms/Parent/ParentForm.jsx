@@ -67,16 +67,14 @@ function ParentForm({ parent, setAdd }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(submit)}
-      className="max-w-lg mx-auto p-4 bg-white shadow-md rounded-md"
-    >
-      <Select
-        label="Role"
-        options={['Father', 'Mother']}
-        {...register('role', { required: true })}
-        className="mb-4"
-      />
+    <form onSubmit={handleSubmit(submit)} className="space-y-4 flex flex-col">
+    <Select
+  label="Role"
+  options={['Father', 'Mother']}
+  {...register('role', { required: true })}
+  className=" mb-4"
+/>
+
       <Input
         label="Full name: "
         placeholder="Enter Parent Fullname"

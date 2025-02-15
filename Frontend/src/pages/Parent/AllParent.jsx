@@ -9,7 +9,6 @@ import { QueryHandler } from "../../components";
 function AllParent() {
   const navigate = useNavigate();
   const [parents, setParents] = useState([]);
-
   const fetchParents = useCallback(() => databaseService.getUserParents(), []);
   const { data, loading, error } = useCustomeReactQuery(fetchParents);
 
@@ -37,28 +36,54 @@ function AllParent() {
 
   return (
     <QueryHandler queries={[{ loading, error }]}>
-      <div className="container mx-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">{`${user}'s Parent Details`}</h2>
-
-        {Array.isArray(parents) && parents.length > 0 && (
-          <div className="w-full">
+      <div className="container mx-auto ">
+        {/* Title */}
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">{`${user}'s Parent Details`}</h2>
+    
+        {/* Parent List */}
+        {Array.isArray(parents) && parents.length > 0 ? (
+          <div className="">
             {parents.map((parent) => (
-              <div key={parent._id} className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md mb-4">
-                <p className="font-semibold">{parent.role} - {parent.fullName}</p>
-                <div className="flex gap-2">
-                  <Button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => navigate(`/parent/${parent._id}`)}>View</Button>
-                  <Button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => navigate(`/parent/edit/${parent._id}`)}>Edit</Button>
-                  <Button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleDelete(parent._id)}>Delete</Button>
+              <div
+                key={parent._id}
+                className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-lg shadow-md hover:bg-gray-100 transition-all"
+              >
+                {/* Parent Info */}
+                <p className="font-semibold text-lg text-center sm:text-left">{`${parent.role} - ${parent.fullName}`}</p>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2 w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-end">
+                  <Button onClick={() => navigate(`/parent/${parent._id}`)} 
+                   className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                   >
+                    View
+                  </Button>
+                  <Button onClick={() => navigate(`/parent/edit/${parent._id}`)} 
+                     className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                     >
+                    Edit
+                  </Button>
+                  <Button onClick={() => handleDelete(parent._id)} 
+                   className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                   >
+                    Delete
+                  </Button>
                 </div>
               </div>
             ))}
           </div>
+        ) : (
+          <p className="text-gray-600 text-center">No parent details available.</p>
         )}
 
         {/* Add Parent Button */}
-        <Button className="bg-green-500 text-white px-4 py-2 rounded mt-4 w-full md:w-auto" onClick={() => navigate("/parent/add")}>
-          Add Parent
-        </Button>
+        <div className="w-full flex justify-center mt-6">
+          <Button onClick={() => navigate("/parent/add")} 
+            className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition"
+            >
+            Add Parent
+          </Button>
+        </div>
       </div>
     </QueryHandler>
   );

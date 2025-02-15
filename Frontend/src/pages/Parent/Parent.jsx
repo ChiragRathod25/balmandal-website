@@ -41,47 +41,34 @@ function Parent() {
 
   return (
     <QueryHandler queries={[{ loading, error }]}> 
-      {parent ? (
-        <div className="container mx-auto p-4 bg-white shadow-md rounded-lg">
-          <h3 className="text-2xl font-bold mb-4">Parent Details</h3>
-          <hr className="mb-4" />
-          <div className="mb-4">
-            <p className="text-gray-700 font-semibold">Role: {parent.role}</p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-700">Full Name: {parent.fullName}</p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-700">Email: {parent.email}</p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-700">Mobile: {parent.mobileNumber}</p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-700">Occupation: {parent.occupation}</p>
-          </div>
-          <div className="flex space-x-4">
-            <Button
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-              onClick={() => navigate(`/parent/edit/${parent._id}`)}
-            >
-              Edit Parent
-            </Button>
-            <Button
-              className="bg-red-500 text-white px-4 py-2 rounded-lg"
-              onClick={() => handleDelete(parent._id)}
-            >
-              Delete Parent
-            </Button>
-            <Button
-              className="bg-green-500 text-white px-4 py-2 rounded-lg"
-              onClick={() => navigate("/parent")}
-            >
-              Manage Parents
-            </Button>
+      {parent && (
+        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+          <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-2xl">
+            <h3 className="text-2xl font-bold text-center text-gray-800 mb-4">Parent Details</h3>
+            <hr className="border-t-2 border-gray-300 mb-6 w-3/4 mx-auto" />
+
+            <div className="space-y-4 text-gray-700">
+              <p><span className="font-semibold">Role:</span> {parent.role}</p>
+              <p><span className="font-semibold">Full Name:</span> {parent.fullName}</p>
+              <p><span className="font-semibold">Email:</span> {parent.email}</p>
+              <p><span className="font-semibold">Mobile:</span> {parent.mobileNumber}</p>
+              <p><span className="font-semibold">Occupation:</span> {parent.occupation}</p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 mt-6">
+              <Button className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={() => navigate(`/parent/edit/${parent._id}`)}>
+                Edit Parent
+              </Button>
+              <Button className="w-full sm:w-auto bg-red-500 text-white px-4 py-2 rounded-lg" onClick={() => handleDelete(parent._id)}>
+                Delete Parent
+              </Button>
+              <Button className="w-full sm:w-auto bg-green-500 text-white px-4 py-2 rounded-lg" onClick={() => navigate("/parent")}>
+                Manage Parents
+              </Button>
+            </div>
           </div>
         </div>
-      ) : null}
+      )}
     </QueryHandler>
   );
 }

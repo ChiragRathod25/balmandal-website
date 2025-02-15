@@ -65,7 +65,7 @@ function UserDetails({ userId }) {
         {/* User Info Section */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
           {/* Avatar Section with More Space */}
-          <div className="flex-shrink-0 w-52 h-52 sm:w-64 sm:h-64 flex justify-center">
+          <div className="flex-shrink-0 w-52 h-52 sm:w-64 sm:h-64 flex justify-center sm:scale-[95%] ">
             <UserAvatar avatar={user?.avatar} className="w-full h-full rounded-full shadow-md" />
           </div>
 

@@ -71,7 +71,7 @@ function AchievementForm({ achievement, setAdd }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-2">
+    // <div className="max-w-2xl mx-auto p-2">
       <form onSubmit={handleSubmit(submit)} className="space-y-4">
         <Input
           type="text"
@@ -122,7 +122,7 @@ function AchievementForm({ achievement, setAdd }) {
           Cancel
         </Button>
       </form>
-    </div>
+    // </div>
   );
 }
 

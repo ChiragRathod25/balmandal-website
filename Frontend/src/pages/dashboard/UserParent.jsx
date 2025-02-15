@@ -77,34 +77,48 @@ function UserParent() {
                 <hr className="mb-4" />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <p className="text-gray-700 font-semibold">Role: <span className="font-normal">{parent.role}</span></p>
-                  <p className="text-gray-700">Full Name: <span className="font-normal">{parent.fullName}</span></p>
-                  <p className="text-gray-700">Email: <span className="font-normal">{parent.email}</span></p>
-                  <p className="text-gray-700">Mobile: <span className="font-normal">{parent.mobileNumber}</span></p>
-                  <p className="text-gray-700">Occupation: <span className="font-normal">{parent.occupation}</span></p>
+                  <p className="text-gray-700 font-semibold">
+                    Role: <span className="font-normal">{parent.role}</span>
+                  </p>
+                  <p className="text-gray-700">
+                    Full Name: <span className="font-normal">{parent.fullName}</span>
+                  </p>
+                  <p className="text-gray-700">
+                    Email: <span className="font-normal">{parent.email}</span>
+                  </p>
+                  <p className="text-gray-700">
+                    Mobile: <span className="font-normal">{parent.mobileNumber}</span>
+                  </p>
+                  <p className="text-gray-700">
+                    Occupation: <span className="font-normal">{parent.occupation}</span>
+                  </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4 mt-6">
-                  <Button
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-                    onClick={() => handleEdit(parent)}
-                  >
-                    Edit Parent
-                  </Button>
-                  <Button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                    onClick={() => handleDelete(parent._id)}
-                  >
-                    Delete Parent
-                  </Button>
-                </div>
+                <div className="flex flex-row justify-center sm:justify-end gap-4 mt-6">
+  <Button
+    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-auto min-w-max"
+    onClick={() => handleEdit(parent)}
+  >
+    Edit Parent
+  </Button>
+  <Button
+    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-auto min-w-max"
+    onClick={() => handleDelete(parent._id)}
+  >
+    Delete Parent
+  </Button>
+</div>
+
               </div>
             ))}
           </div>
         )}
 
         <div className="mt-6 flex justify-center sm:justify-start">
-          <Button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md" onClick={handleAdd}>
+          <Button
+            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md"
+            onClick={handleAdd}
+          >
             Add Parent
           </Button>
         </div>

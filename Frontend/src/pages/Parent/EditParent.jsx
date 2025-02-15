@@ -1,43 +1,43 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import databaseService from "../../services/database.services";
-import { ParentForm, QueryHandler } from "../../components";
-import useCustomReactQuery  from "../../utils/useCustomReactQuery";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import databaseService from '../../services/database.services';
+import { ParentForm, QueryHandler } from '../../components';
+import useCustomReactQuery from '../../utils/useCustomReactQuery';
 
 function EditParent() {
   const { parentId } = useParams();
-
+  const navigate = useNavigate();
   const [parent, setParent] = useState(null);
 
-  const fetchParent = useCallback(() => databaseService.getParentDetailsById({ parentId }), [parentId]);
+  const fetchParent = useCallback(
+    () => databaseService.getParentDetailsById({ parentId }),
+    [parentId]
+  );
   const { data, loading, error } = useCustomReactQuery(fetchParent);
 
-  const navigate = useNavigate();
   useEffect(() => {
-   
     if (!parentId) {
-      navigate("/");
+      navigate('/');
       return;
     }
     if (data) {
       setParent(data);
     }
-    console.log("Edit Parent", parent);
-    
-  }, [data,parentId, navigate]);
+  }, [data, parentId, navigate]);
+
   return (
+    <>
     <QueryHandler queries={[{ loading, error }]}>
-      {
-        parent ? (
-          <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-            <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-2xl">
-              <ParentForm parent={parent} />
-            </div>
-          </div>
-        ) : null
-      }
-      </QueryHandler>
-  )
+      {parent && (
+        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Edit Parent Details</h2>
+
+          <ParentForm parent={parent} />
+        </div>
+      )}
+    </QueryHandler>
+      </>
+  );
 }
 
 export default EditParent;

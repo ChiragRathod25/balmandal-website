@@ -14,49 +14,6 @@ function UserDetailsForm({ user,setEditing }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const editableUser=useSelector(state=>state.dashboard.editableUser)
 
-  // firstName: {
-  //     type: String,
-  //     required: true,
-  //     trim: true,
-  //     index: true,
-  //   },
-  //   lastName: {
-  //     type: String,
-  //     required: true,
-  //     trim: true,
-  //     index: true,
-  //   },
-  //   middleName: {
-  //     type: String,
-  //     trim: true,
-  //   },
-  //   email: {
-  //     type: String,
-  //   },
-  //   mobile: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   avatar: {
-  //     type: String,
-  //   },
-  //   password: {
-  //     type: String,
-  //     required: [true, "Password is required"],
-  //   },
-  //   DOB: {
-  //     type: Date,
-  //   },
-  //   school: {
-  //     type: String,
-  //   },
-  //   std: {
-  //     type: String,
-  //   },
-  //   mediumOfStudy: {
-  //     type: String,
-  //     enum: ["Hindi", "Gujarati", "English", "Marathi"],
-  //   },
   const { register, handleSubmit } = useForm({
     defaultValues: {
       firstName: user.firstName || '',
@@ -110,8 +67,8 @@ function UserDetailsForm({ user,setEditing }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <form onSubmit={handleSubmit(submit)}>
+    <div className="max-w-2xl mx-auto ">
+      <form onSubmit={handleSubmit(submit)} className='flex flex-col gap-4'>
         <Input
           label="First Name"
           placeholder="First Name"
@@ -154,7 +111,9 @@ function UserDetailsForm({ user,setEditing }) {
   
         <div className="flex justify-between p-4">
           <Button type="submit" >Update</Button>
-          <Button type="button" onClick={handleCancel}>
+          <Button type="button" 
+          className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+          onClick={handleCancel}>
             Cancel
           </Button>
         </div>
