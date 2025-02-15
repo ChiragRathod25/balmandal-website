@@ -17,7 +17,9 @@ function ParentForm({ parent, setAdd }) {
       fullName: parent?.fullName || '',
       email: parent?.email || '',
       mobileNumber: parent?.mobileNumber || '',
-      occupation: parent?.occupation || '',
+      occupationType: parent?.occupationType || '',
+      occupationTitle: parent?.occupationTitle || '',
+      occupationAddress: parent?.occupationAddress || '',
     },
   });
 
@@ -97,8 +99,20 @@ function ParentForm({ parent, setAdd }) {
       />
       <Input
         label="Occupation: "
-        placeholder="Enter Parent Occupation"
-        {...register('occupation', { required: true })}
+        placeholder="Enter Occupation (Job/Business)"
+        {...register('occupationType', { required: true })}
+        className="mb-4"
+      />
+      <Input
+        label="Job/Business Title: "
+        placeholder="Enter Job/Business Title"
+        {...register('occupationTitle', { required: true })}
+        className="mb-4"
+      />
+      <Input
+        label="Job/Business Address: "
+        placeholder="Enter Job/Business Address"
+        {...register('occupationAddress', { required: true })}
         className="mb-4"
       />
       <div className="flex justify-between">

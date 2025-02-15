@@ -42,11 +42,11 @@ function AllParent() {
     
         {/* Parent List */}
         {Array.isArray(parents) && parents.length > 0 ? (
-          <div className="">
+          <div className="w-full">
             {parents.map((parent) => (
               <div
                 key={parent._id}
-                className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-lg shadow-md hover:bg-gray-100 transition-all"
+                className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md mb-4 lg:flex-row flex-col text-center lg:text-left"
               >
                 {/* Parent Info */}
                 <p className="font-semibold text-lg text-center sm:text-left">{`${parent.role} - ${parent.fullName}`}</p>

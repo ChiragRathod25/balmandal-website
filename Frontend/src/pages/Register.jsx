@@ -17,7 +17,7 @@ function Register() {
 
   const submit = async (data) => {
     try {
-      const user = await databaseService.register(data).then((response) => response.data);
+      const user = await databaseService.register(data).then((response) => response.data)
       if (user) {
         const session = await databaseService.login(data);
         if (session) {

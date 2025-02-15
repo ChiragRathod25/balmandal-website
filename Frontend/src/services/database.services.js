@@ -1,28 +1,49 @@
 import axiosInstace from '../utils/axios';
 import { handleApiRequest } from '../utils/apiHelper';
+import toast from 'react-hot-toast';
 
 export class DatabaseService {
   async register({ firstName, lastName, mobile, password }) {
-    return handleApiRequest(
-      () =>
-        axiosInstace.post('/api/v1/user/register', {
-          firstName,
-          lastName,
-          mobile,
-          password,
-        }),
-      'register'
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/user/register', {
+            firstName,
+            lastName,
+            mobile,
+            password,
+          }),
+        'register'
+      ),
+      {
+        loading: 'Registering',
+        success: 'Registered successfully',
+        error: 'Error while registering',
+      },
+      {
+        id: 'register',
+      }
     );
   }
   async login({ firstName, mobile, password }) {
-    return handleApiRequest(
-      () =>
-        axiosInstace.post('/api/v1/user/login', {
-          firstName,
-          mobile,
-          password,
-        }),
-      'login'
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/user/login', {
+            firstName,
+            mobile,
+            password,
+          }),
+        'login'
+      ),
+      {
+        loading: 'Logging in',
+        success: 'Logged in',
+        error: 'Error while logging in',
+      },
+      {
+        id: 'login',
+      }
     );
   }
   async updateUserDetails(
@@ -30,9 +51,37 @@ export class DatabaseService {
     userId = null
   ) {
     if (userId) {
-      return handleApiRequest(
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.put(`/api/v1/admin/user/updateuserDetails?userId=${userId}`, {
+              firstName,
+              lastName,
+              middleName,
+              email,
+              mobile,
+              DOB,
+              school,
+              std,
+              mediumOfStudy,
+            }),
+          'updateUserDetails'
+        ),
+        {
+          loading: 'Updating',
+          success: 'Updated successfully',
+          error: 'Error while updating',
+        },
+        {
+          id: 'updateUserDetails',
+        }
+      );
+    }
+
+    return toast.promise(
+      handleApiRequest(
         () =>
-          axiosInstace.put(`/api/v1/admin/user/updateuserDetails?userId=${userId}`, {
+          axiosInstace.put('/api/v1/user/updateuserDetails', {
             firstName,
             lastName,
             middleName,
@@ -44,77 +93,101 @@ export class DatabaseService {
             mediumOfStudy,
           }),
         'updateUserDetails'
-      );
-    }
-    return handleApiRequest(
-      () =>
-        axiosInstace.put('/api/v1/user/updateuserDetails', {
-          firstName,
-          lastName,
-          middleName,
-          email,
-          mobile,
-          DOB,
-          school,
-          std,
-          mediumOfStudy,
-        }),
-      'updateUserDetails'
+      ),
+      {
+        loading: 'Updating',
+        success: 'Updated successfully',
+        error: 'Error while updating',
+      },
+      {
+        id: 'updateUserDetails',
+      }
     );
   }
   async updateAvatar({ avatar }, userId = null) {
-    const formData=new FormData();
-    formData.append('avatar',avatar[0]);
-
+    const formData = new FormData();
+    formData.append('avatar', avatar[0]);
 
     if (userId) {
-      return handleApiRequest(
-        () =>
-          axiosInstace.put(
-            `/api/v1/admin/user/updateAvatar?userId=${userId}`,
-            formData
-            ,
-            {
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.put(`/api/v1/admin/user/updateAvatar?userId=${userId}`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
-            }
-          ),
-        'updateAvatar'
+            }),
+          'updateAvatar'
+        ),
+        {
+          loading: 'Updating',
+          success: 'Updated successfully',
+          error: 'Error while updating',
+        },
+        {
+          id: 'updateAvatar',
+        }
       );
     }
-    return handleApiRequest(
-      () =>
-        axiosInstace.put(
-          '/api/v1/user/updateAvatar',
-         formData,
-          {
+
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put('/api/v1/user/updateAvatar', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
-          }
-        ),
-      'updateAvatar'
+          }),
+        'updateAvatar'
+      ),
+      {
+        loading: 'Updating',
+        success: 'Updated successfully',
+        error: 'Error while updating',
+      },
+      {
+        id: 'updateAvatar',
+      }
     );
   }
   async updatePassword({ password, newPassword }, userId = null) {
     if (userId) {
-      return handleApiRequest(
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.put(`/api/v1/admin/updatePassword?userId=${userId}`, {
+              password,
+              newPassword,
+            }),
+          'updatePassword'
+        ),
+        {
+          loading: 'Updating',
+          success: 'Password Updated successfully',
+          error: 'Error while updating password',
+        },
+        {
+          id: 'updatePassword',
+        }
+      );
+    }
+    return toast.promise(
+      handleApiRequest(
         () =>
-          axiosInstace.put(`/api/v1/admin/updatePassword?userId=${userId}`, {
+          axiosInstace.put('/api/v1/user/updatePassword', {
             password,
             newPassword,
           }),
         'updatePassword'
-      );
-    }
-    return handleApiRequest(
-      () =>
-        axiosInstace.put('/api/v1/user/updatePassword', {
-          password,
-          newPassword,
-        }),
-      'updatePassword'
+      ),
+      {
+        loading: 'Updating',
+        success: 'Password Updated successfully',
+        error: 'Error while updating password',
+      },
+      {
+        id: 'updatePassword',
+      }
     );
   }
   async getCurrentuser() {
@@ -130,15 +203,34 @@ export class DatabaseService {
     );
   }
   async logout() {
-    return handleApiRequest(() => axiosInstace.post('/api/v1/user/logout'), 'logout');
+    return toast.promise(
+      handleApiRequest(() => axiosInstace.post('/api/v1/user/logout'), 'logout'),
+      {
+        loading: 'Logging out',
+        success: 'Logged out',
+        error: 'Error while logging out',
+      },
+      {
+        id: 'logout',
+      }
+    );
   }
 
-  async getUserById(userId=null) {
-    if(userId){
-      return handleApiRequest(() => axiosInstace.get(`/api/v1/admin/user/${userId}`), 'getUserById');
+  async getUserById(userId = null) {
+    if (userId) {
+      return toast.promise(
+        handleApiRequest(() => axiosInstace.get(`/api/v1/admin/user/${userId}`), 'getUserById'),
+        {
+          loading: 'Getting User Details',
+          success: 'User Details Fetched successfully',
+          error: 'Error while fetching user',
+        },
+        {
+          id: 'getUserById',
+        }
+      );
     }
   }
-
 
   async getUserAchivements(userId = null) {
     //if userId is passed then it will return all achievements of the user
@@ -153,6 +245,7 @@ export class DatabaseService {
     //if userId is not passed then it will return all achievements of the logged in user
     return handleApiRequest(() => axiosInstace.get('/api/v1/achievement'), 'getUserAchivements');
   }
+
   async getAchievementById({ achievementId }, userId = null) {
     if (userId) {
       return handleApiRequest(
@@ -174,24 +267,44 @@ export class DatabaseService {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
     if (userId) {
-      return handleApiRequest(
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.post(`/api/v1/admin/achievement?userId=${userId}`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }),
+          'addAchievement'
+        ),
+        {
+          loading: 'Adding Achievement',
+          success: 'Achievement Added successfully',
+          error: 'Error while adding achievement',
+        },
+        {
+          id: 'addAchievement',
+        }
+      );
+    }
+    return toast.promise(
+      handleApiRequest(
         () =>
-          axiosInstace.post(`/api/v1/admin/achievement?userId=${userId}`, formData, {
+          axiosInstace.post('/api/v1/achievement', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           }),
         'addAchievement'
-      );
-    }
-    return handleApiRequest(
-      () =>
-        axiosInstace.post('/api/v1/achievement', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }),
-      'addAchievement'
+      ),
+      {
+        loading: 'Adding Achievement',
+        success: 'Achievement Added successfully',
+        error: 'Error while adding achievement',
+      },
+      {
+        id: 'addAchievement',
+      }
     );
   }
 
@@ -203,42 +316,82 @@ export class DatabaseService {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
     if (userId) {
-      return handleApiRequest(
-        () =>
-          axiosInstace.put(
-            `/api/v1/admin/achievement/${achievementId}?userId=${userId}`,
-            formData,
-            {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            }
-          ),
-        'updateAchivement'
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.put(
+              `/api/v1/admin/achievement/${achievementId}?userId=${userId}`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+            ),
+          'updateAchivement'
+        ),
+        {
+          loading: 'Updating Achievement',
+          success: 'Achievement Updated successfully',
+          error: 'Error while updating achievement',
+        },
+        {
+          id: 'updateAchivement',
+        }
       );
     }
-    
-    return handleApiRequest(
-      () =>
-        axiosInstace.put(`/api/v1/achievement/${achievementId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }),
-      'updateAchivement'
+
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/achievement/${achievementId}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+        'updateAchivement'
+      ),
+      {
+        loading: 'Updating Achievement',
+        success: 'Achievement Updated successfully',
+        error: 'Error while updating achievement',
+      },
+      {
+        id: 'updateAchivement',
+      }
     );
   }
   async deleteAchivement({ achievementId }, userId = null) {
     if (userId) {
-      return handleApiRequest(
-        () => axiosInstace.delete(`/api/v1/admin/achievement/${achievementId}?userId=${userId}`),
-        'deleteAchivement'
+      return toast.promise(
+        handleApiRequest(
+          () => axiosInstace.delete(`/api/v1/admin/achievement/${achievementId}?userId=${userId}`),
+          'deleteAchivement'
+        ),
+        {
+          loading: 'Deleting Achievement',
+          success: 'Achievement Deleted successfully',
+          error: 'Error while deleting achievement',
+        },
+        {
+          id: 'deleteAchivement',
+        }
       );
     }
 
-    return handleApiRequest(
-      () => axiosInstace.delete(`/api/v1/achievement/${achievementId}`),
-      'deleteAchivement'
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/achievement/${achievementId}`),
+        'deleteAchivement'
+      ),
+      {
+        loading: 'Deleting Achievement',
+        success: 'Achievement Deleted successfully',
+        error: 'Error while deleting achievement',
+      },
+      {
+        id: 'deleteAchivement',
+      }
     );
   }
 
@@ -251,66 +404,116 @@ export class DatabaseService {
     }
     return handleApiRequest(() => axiosInstace.get('/api/v1/parent'), 'getUserParents');
   }
-  async addParentDetails({ role, fullName, email, mobileNumber, occupation }, userId = null) {
+  async addParentDetails(
+    { role, fullName, email, mobileNumber, occupationType, occupationTitle, occupationAddress },
+    userId = null
+  ) {
     if (userId) {
-      return handleApiRequest(
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.post(`/api/v1/admin/parent?userId=${userId}`, {
+              role,
+              fullName,
+              email,
+              mobileNumber,
+              occupationType,
+              occupationTitle,
+              occupationAddress,
+            }),
+          'addParentDetails'
+        ),
+        {
+          loading: 'Adding Parent',
+          success: 'Parent Added successfully',
+          error: 'Error while adding parent',
+        },
+        {
+          id: 'addParentDetails',
+        }
+      );
+    }
+
+    return toast.promise(
+      handleApiRequest(
         () =>
-          axiosInstace.post(`/api/v1/admin/parent?userId=${userId}`, {
+          axiosInstace.post('/api/v1/parent', {
             role,
             fullName,
             email,
             mobileNumber,
-            occupation,
+            occupationType,
+            occupationTitle,
+            occupationAddress,
           }),
         'addParentDetails'
-      );
-    }
-
-    return handleApiRequest(
-      () =>
-        axiosInstace.post('/api/v1/parent', {
-          role,
-          fullName,
-          email,
-          mobileNumber,
-          occupation,
-        }),
-      'addParentDetails'
+      ),
+      {
+        loading: 'Adding Parent',
+        success: 'Parent Added successfully',
+        error: 'Error while adding parent',
+      },
+      {
+        id: 'addParentDetails',
+      }
     );
   }
 
   async updateParentDetails(
-    { role, fullName, email, mobileNumber, occupation },
+    { role, fullName, email, mobileNumber, occupationType, occupationTitle, occupationAddress },
     parentId,
     userId = null
-  ) 
-  {
+  ) {
     if (userId) {
-      return handleApiRequest(
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.put(`/api/v1/admin/parent/${parentId}?userId=${userId}`, {
+              role,
+              fullName,
+              email,
+              mobileNumber,
+              occupationType,
+              occupationTitle,
+              occupationAddress,
+            }),
+          'updateParentDetails'
+        ),
+        {
+          loading: 'Updating Parent',
+          success: 'Parent Updated successfully',
+          error: 'Error while updating parent',
+        },
+        {
+          id: 'updateParentDetails',
+        }
+      );
+    }
+    return toast.promise(
+      handleApiRequest(
         () =>
-          axiosInstace.put(`/api/v1/admin/parent/${parentId}?userId=${userId}`, {
+          axiosInstace.put(`/api/v1/parent/${parentId}`, {
             role,
             fullName,
             email,
             mobileNumber,
-            occupation,
+            occupationType,
+            occupationTitle,
+            occupationAddress,
           }),
         'updateParentDetails'
-      );
-    }
-    return handleApiRequest(
-      () =>
-        axiosInstace.put(`/api/v1/parent/${parentId}`, {
-          role,
-          fullName,
-          email,
-          mobileNumber,
-          occupation,
-        }),
-      'updateParentDetails'
+      ),
+      {
+        loading: 'Updating Parent',
+        success: 'Parent Updated successfully',
+        error: 'Error while updating parent',
+      },
+      {
+        id: 'updateParentDetails',
+      }
     );
   }
-  
+
   async getParentDetailsById({ parentId }, userId = null) {
     if (userId) {
       return handleApiRequest(
@@ -326,22 +529,41 @@ export class DatabaseService {
   }
   async deleteParentDetails({ parentId }, userId = null) {
     if (userId) {
-      return handleApiRequest(
-        () => axiosInstace.delete(`/api/v1/admin/parent/${parentId}?userId=${userId}`),
-        'deleteParentDetails'
+      return toast.promise(
+        handleApiRequest(
+          () => axiosInstace.delete(`/api/v1/admin/parent/${parentId}?userId=${userId}`),
+          'deleteParentDetails'
+        ),
+        {
+          loading: 'Deleting Parent',
+          success: 'Parent Deleted successfully',
+          error: 'Error while deleting parent',
+        },
+        {
+          id: 'deleteParentDetails',
+        }
       );
     }
-
-    return handleApiRequest(
-      () => axiosInstace.delete(`/api/v1/parent/${parentId}`),
-      'deleteParentDetails'
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/parent/${parentId}`),
+        'deleteParentDetails'
+      ),
+      {
+        loading: 'Deleting Parent',
+        success: 'Parent Deleted successfully',
+        error: 'Error while deleting parent',
+      },
+      {
+        id: 'deleteParentDetails',
+      }
     );
   }
 
   async getUserTalents(userId = null) {
-    console.log("userId",userId);
-    console.log("userId",typeof userId);
-    
+    console.log('userId', userId);
+    console.log('userId', typeof userId);
+
     if (userId) {
       return handleApiRequest(
         () => axiosInstace.get(`/api/v1/admin/talent?userId=${userId}`),
@@ -368,25 +590,45 @@ export class DatabaseService {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
     if (userId) {
-      return handleApiRequest(
-        () =>
-          axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`, {
-            heading,
-            description,
-            image,
-          }),
-        'addTalent'
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`, {
+              heading,
+              description,
+              image,
+            }),
+          'addTalent'
+        ),
+        {
+          loading: 'Adding Talent',
+          success: 'Talent Added successfully',
+          error: 'Error while adding talent',
+        },
+        {
+          id: 'addTalent',
+        }
       );
     }
 
-    return handleApiRequest(
-      () =>
-        axiosInstace.post('/api/v1/talent', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }),
-      'addTalent'
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/talent', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+        'addTalent'
+      ),
+      {
+        loading: 'Adding Talent',
+        success: 'Talent Added successfully',
+        error: 'Error while adding talent',
+      },
+      {
+        id: 'addTalent',
+      }
     );
   }
   async updateTalent({ heading, description, image }, talentId, userId = null) {
@@ -397,42 +639,89 @@ export class DatabaseService {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
     if (userId) {
-      return handleApiRequest(
+      return toast.promise(
+        handleApiRequest(
+          () =>
+            axiosInstace.put(`/api/v1/admin/talent/${talentId}?userId=${userId}`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }),
+          'updateTalent'
+        ),
+        {
+          loading: 'Updating Talent',
+          success: 'Talent Updated successfully',
+          error: 'Error while updating talent',
+        },
+        {
+          id: 'updateTalent',
+        }
+      );
+    }
+    return toast.promise(
+      handleApiRequest(
         () =>
-          axiosInstace.put(`/api/v1/admin/talent/${talentId}?userId=${userId}`, formData, {
+          axiosInstace.put(`/api/v1/talent/${talentId}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           }),
         'updateTalent'
-      );
-    }
-    return handleApiRequest(
-      () =>
-        axiosInstace.put(`/api/v1/talent/${talentId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }),
-      'updateTalent'
+      ),
+      {
+        loading: 'Updating Talent',
+        success: 'Talent Updated successfully',
+        error: 'Error while updating talent',
+      },
+      {
+        id: 'updateTalent',
+      }
     );
   }
 
   async deleteTalent({ talentId }, userId = null) {
     if (userId) {
-      return handleApiRequest(
-        () => axiosInstace.delete(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
-        'deleteTalent'
+      return toast.promise(
+        handleApiRequest(
+          () => axiosInstace.delete(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
+          'deleteTalent'
+        ),
+        {
+          loading: 'Deleting Talent',
+          success: 'Talent Deleted successfully',
+          error: 'Error while deleting talent',
+        },
+        {
+          id: 'deleteTalent',
+        }
       );
     }
-    return handleApiRequest(
-      () => axiosInstace.delete(`/api/v1/talent/${talentId}`),
-      'deleteTalent'
+    return toast.promise(
+      handleApiRequest(() => axiosInstace.delete(`/api/v1/talent/${talentId}`), 'deleteTalent'),
+      {
+        loading: 'Deleting Talent',
+        success: 'Talent Deleted successfully',
+        error: 'Error while deleting talent',
+      },
+      {
+        id: 'deleteTalent',
+      }
     );
   }
 
   async fetchAllUsers() {
-    return handleApiRequest(() => axiosInstace.get('/api/v1/admin/all-users'), 'fetchAllUsers');
+    return toast.promise(
+      handleApiRequest(() => axiosInstace.get('/api/v1/admin/all-users'), 'fetchAllUsers'),
+      {
+        loading: 'Fetching Users',
+        success: 'All Users Fetched successfully',
+        error: 'Error while fetching users',
+      },
+      {
+        id: 'fetchAllUsers',
+      }
+    );
   }
 }
 const databaseService = new DatabaseService();

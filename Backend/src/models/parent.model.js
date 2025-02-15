@@ -18,7 +18,15 @@ const parentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    occupation: {
+    occupationType: {
+      type: String,
+      required: true,
+    },
+    occupationTitle: {
+      type: String,
+      required: true,
+    },
+    occupationAddress: {
       type: String,
       required: true,
     },

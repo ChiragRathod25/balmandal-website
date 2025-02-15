@@ -4,6 +4,7 @@ import databaseService from './services/database.services';
 import { useDispatch } from 'react-redux';
 import { login, logout } from './slices/userSlice/authSlice';
 import { Header, Footer } from './pages';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -22,16 +23,29 @@ function App() {
         })
         .finally(() => setLoading(false));
     };
-    getCurrentUser();
+
+    toast.promise(
+      getCurrentUser,
+      {
+        loading: 'Loading',
+        success: 'Got the data',
+        error: 'Error when fetching',
+      },
+      {
+        id: 'fetching',
+      }
+    );
   }, []);
 
   if (loading) {
     return <h2>Loading...</h2>;
   }
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 min-h-screen">
       <Header />
+
       <main>
+        <Toaster position="top-right" duration="5000" reverseOrder={false} />
         <Outlet />
       </main>
       <Footer />

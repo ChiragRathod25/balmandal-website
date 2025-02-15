@@ -4,11 +4,25 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { Parent } from "../models/parent.model.js";
 
 const addParentDetails = asyncHandler(async (req, res, next) => {
-  const { role, fullName, email, mobileNumber, occupation } = req.body;
+  const {
+    role,
+    fullName,
+    email,
+    mobileNumber,
+    occupationType,
+    occupationTitle,
+    occupationAddress,
+  } = req.body;
   if (
-    [role, email,fullName, mobileNumber, occupation].some(
-      (field) => (field?.trim() ?? "") === ""
-    )
+    [
+      role,
+      email,
+      fullName,
+      mobileNumber,
+      occupationType,
+      occupationTitle,
+      occupationAddress,
+    ].some((field) => (field?.trim() ?? "") === "")
   ) {
     throw new ApiError(400, "Please provide all the details");
   }
@@ -17,7 +31,9 @@ const addParentDetails = asyncHandler(async (req, res, next) => {
     fullName,
     email,
     mobileNumber,
-    occupation,
+    occupationType,
+    occupationTitle,
+    occupationAddress,
     userId: req.user._id,
   });
 
@@ -38,17 +54,39 @@ const updateParentDetails = asyncHandler(async (req, res, next) => {
   if (!parent) {
     return next(new ApiError(404, "Parent details not found"));
   }
-  const { role, fullName, email, mobileNumber, occupation } = req.body;
+  const {
+    role,
+    fullName,
+    email,
+    mobileNumber,
+    occupationType,
+    occupationTitle,
+    occupationAddress,
+  } = req.body;
   if (
-    [role, email,fullName, mobileNumber, occupation].some(
-      (field) => (field?.trim() ?? "") === ""
-    )
+    [
+      role,
+      email,
+      fullName,
+      mobileNumber,
+      occupationType,
+      occupationTitle,
+      occupationAddress,
+    ].some((field) => (field?.trim() ?? "") === "")
   ) {
     return next(new ApiError(400, "Please provide all the details"));
   }
   const updatedParent = await Parent.findByIdAndUpdate(
     parentId,
-    { role, fullName, email, mobileNumber, occupation },
+    {
+      role,
+      fullName,
+      email,
+      mobileNumber,
+      occupationType,
+      occupationTitle,
+      occupationAddress,
+    },
     { new: true }
   );
   if (!updatedParent) {

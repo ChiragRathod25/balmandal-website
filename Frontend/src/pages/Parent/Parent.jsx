@@ -42,7 +42,7 @@ function Parent() {
   return (
     <QueryHandler queries={[{ loading, error }]}> 
       {parent && (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+        <div className="flex justify-center min-h-screen bg-white-100">
           <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-2xl">
             <h3 className="text-2xl font-bold text-center text-gray-800 mb-4">Parent Details</h3>
             <hr className="border-t-2 border-gray-300 mb-6 w-3/4 mx-auto" />
@@ -52,7 +52,10 @@ function Parent() {
               <p><span className="font-semibold">Full Name:</span> {parent.fullName}</p>
               <p><span className="font-semibold">Email:</span> {parent.email}</p>
               <p><span className="font-semibold">Mobile:</span> {parent.mobileNumber}</p>
-              <p><span className="font-semibold">Occupation:</span> {parent.occupation}</p>
+              <p><span className="font-semibold">Occupation:</span> {parent.occupationType}</p>
+              <p><span className="font-semibold">Job/Business Title:</span> {parent.occupationTitle}</p>
+              <p><span className="font-semibold">Job/Business Address:</span> {parent.occupationAddress}</
+              p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">

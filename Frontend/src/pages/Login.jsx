@@ -20,15 +20,17 @@ function Login() {
   const submit = async (data) => {
     try {
       const session = await databaseService.login(data);
+
       if (session) {
         const user = await databaseService.getCurrentuser();
+
         if (user) {
           dispatch(login(user.data));
         }
         navigate('/');
       }
     } catch (error) {
-      setError(error.message);       
+      setError(error.message);
     }
   };
 
@@ -58,7 +60,10 @@ function Login() {
             className="w-full px-4 py-2 border rounded-md"
           />
           {error && <p className="text-red-600 mt-2 text-center">{error}</p>}
-          <Button type="Submit" className="w-full py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+          <Button
+            type="Submit"
+            className="w-full py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+          >
             Login
           </Button>
         </form>

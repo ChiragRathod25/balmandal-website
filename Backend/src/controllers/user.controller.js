@@ -199,7 +199,7 @@ const updateAvatar = asyncHandler(async (req, res) => {
       console.log("Old avatar", oldAvatar);
       const deleteExistingAvatar = await deleteFromCloudinary(oldAvatar);
       console.log("deleteExistingAvatar", deleteExistingAvatar);
-      
+
       if (deleteExistingAvatar.result !== "ok")
         throw new ApiError(404, `Error while deleting old avatar`);
     } catch (error) {
@@ -242,6 +242,7 @@ const getCurrentuser = asyncHandler(async (req, res) => {
     "-password -refreshToken"
   );
   if (!user) throw new ApiError(404, `Invalid user request`);
+
   res
     .status(200)
     .json(new ApiResponce(200, user, `User details fetched successfully !!`));
@@ -289,7 +290,7 @@ const refreshAceesToken = asyncHandler(async (req, res) => {
 
 const getUserById = asyncHandler(async (req, res) => {
   console.log("getUserById :: User id", req.params.id);
-  console.log(req.params)
+  console.log(req.params);
   const user = await User.findById(req.params.id).select(
     "-password -refreshToken"
   );
@@ -309,5 +310,5 @@ export {
   forgetPassword,
   getCurrentuser,
   refreshAceesToken,
-  getUserById
+  getUserById,
 };
