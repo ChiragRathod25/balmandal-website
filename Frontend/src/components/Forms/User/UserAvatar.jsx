@@ -77,7 +77,9 @@ function UserAvatar({ avatar }) {
       {/* Avatar Upload Form */}
       {isEditing && (
         <form onSubmit={handleSubmit(submit)} className="flex flex-col items-center space-y-4">
-          <Input type="file" {...register("avatar", { required: true })} />
+          <Input type="file"
+            accept="image/*"
+          {...register("avatar", { required: true })} />
           <div className="flex space-x-4">
             <Button type="submit" >
               Upload

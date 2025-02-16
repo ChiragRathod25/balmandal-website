@@ -59,7 +59,7 @@ function UserDetailsForm({ user,setEditing }) {
     if (isAdmin && userId) {
       dispatch(setEditableUser(false));
       setEditing(false)
-      // navigate(`/dashboard/user/${userId}`);
+      navigate(`/dashboard/user/${userId}`);
     } else {
       setEditing(false)
       navigate(`/profile`);

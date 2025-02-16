@@ -1,10 +1,10 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import databaseService from "../../../services/database.services";
-import { Button, Input, FileUploader } from "../../";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setEditableUserTalent } from "../../../slices/dashboard/dashboardSlice";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import databaseService from '../../../services/database.services';
+import { Button, Input, FileUploader } from '../../';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEditableUserTalent } from '../../../slices/dashboard/dashboardSlice';
 
 function TalentForm({ talent, setAdd }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
@@ -13,8 +13,8 @@ function TalentForm({ talent, setAdd }) {
 
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
-      heading: talent?.heading || "",
-      description: talent?.description || "",
+      heading: talent?.heading || '',
+      description: talent?.description || '',
       image: null,
     },
   });
@@ -25,13 +25,17 @@ function TalentForm({ talent, setAdd }) {
   const submit = async (data) => {
     if (isAdmin && userId) {
       if (talent) {
-        const response = await databaseService.updateTalent(data, talent?._id, userId).then((response) => response.data);
+        const response = await databaseService
+          .updateTalent(data, talent?._id, userId)
+          .then((response) => response.data);
         if (response) {
           dispatch(setEditableUserTalent(null));
           navigate(`/dashboard/user/${userId}`);
         }
       } else {
-        const response = await databaseService.addTalent(data, userId).then((response) => response.data);
+        const response = await databaseService
+          .addTalent(data, userId)
+          .then((response) => response.data);
         if (response) {
           dispatch(setEditableUserTalent(null));
           navigate(`/dashboard/user/${userId}`);
@@ -40,7 +44,9 @@ function TalentForm({ talent, setAdd }) {
       }
     } else {
       if (talent) {
-        const response = await databaseService.updateTalent(data, talent?._id).then((response) => response.data);
+        const response = await databaseService
+          .updateTalent(data, talent?._id)
+          .then((response) => response.data);
         if (response) {
           navigate(`/talent/${response._id}`);
         }
@@ -56,6 +62,7 @@ function TalentForm({ talent, setAdd }) {
       dispatch(setEditableUserTalent(null));
       navigate(`/dashboard/user/${userId}`);
       setAdd(false);
+      return;
     } else {
       navigate(`/talent`);
     }
@@ -67,20 +74,20 @@ function TalentForm({ talent, setAdd }) {
         <Input
           label="Heading: "
           placeholder="Enter talent "
-          {...register("heading", { required: true })}
+          {...register('heading', { required: true })}
           className="w-full"
         />
         <Input
           label="Description: "
           placeholder="Describe talent "
-          {...register("description", { required: true })}
+          {...register('description', { required: true })}
           className="w-full"
         />
         {cloudImages &&
           cloudImages.length > 0 &&
           cloudImages.map((img, index) => (
             <div key={index} className="my-2">
-              {img.includes("image") !== -1 ? (
+              {img.includes('image') !== -1 ? (
                 <img src={img} className="preview-image w-full h-auto" />
               ) : (
                 <video controls className="preview-video w-full h-auto">
@@ -101,9 +108,13 @@ function TalentForm({ talent, setAdd }) {
 
         <div className="flex space-x-4">
           <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-            {talent ? "Update" : "Add"}
+            {talent ? 'Update' : 'Add'}
           </Button>
-          <Button type="button" onClick={() => handleCancel()} className="bg-gray-500 text-white px-4 py-2 rounded">
+          <Button
+            type="button"
+            onClick={() => handleCancel()}
+            className="bg-gray-500 text-white px-4 py-2 rounded"
+          >
             Cancel
           </Button>
         </div>

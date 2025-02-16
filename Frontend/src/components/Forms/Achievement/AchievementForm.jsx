@@ -49,6 +49,8 @@ function AchievementForm({ achievement, setAdd }) {
           .updateAchivement(data, achievement?._id)
           .then((response) => response.data);
         if (response) {
+          console.log('here');
+          
           navigate(`/achievement/${response._id}`);
         }
       } else {
@@ -63,8 +65,8 @@ function AchievementForm({ achievement, setAdd }) {
   const handleCancel = () => {
     if (isAdmin && userId) {
       dispatch(setEditableUserAchievement(null));
-      if(setAdd)
-      setAdd(false);
+      if (setAdd) setAdd(false);
+      navigate(`/dashboard/user/${userId}`);
       return;
     }
     navigate('/achievement');
@@ -72,56 +74,54 @@ function AchievementForm({ achievement, setAdd }) {
 
   return (
     // <div className="max-w-2xl mx-auto p-2">
-      <form onSubmit={handleSubmit(submit)} className="space-y-4">
-        <Input
-          type="text"
-          label="Title: "
-          placeholder="Achievement Title e.g. 'All India skating first rank'"
-          {...register('title', { required: true })}
-          className="w-full"
-        />
-        <Input
-          type="text"
-          label="Description: "
-          placeholder="Description about achievement"
-          {...register('description')}
-          className="w-full"
-        />
-        {cloudImages &&
-          cloudImages.length > 0 &&
-          cloudImages.map((img, index) => {
-            return img.includes('image') !== -1 ? (
-              <img key={index} src={img} className="preview-image w-full h-auto my-2" />
-            ) : (
-              <video key={index} controls className="preview-video w-full h-auto my-2">
-                <source src={img} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            );
-          })}
+    <form onSubmit={handleSubmit(submit)} className="space-y-4">
+      <Input
+        type="text"
+        label="Title: "
+        placeholder="Achievement Title e.g. 'All India skating first rank'"
+        {...register('title', { required: true })}
+        className="w-full"
+      />
+      <Input
+        type="text"
+        label="Description: "
+        placeholder="Description about achievement"
+        {...register('description')}
+        className="w-full"
+      />
+      {cloudImages &&
+        cloudImages.length > 0 &&
+        cloudImages.map((img, index) => {
+          return img.includes('image') !== -1 ? (
+            <img key={index} src={img} className="preview-image w-full h-auto my-2" />
+          ) : (
+            <video key={index} controls className="preview-video w-full h-auto my-2">
+              <source src={img} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          );
+        })}
 
-        <FileUploader
-          accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
-          register={register}
-          name="image"
-          watch={watch}
-          className="w-full"
-        />
+      <FileUploader
+        accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
+        register={register}
+        name="image"
+        watch={watch}
+        className="w-full"
+      />
 
-        <Button
-          type="submit"
-          className={`w-full py-2 text-white rounded ${achievement ? 'bg-green-400' : 'bg-blue-500'}`}
-        >
+      <div className="flex space-x-4 justify-center items-center px-12"> 
+        <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
           {achievement ? 'Update' : 'Add'}
         </Button>
 
-        <Button
-          onClick={() => handleCancel()}
-          className="w-full py-2 text-white bg-gray-500 rounded"
-        >
+        <Button 
+        type="button"
+        onClick={() => handleCancel()} className="bg-gray-500 text-white px-4 py-2 rounded">
           Cancel
         </Button>
-      </form>
+      </div>
+    </form>
     // </div>
   );
 }

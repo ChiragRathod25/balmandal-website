@@ -4,6 +4,15 @@ Fix ui and make it responsive =>done
 Home page steps setup => Done
 Fix Edit parent details =>done
 Achievement Add BTn =>done
-Displaying Video 
 introduce react-hot-toast => Done
-Search Functionality - Dashboard => 
+Search Functionality - Dashboard => Done 
+add parent details, => done
+Update registration and login page => added case compatibility for firstName for login, => done
+
+
+Displaying Video 
+Enhanced user avatar,  
+Pages - sanchalak, contact, invite link, about
+Footer credit 
+userName or not?
+Enhance image management for avatar and talent

@@ -11,9 +11,11 @@ function ParentForm({ parent, setAdd }) {
   const dispatch = useDispatch();
   const { userId } = useParams();
 
+  const role= new URLSearchParams(window.location.search).get('role');
+  console.log('role:', role);
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      role: parent?.role || '',
+      role: parent?.role || role || '',
       fullName: parent?.fullName || '',
       email: parent?.email || '',
       mobileNumber: parent?.mobileNumber || '',
@@ -63,6 +65,7 @@ function ParentForm({ parent, setAdd }) {
     if (isAdmin && userId) {
       dispatch(setEditableUserParent(null));
       setAdd(false);
+      navigate(`/dashboard/user/${userId}`);
       return;
     }
     navigate(`/parent`);

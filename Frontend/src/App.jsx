@@ -5,10 +5,13 @@ import { useDispatch } from 'react-redux';
 import { login, logout } from './slices/userSlice/authSlice';
 import { Header, Footer } from './pages';
 import toast, { Toaster } from 'react-hot-toast';
+import useScrollToTop from './utils/useScrollToTop';
 
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+ useScrollToTop()
+ 
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -44,13 +47,9 @@ function App() {
     <div className="bg-gray-100 min-h-screen">
       <Header />
 
-      <main>
-      <Toaster
-  position="top-right"
-  duration={3000}
-  reverseOrder={false}
-/>
-
+      <main
+      >
+        <Toaster position="top-right" duration={3000} reverseOrder={false} />
 
         <Outlet />
       </main>

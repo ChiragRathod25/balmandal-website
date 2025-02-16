@@ -40,8 +40,8 @@ const register = asyncHandler(async (req, res) => {
   )
     throw new ApiError(404, "All fields are required");
 
-  const existedUser = await User.find({
-    $and: [{ firstName }, { mobile }],
+  const existedUser = await User.findOne({
+    $and: [{ firstName: { $regex: new RegExp(firstName, "i") } }, { mobile }],
   });
   console.log("Already existed user: \n", existedUser);
 
@@ -72,8 +72,9 @@ const login = asyncHandler(async (req, res) => {
   )
     throw new ApiError(404, `All fields are required`);
   const user = await User.findOne({
-    $and: [{ firstName }, { mobile }],
+    $and: [{ firstName: { $regex: new RegExp(firstName, "i") } }, { mobile }],
   });
+
   if (!user) throw new ApiError(404, `invalid user request`);
   try {
     const isPasswordValid = await user.isPasswordCorrect(password);
