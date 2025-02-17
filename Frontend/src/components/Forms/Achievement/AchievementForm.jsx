@@ -9,7 +9,7 @@ import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardS
 function AchievementForm({ achievement, setAdd }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
-  const { userId } = useParams();
+  const userId = useSelector((state) => state.dashboard.editableUser?._id);
 
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {

@@ -216,6 +216,49 @@ export class DatabaseService {
     );
   }
 
+ 
+  async deleteFile({ deleteUrl }, userId) {
+    console.log('Client Url', deleteUrl);
+  
+    const config = {
+      headers: { 'Content-Type': 'application/json' },  // Ensure JSON is sent
+      data: { url: deleteUrl },  // Must be inside `data` for DELETE requests
+    };
+  
+    if (userId) {
+      return toast.promise(
+        handleApiRequest(
+          () => axiosInstace.delete(`/api/v1/admin/user/deleteFile?userId=${userId}`, config),
+          'deleteFile'
+        ),
+        {
+          loading: 'Deleting File',
+          success: 'File Deleted successfully',
+          error: 'Error while deleting file',
+        },
+        {
+          id: 'deleteFile',
+        }
+      );
+    }
+  
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/user/deleteFile`, config), // Pass `data` in `config`
+        'deleteFile'
+      ),
+      {
+        loading: 'Deleting File',
+        success: 'File Deleted successfully',
+        error: 'Error while deleting file',
+      },
+      {
+        id: 'deleteFile',
+      }
+    );
+  }
+  
+
   async getUserById(userId = null) {
     if (userId) {
       return toast.promise(
@@ -631,13 +674,15 @@ export class DatabaseService {
       }
     );
   }
-  async updateTalent({ heading, description, image }, talentId, userId = null) {
+  async updateTalent({ heading, description, image,cloudFiles }, talentId, userId = null) {
     const formData = new FormData();
     formData.append('heading', heading);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
+    formData.append('cloudFiles',cloudFiles);
+    console.log('Images', image);
     if (userId) {
       return toast.promise(
         handleApiRequest(

@@ -42,8 +42,14 @@ const deleteFromCloudinary = async (deleteFileURL) => {
         deleteFileURL
       );
       console.log("publicId: ", publicId);
+      const reourseType=deleteFileURL.includes("image")?"image":"video"
       const responce = await cloudinary.uploader
-        .destroy(publicId)
+        .destroy(publicId,
+          {
+            invalidate: true,
+            resource_type: reourseType,
+          }
+        )
         .catch((error) =>
           console.log("Error while deleting !!\nError: ", error)
         );

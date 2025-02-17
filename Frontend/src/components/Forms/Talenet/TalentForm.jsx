@@ -1,17 +1,18 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { useForm } from 'react-hook-form';
 import databaseService from '../../../services/database.services';
 import { Button, Input, FileUploader } from '../../';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEditableUserTalent } from '../../../slices/dashboard/dashboardSlice';
+import CloudeFilesManager from '../CloudeFilesManager';
 
 function TalentForm({ talent, setAdd }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
-  const { userId } = useParams();
+  const userId=useSelector((state)=>state.dashboard.editableUser?._id);
 
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit, watch,setValue ,getValues} = useForm({
     defaultValues: {
       heading: talent?.heading || '',
       description: talent?.description || '',
@@ -21,8 +22,28 @@ function TalentForm({ talent, setAdd }) {
 
   const navigate = useNavigate();
 
-  const cloudImages = talent?.images || [];
+  const [cloudFiles, setCloudFiles] = React.useState(talent?.images || []);
+
+  
+  useEffect(() => {
+    console.log("talent file manager",talent);
+    console.log("Rerendering for cloudFiles file manager",cloudFiles);
+    setFinalCloudFiles(cloudFiles);
+  }, [cloudFiles]);
+
+
+  let FinalCloudFiles=cloudFiles;
   const submit = async (data) => {
+    console.log("Submitting form...",data);
+    // // const uploaded=getValues('image');
+    // data.image=[...cloudFiles,...data.image];
+    // console.log("Submitting form...",data);
+    // console.log("cloudFiles",cloudFiles);
+    // console.log(JSON.stringify(cloudFiles));
+
+
+      data["cloudFiles"]=JSON.stringify(FinalCloudFiles);
+    // setValue('image', [...cloudFiles,...uploaded]); // Update form value
     if (isAdmin && userId) {
       if (talent) {
         const response = await databaseService
@@ -61,6 +82,7 @@ function TalentForm({ talent, setAdd }) {
     if (isAdmin && userId) {
       dispatch(setEditableUserTalent(null));
       navigate(`/dashboard/user/${userId}`);
+    
       setAdd(false);
       return;
     } else {
@@ -68,8 +90,26 @@ function TalentForm({ talent, setAdd }) {
     }
   };
 
+  const setFinalCloudFiles=(nf)=>{
+    FinalCloudFiles=nf;
+  }
+  const handleDeleteFile = async (index) => {
+    const url = cloudFiles[index];
+      console.log("url",url);
+      await databaseService.deleteFile({deleteUrl : url}).then(() => {
+        setCloudFiles((prev) => prev.filter((img, i) => i !== index));
+      });
+      const newFiles=cloudFiles.filter((img, i) => i !== index);
+      console.log("newFiles",newFiles);
+
+      // setCloudFiles((prev)=>newFiles);
+      setFinalCloudFiles(newFiles);
+      handleSubmit(submit)();
+    
+  };
+
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-2xl mx-auto ">
       <form onSubmit={handleSubmit(submit)} className="space-y-4">
         <Input
           label="Heading: "
@@ -83,21 +123,11 @@ function TalentForm({ talent, setAdd }) {
           {...register('description', { required: true })}
           className="w-full"
         />
-        {cloudImages &&
-          cloudImages.length > 0 &&
-          cloudImages.map((img, index) => (
-            <div key={index} className="my-2">
-              {img.includes('image') !== -1 ? (
-                <img src={img} className="preview-image w-full h-auto" />
-              ) : (
-                <video controls className="preview-video w-full h-auto">
-                  <source src={img} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              )}
-            </div>
-          ))}
 
+        {
+          cloudFiles && cloudFiles.length > 0 &&
+          <CloudeFilesManager  cloudFiles={cloudFiles} setCloudFiles={setCloudFiles} handleDeleteFile={handleDeleteFile}/>
+        }
         <FileUploader
           register={register}
           name="image"
@@ -109,6 +139,7 @@ function TalentForm({ talent, setAdd }) {
         <div className="flex space-x-4">
           <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
             {talent ? 'Update' : 'Add'}
+         
           </Button>
           <Button
             type="button"

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { use, useCallback, useEffect, useState } from 'react';
 import { useNavigate,useParams  } from 'react-router-dom';
 import customReactQuery from '../../../utils/useCustomReactQuery';
 import databaseService from '../../../services/database.services';
@@ -10,7 +10,7 @@ function UserDetailsForm({ user,setEditing }) {
   console.log('UserDetailsForm Component', user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userId } = useParams();
+  const userId=useSelector(state=>state.dashboard.editableUser?._id)
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const editableUser=useSelector(state=>state.dashboard.editableUser)
 
@@ -89,7 +89,7 @@ function UserDetailsForm({ user,setEditing }) {
         />
         <Input label="Email" placeholder="Email" className="w-full" {...register('email')} />
         <Input label="Mobile" placeholder="Mobile" className="w-full" {...register('mobile')} />
-        <Input label="DOB" placeholder="DOB" className="w-full" {...register('DOB')} />
+        <Input  type="date" label="DOB" placeholder="DOB" className="w-full" {...register('DOB')} />
       <div className="flex justify-center w-full max-w-md mx-auto gap-4">
 
         <Select

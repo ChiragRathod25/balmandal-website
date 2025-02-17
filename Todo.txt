@@ -16,3 +16,5 @@ Pages - sanchalak, contact, invite link, about
 Footer credit 
 userName or not?
 Enhance image management for avatar and talent
+Notification
+Event 

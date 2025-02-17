@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 function ParentForm({ parent, setAdd }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
-  const { userId } = useParams();
+  const userId = useSelector((state) => state.dashboard.editableUser?._id);
 
   const role= new URLSearchParams(window.location.search).get('role');
   console.log('role:', role);

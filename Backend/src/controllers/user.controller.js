@@ -214,6 +214,20 @@ const updateAvatar = asyncHandler(async (req, res) => {
     .json(new ApiResponce(200, user, `User avatar updated successfully !!`));
 });
 
+const deleteFile=asyncHandler (async(req,res)=>{
+  console.log("Delete file",req.body);
+  const {url}=req.body;
+  console.log("Url",url);
+  if(!url) throw new ApiError(404, `Url is required to delete file`);
+  const deleteFile = await deleteFromCloudinary(url);
+  if (deleteFile.result !== "ok")
+    throw new ApiError(404, `Error while deleting file`);
+  res
+    .status(200)
+    .json(new ApiResponce(200, {}, `File deleted successfully !!`));
+
+})
+
 const updatePassword = asyncHandler(async (req, res) => {
   const { password, newPassword } = req.body;
   if (!password || !newPassword)
@@ -312,4 +326,5 @@ export {
   getCurrentuser,
   refreshAceesToken,
   getUserById,
+  deleteFile,
 };
