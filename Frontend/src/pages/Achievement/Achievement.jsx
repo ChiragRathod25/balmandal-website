@@ -4,6 +4,7 @@ import databaseService from '../../services/database.services';
 import { Button } from '../../components';
 import { QueryHandler } from '../../components';
 import useCustomeReactQuery from '../../utils/useCustomReactQuery';
+import { FilesDisplayHelper } from '../../components';
 
 function Achievement() {
     console.log('Achievement Page');
@@ -64,20 +65,9 @@ function Achievement() {
                             {achievement.description}
                         </p>
 
-                        {/* Achievement Images */}
-                        {achievement?.images && achievement.images.length > 0 && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                                {achievement.images.map((img, index) => (
-                                    <div key={index} className="flex justify-center">
-                                        <img
-                                            src={img}
-                                            alt={achievement.title}
-                                            className="w-full h-auto rounded-lg shadow-sm"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                      
+                        {/* Achievement Image */}
+                        <FilesDisplayHelper cloudFiles={achievement?.images} />
 
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center sm:justify-start">

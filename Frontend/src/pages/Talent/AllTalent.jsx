@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
-import databaseService from "../../services/database.services";
-import { useSelector } from "react-redux";
-import { Button } from "../../components";
-import { useNavigate } from "react-router-dom";
-import useCustomReactQuery from "../../utils/useCustomReactQuery";
-import { QueryHandler } from "../../components";
+import { useCallback, useEffect, useState } from 'react';
+import databaseService from '../../services/database.services';
+import { useSelector } from 'react-redux';
+import { Button } from '../../components';
+import { useNavigate } from 'react-router-dom';
+import useCustomReactQuery from '../../utils/useCustomReactQuery';
+import { QueryHandler } from '../../components';
 
 function AllTalent() {
   const [talents, setTalents] = useState(null);
@@ -23,15 +23,30 @@ function AllTalent() {
 
   // Handle delete action
   const handleDelete = async (talentId) => {
-    if (!window.confirm("Are you sure you want to delete this talent?")) return;
+    if (!window.confirm('Are you sure you want to delete this talent?')) return;
 
     try {
       await databaseService.deleteTalent({ talentId });
       setTalents((prev) => prev.filter((talent) => talent._id !== talentId));
-      console.log("Talent Deleted");
+      console.log('Talent Deleted');
     } catch (error) {
-      console.error("Error deleting talent:", error);
+      console.error('Error deleting talent:', error);
     }
+  };
+
+  const getHeroImage = (talent) => {
+    let hero =
+      'https://images.unsplash.com/photo-1620398722262-969d8f2bc875?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a2lkcyUyMGRyYXdpbmd8ZW58MHx8MHx8fDA%3D';
+    const files = talent?.images;
+    if (files && files.length > 0) {
+      for (const file of files) {
+        if (file.includes('image')) {
+          hero = file;
+          return hero;
+        }
+      }
+    }
+    return hero;
   };
 
   return (
@@ -47,13 +62,16 @@ function AllTalent() {
                   className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md mb-4 lg:flex-row flex-col text-center lg:text-left"
                 >
                   <div className="flex items-center gap-4 flex-col lg:flex-row">
-                    {talent.images?.length > 0 && (
-                      <img
-                        src={talent.images[0]}
-                        alt={talent.heading}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                    )}
+                   
+                    <img
+                      src={
+                       getHeroImage(talent)
+                      }
+                      alt={talent.heading || 'hero'}
+                      className="w-16 h-16 object-cover rounded-lg"
+                      // className="w-16 h-16 object-cover rounded-lg"
+                    />
+
                     <p className="font-semibold text-lg">{talent.heading}</p>
                   </div>
                   <div className="flex gap-2 mt-4 lg:mt-0">
@@ -84,7 +102,7 @@ function AllTalent() {
 
         <div className="mt-8 flex justify-center">
           <Button
-            onClick={() => navigate("/talent/add")}
+            onClick={() => navigate('/talent/add')}
             className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition"
           >
             Add Talent

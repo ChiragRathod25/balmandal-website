@@ -49,54 +49,76 @@ const addAchivement = asyncHandler(async (req, res) => {
 });
 
 const updateAchivement = asyncHandler(async (req, res) => {
+  try {
+    const { title, description,cloudFiles} = req.body;
+    const achivementId = req.params.id;
+    const achivement = await Achivement.findById(achivementId);
+    if (!achivement) throw new ApiError(404, `Invalid achivement request`);
 
-  
- try {
-  const { title, description } = req.body;
-  const achivementId = req.params.id;
-  const achivement = await Achivement.findById(achivementId);
-  if (!achivement) throw new ApiError(404, `Invalid achivement request`);
-
-  const userImages = achivement.images;
-  
-  if (req.files?.image) {
-    for (const img of req.files?.image) {
-      const path = img.path;
-      console.log(img);
-      try {
-        const image = await uploadOnCloudinary(path);
-        if (!image || !image.url){
-          console.log('here');
-          throw new ApiError(400, `Error while uploading image`);
+    console.log("cloudFiles", typeof cloudFiles, Array.isArray(cloudFiles));
+    console.log("req.files", req.files);
+    console.log("cloudFiles", cloudFiles);
+    const newFiles = [];
+    if (req.files) {
+      const imageArray = Array.isArray(req.files)
+        ? Array.from(req.files)
+        : [req.files];
+      console.log("Image Array", imageArray);
+      for (const img of imageArray) {
+        const path = img.path;
+        try {
+          const image = await uploadOnCloudinary(path);
+          if (!image || !image.url)
+            throw new ApiError(400, `Error while uploading image`);
+          newFiles.push(image.url);
+        } catch (error) {
+          console.error(`Error while uploading image`, error);
+          throw new ApiError(400, `Error while uploading image`, error);
         }
-        userImages.push(image.url);
-      } catch (error) {
-        console.error(`Error while uploading image`, error);
-        throw new ApiError(400, `Error while uploading image`, error);
       }
     }
-  }
-  const updatedAchivement = await Achivement.findByIdAndUpdate(
-    achivementId,
-    {
-      title,
-      description,
-      images: userImages,
-    },
-    { new: true }
-  );
-  if (!updatedAchivement){
-    throw new ApiError(404, `Error while updating achivement`);
-  }
-  
-  console.log('here')
-   res.status(200)
-    .json(
-      new ApiResponce(200, updatedAchivement, `Achievement updated successfully !!`)
+    let cloudFilesArray = JSON.parse(cloudFiles);
+    console.log("cloudFilesArray", cloudFilesArray);
+    // cloudFiles=JSON.parse(cloudFiles);
+    let files = [];
+    if (cloudFilesArray.length > 0) {
+      files = Array.isArray(cloudFilesArray)
+        ? cloudFilesArray
+        : [cloudFilesArray];
+    }
+    if (newFiles.length > 0) {
+      if (files?.length > 0) files = [...files, ...newFiles];
+      else files = newFiles;
+    }
+
+    console.log("newFiles", newFiles);
+    console.log("files", files);
+    const updatedAchivement = await Achivement.findByIdAndUpdate(
+      achivementId,
+      {
+        title,
+        description,
+        images: files,
+      },
+      { new: true }
     );
- } catch (error) {
-  console.error(`Error while updating achivement`, error);
- }
+    if (!updatedAchivement) {
+      throw new ApiError(404, `Error while updating achivement`);
+    }
+
+    console.log("here");
+    res
+      .status(200)
+      .json(
+        new ApiResponce(
+          200,
+          updatedAchivement,
+          `Achievement updated successfully !!`
+        )
+      );
+  } catch (error) {
+    console.error(`Error while updating achivement`, error);
+  }
 });
 
 const getUserAchivements = asyncHandler(async (req, res) => {

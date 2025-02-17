@@ -14,7 +14,6 @@ function AllAchievement() {
   // Fetch achievements data
   const fetchAchievements = useCallback(() => databaseService.getUserAchivements(), []);
   const { data, error, loading } = useCustomReactQuery(fetchAchievements);
-
   useEffect(() => {
     if (data) {
       setAchievements(data);
@@ -35,6 +34,20 @@ function AllAchievement() {
     }
   };
 
+  const getHeroImage = (achievement) => {
+    let hero =
+      'https://plus.unsplash.com/premium_photo-1683749809341-23a70a91b195?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YWNoaWV2ZW1lbnR8ZW58MHx8MHx8fDA%3D';
+    const files = achievement?.images;
+    if (files && files.length > 0) {
+      for (const file of files) {
+        if (file.includes('image')) {
+          hero = file;
+          return hero;
+        }
+      }
+    }
+    return hero;
+  };
   return (
     <QueryHandler queries={[{ loading, error }]}>
       <div className="container mx-auto p-4">
@@ -48,13 +61,12 @@ function AllAchievement() {
                   className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md mb-4 lg:flex-row flex-col text-center lg:text-left"
                 >
                   <div className="flex items-center gap-4 flex-col lg:flex-row">
-                    {achievement.images?.length > 0 && (
-                      <img
-                        src={achievement.images[0]}
-                        alt={achievement.title}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                    )}
+                    <img
+                      src={getHeroImage(achievement)}
+                      alt={achievement.title || 'hero'}
+                      className="w-16 h-16 object-cover rounded-lg"
+                    />
+
                     <p className="font-semibold text-lg">{achievement.title}</p>
                   </div>
                   <div className="flex gap-2 mt-4 lg:mt-0">

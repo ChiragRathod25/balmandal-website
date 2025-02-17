@@ -9,12 +9,17 @@ Search Functionality - Dashboard => Done
 add parent details, => done
 Update registration and login page => added case compatibility for firstName for login, => done
 
+forgetPassword
+push Notification
 
-Displaying Video 
-Enhanced user avatar,  
+
+Displaying Video => Done
+Enhanced user avatar, => Done 
+Enhance image management for avatar and talent => Done
+Separate Cloude and Local File Manager => Done
+
 Pages - sanchalak, contact, invite link, about
 Footer credit 
 userName or not?
-Enhance image management for avatar and talent
 Notification
 Event 

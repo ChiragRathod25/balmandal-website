@@ -26,6 +26,7 @@ function ParentForm({ parent, setAdd }) {
   });
 
   const navigate = useNavigate();
+
   const submit = async (data) => {
     if (isAdmin && userId) {
       if (parent) {

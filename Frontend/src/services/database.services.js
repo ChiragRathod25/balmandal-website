@@ -351,13 +351,19 @@ export class DatabaseService {
     );
   }
 
-  async updateAchivement({ title, description, image }, achievementId, userId = null) {
+  async updateAchivement({ title, description, image,cloudFiles }, achievementId, userId = null) {
+
+    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
+    formData.append('cloudFiles',cloudFiles);
+    console.log('Formdata', formData);
+    console.log('Images', image);
+
     if (userId) {
       return toast.promise(
         handleApiRequest(

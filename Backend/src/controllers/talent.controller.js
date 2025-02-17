@@ -61,7 +61,8 @@ const updateTalent = asyncHandler(async (req, res) => {
     const imageArray = Array.isArray(req.files)
       ? Array.from(req.files)
       : [req.files];
-
+    console.log("Image Array", imageArray);
+    
     for (const img of imageArray) {
       const path = img.path;
       try {

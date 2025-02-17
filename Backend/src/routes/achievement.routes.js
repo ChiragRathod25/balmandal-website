@@ -18,7 +18,7 @@ router
   .post(upload.array("image"), addAchivement);
 router
   .route("/:id")
-  .put(upload.fields([{ name: "image" }]), updateAchivement)
+  .put(upload.array("image"), updateAchivement)
   .delete(deleteAchivement)
   .get(getAchievementById);
 

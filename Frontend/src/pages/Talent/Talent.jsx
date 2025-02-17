@@ -5,7 +5,7 @@ import { Button } from '../../components';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
 import { QueryHandler } from '../../components';
 import { useSelector } from 'react-redux';
-
+import {FilesDisplayHelper} from '../../components';
 
 function Talent() {
   const { talentId } = useParams();
@@ -48,7 +48,7 @@ function Talent() {
             <p className="text-gray-700 mb-4">{talent.description}</p>
 
             {/* Image Section */}
-            {Array.isArray(talent.images) && talent.images.length > 0 && (
+            {/* {Array.isArray(talent.images) && talent.images.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                 {talent.images && talent?.images.length>0  && talent.images.map((img, index) =>
                   img.includes('image') ? (
@@ -71,8 +71,9 @@ function Talent() {
                   )
                 )}
               </div>
-            )}
-
+            )} */}
+            <FilesDisplayHelper cloudFiles={talent?.images} />
+        
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center sm:justify-start">
               <Button

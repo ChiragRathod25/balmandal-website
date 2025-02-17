@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
+function FilesDisplayHelper({ cloudFiles }) {
   useEffect(() => {
     console.log('Rerendering for cloudFiles file manager', cloudFiles);
   }, [cloudFiles]);
@@ -9,12 +9,6 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
   useEffect(() => {
     console.log('isVisible', isVisible);
   }, [isVisible]);
-
-  const handleDelete = async (index) => {
-    console.log('Deleting file at index:', index);
-    if(!window.confirm('Are you sure you want to delete this file?'))  return;
-    await handleDeleteFile(index); // Use the function from props
-  };
 
   const handleDownload = (index) => {
     console.log('Downloading file at index:', index);
@@ -48,11 +42,15 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
     <>
       {/* View Modal */}
       {view && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black 
-        min-h-screen
-                     min-h-screen p-2 sm:p-10
-        bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative max-w-lg w-full">
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 
+                   min-h-screen p-2 sm:p-10"
+        >
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg relative max-w-lg w-full
+           sm:max-w-3xl sm:w-full h-full overflow-y-auto
+          "
+          >
             <button
               className="absolute top-2 right-2 text-gray-600 hover:text-black"
               onClick={() => setView(null)}
@@ -60,12 +58,16 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
               ✖
             </button>
             {view.includes('image') ? (
-              <img src={view} alt="
-              File Preview" className="w-full rounded-lg" />
+              <img
+                src={view}
+                alt="
+              File Preview"
+                className="w-full rounded-lg"
+              />
             ) : (
               <video src={view} controls className="w-full rounded-lg" />
             )}
-            </div>
+          </div>
         </div>
       )}
 
@@ -101,6 +103,7 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
                     e.preventDefault();
                     setIsVisible(isVisible === index ? null : index);
                   }}
+                  onMouseOver={() => setIsVisible(index)}
                   onMouseEnter={() => setIsVisible(index)}
                 >
                   ⋮
@@ -114,15 +117,6 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
                   onMouseLeave={() => setIsVisible(null)}
                 >
                   <ul className="text-sm text-gray-700">
-                    <li
-                      className="hover:bg-gray-100 p-2 cursor-pointer"
-                      onClick={() => {
-                        setIsVisible(null);
-                        handleDelete(index);
-                      }}
-                    >
-                      Delete
-                    </li>
                     <li
                       className="hover:bg-gray-100 p-2 cursor-pointer"
                       onClick={() => {
@@ -151,4 +145,4 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
   );
 }
 
-export default CloudFilesManager;
+export default FilesDisplayHelper;

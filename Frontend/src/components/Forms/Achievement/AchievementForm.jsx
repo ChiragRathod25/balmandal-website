@@ -5,6 +5,7 @@ import databaseService from '../../../services/database.services';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardSlice';
+import CloudeFilesManager from '../CloudeFilesManager';
 
 function AchievementForm({ achievement, setAdd }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
@@ -15,15 +16,25 @@ function AchievementForm({ achievement, setAdd }) {
     defaultValues: {
       title: achievement?.title || '',
       description: achievement?.description || '',
-      image: '',
-      cloudImages: achievement?.images || '',
+      image: null,
     },
   });
-  const cloudImages = achievement?.images;
-
   const navigate = useNavigate();
+  
+  const [cloudFiles, setCloudFiles] = React.useState(achievement?.images || []);
+  
+  useEffect(() => {
+    console.log('Achievement file manager', achievement);
+    console.log('Rerendering for cloudFiles file manager', cloudFiles);
+    setFinalCloudFiles(cloudFiles);
+  }, [cloudFiles]);
 
+
+  let FinalCloudFiles = cloudFiles;
   const submit = async (data) => {
+    data['cloudFiles'] = JSON.stringify(FinalCloudFiles);
+    console.log('submitting form data', data);
+
     if (isAdmin && userId) {
       if (achievement) {
         const response = await databaseService
@@ -72,6 +83,23 @@ function AchievementForm({ achievement, setAdd }) {
     navigate('/achievement');
   };
 
+  const setFinalCloudFiles=(nf)=>{
+    FinalCloudFiles=nf;
+  }
+  const handleDeleteFile = async (index) => {
+    const url = cloudFiles[index];
+      console.log("url",url);
+      await databaseService.deleteFile({deleteUrl : url}).then(() => {
+        setCloudFiles((prev) => prev.filter((img, i) => i !== index));
+      });
+      const newFiles=cloudFiles.filter((img, i) => i !== index);
+      console.log("newFiles",newFiles);
+
+      // setCloudFiles((prev)=>newFiles);
+      setFinalCloudFiles(newFiles);
+      handleSubmit(submit)();
+  };
+
   return (
     // <div className="max-w-2xl mx-auto p-2">
     <form onSubmit={handleSubmit(submit)} className="space-y-4">
@@ -89,18 +117,10 @@ function AchievementForm({ achievement, setAdd }) {
         {...register('description')}
         className="w-full"
       />
-      {cloudImages &&
-        cloudImages.length > 0 &&
-        cloudImages.map((img, index) => {
-          return img.includes('image') !== -1 ? (
-            <img key={index} src={img} className="preview-image w-full h-auto my-2" />
-          ) : (
-            <video key={index} controls className="preview-video w-full h-auto my-2">
-              <source src={img} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          );
-        })}
+        {
+          cloudFiles && cloudFiles.length > 0 &&
+          <CloudeFilesManager  cloudFiles={cloudFiles} setCloudFiles={setCloudFiles} handleDeleteFile={handleDeleteFile}/>
+        }
 
       <FileUploader
         accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
