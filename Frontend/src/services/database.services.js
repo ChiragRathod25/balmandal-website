@@ -774,6 +774,93 @@ export class DatabaseService {
       }
     );
   }
+  async addEvent({
+      title,description,media,cloudMediaFiles,
+      startAt,endAt,venue
+  }){
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    if(media && media.length > 0){
+      Array.from(media).forEach((img) => formData.append('media', img));
+    }
+    formData.append('cloudMediaFiles', cloudMediaFiles);
+    formData.append('startAt', startAt);
+    formData.append('endAt', endAt);
+    formData.append('venue', venue);
+
+
+
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/event', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+        'addEvent'
+      ),
+      {
+        loading: 'Adding Event',
+        success: 'Event Added successfully',
+        error: 'Error while adding event',
+      },
+      {
+        id: 'addEvent',
+      }
+    );
+  }
+  async updateEvent({ title, description, media, cloudMediaFiles }, eventId) {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    if (media && media.length > 0) {
+      Array.from(media).forEach((img) => formData.append('media', img));
+    }
+    formData.append('cloudMediaFiles', cloudMediaFiles);
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/event/${eventId}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+        'updateEvent'
+      ),
+      {
+        loading: 'Updating Event',
+        success: 'Event Updated successfully',
+        error: 'Error while updating event',
+      },
+      {
+        id: 'updateEvent',
+      }
+    );
+  }
+
+  async deleteEvent({eventId}){
+    return toast.promise(
+      handleApiRequest(() => axiosInstace.delete(`/api/v1/event/${eventId}`), 'deleteEvent'),
+      {
+        loading: 'Deleting Event',
+        success: 'Event Deleted successfully',
+        error: 'Error while deleting event',
+      },
+      {
+        id: 'deleteEvent',
+      }
+    );
+  }
+  async getEvents(){
+    return handleApiRequest(() => axiosInstace.get('/api/v1/event'), 'getEvents');
+  }
+  async getEventById({ eventId }) {
+    return handleApiRequest(() => axiosInstace.get(`/api/v1/event/${eventId}`), 'getEventById');
+  }
+  
+
 }
 const databaseService = new DatabaseService();
 export default databaseService;

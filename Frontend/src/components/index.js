@@ -15,6 +15,7 @@ import UserCard from "./Dashbord/UserCard";
 import UserAvatar from "./Forms/User/UserAvatar";
 import CloudFilesManager from "./Forms/CloudeFilesManager";
 import FilesDisplayHelper from "./FilesDisplayHelper";
+import EventForm from "./Forms/Event/EventForm";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -33,4 +34,5 @@ export {
   UserAvatar,
   CloudFilesManager,
   FilesDisplayHelper,
+  EventForm
 };

@@ -58,6 +58,13 @@ function Header() {
             Talent
           </Link>
           <Link
+           onClick={() => setIsMenuOpen(false)}
+            to="/event"
+            className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"
+          >
+            Event
+          </Link>
+          <Link
             to="/profile"
             onClick={() => setIsMenuOpen(false)}
             className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"

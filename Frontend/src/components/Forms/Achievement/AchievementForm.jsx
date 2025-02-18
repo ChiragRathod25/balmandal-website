@@ -119,7 +119,7 @@ function AchievementForm({ achievement, setAdd }) {
       />
         {
           cloudFiles && cloudFiles.length > 0 &&
-          <CloudeFilesManager  cloudFiles={cloudFiles} setCloudFiles={setCloudFiles} handleDeleteFile={handleDeleteFile}/>
+          <CloudeFilesManager  cloudFiles={cloudFiles} handleDeleteFile={handleDeleteFile}/>
         }
 
       <FileUploader

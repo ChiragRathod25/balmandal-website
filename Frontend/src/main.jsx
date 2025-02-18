@@ -27,6 +27,11 @@ import {
   AdminDashboard,
   UserData,
   UserProfile,
+  AddEvent,
+  EditEvent,
+  AllEvent,
+  Event
+
 } from './pages/index.js';
 import { AuthLayout } from './components';
 
@@ -186,6 +191,44 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path:'event',
+        children:[
+          {
+            path:'',
+            element:(
+              <AuthLayout>
+                <AllEvent />
+              </AuthLayout>
+            )
+          },
+          {
+            path:'add',
+            element:(
+              <AuthLayout>
+                <AddEvent />
+              </AuthLayout>
+            )
+          },
+          {
+            path:':eventId',
+            element:(
+              <AuthLayout>
+                <Event />
+              </AuthLayout>
+            )
+          },
+          {
+            path:'edit/:eventId',
+            element:(
+              <AuthLayout>
+                <EditEvent />
+              </AuthLayout>
+            )
+
+          }
+        ]
+      }
     ],
   },
 ]);

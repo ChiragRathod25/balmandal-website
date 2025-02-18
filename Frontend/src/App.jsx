@@ -6,6 +6,7 @@ import { login, logout } from './slices/userSlice/authSlice';
 import { Header, Footer } from './pages';
 import toast, { Toaster } from 'react-hot-toast';
 import useScrollToTop from './utils/useScrollToTop';
+import MyToaster from './MyToaster';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -26,19 +27,14 @@ function App() {
         })
         .finally(() => setLoading(false));
     };
+    getCurrentUser();
 
-    toast.promise(
-      getCurrentUser,
-      {
-        loading: 'Loading',
-        success: 'Got the data',
-        error: 'Error when fetching',
-      },
-      {
-        id: 'fetching',
-      }
-    );
+    
   }, []);
+
+
+
+
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -49,7 +45,8 @@ function App() {
 
       <main
       >
-        <Toaster position="top-right" duration={3000} reverseOrder={false} />
+        {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
+        <MyToaster />
 
         <Outlet />
       </main>

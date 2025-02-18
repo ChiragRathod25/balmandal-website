@@ -40,12 +40,14 @@ import parentRoutes from "./routes/parent.routes.js";
 import achievementRoutes from "./routes/achievement.routes.js";
 import talentRoutes from "./routes/talent.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import eventRoutes from "./routes/event.routes.js";
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/parent", parentRoutes);
 app.use("/api/v1/achievement", achievementRoutes);
 app.use("/api/v1/talent", talentRoutes);
 app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/event", eventRoutes);
 
 app.use(errorHandler)
 

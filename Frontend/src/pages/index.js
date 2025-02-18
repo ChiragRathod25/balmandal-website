@@ -24,6 +24,12 @@ import AdminDashboard from "./dashboard/AdminDashboard";
 import UserData from "./dashboard/UserProfile";
 import UserDetails from "./User/UserDetails";
 import UserProfile from "./User/UserProfile";
+
+
+import AddEvent from "./Event/AddEvent";
+import EditEvent from "./Event/EditEvent";
+import AllEvent from "./Event/AllEvent";
+import Event from "./Event/Event";
 export {
     AddAchievement,
     EditAchievement,
@@ -46,5 +52,9 @@ export {
     AdminDashboard,
     UserData,
     UserDetails,
-    UserProfile
+    UserProfile,
+    AddEvent,
+    EditEvent,
+    AllEvent,
+    Event
 }
