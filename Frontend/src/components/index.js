@@ -16,6 +16,7 @@ import UserAvatar from "./Forms/User/UserAvatar";
 import CloudFilesManager from "./Forms/CloudeFilesManager";
 import FilesDisplayHelper from "./FilesDisplayHelper";
 import EventForm from "./Forms/Event/EventForm";
+import NotificationForm from "./Forms/Notification/NotificationForm";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -34,5 +35,6 @@ export {
   UserAvatar,
   CloudFilesManager,
   FilesDisplayHelper,
-  EventForm
+  EventForm,
+  NotificationForm
 };

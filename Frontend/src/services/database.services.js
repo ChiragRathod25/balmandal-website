@@ -1,6 +1,7 @@
 import axiosInstace from '../utils/axios';
 import { handleApiRequest } from '../utils/apiHelper';
 import toast from 'react-hot-toast';
+import { getUserNotifications } from '../../../Backend/src/controllers/notification.controller';
 
 export class DatabaseService {
   async register({ firstName, lastName, mobile, password }) {
@@ -216,15 +217,14 @@ export class DatabaseService {
     );
   }
 
- 
   async deleteFile({ deleteUrl }, userId) {
     console.log('Client Url', deleteUrl);
-  
+
     const config = {
-      headers: { 'Content-Type': 'application/json' },  // Ensure JSON is sent
-      data: { url: deleteUrl },  // Must be inside `data` for DELETE requests
+      headers: { 'Content-Type': 'application/json' }, // Ensure JSON is sent
+      data: { url: deleteUrl }, // Must be inside `data` for DELETE requests
     };
-  
+
     if (userId) {
       return toast.promise(
         handleApiRequest(
@@ -241,7 +241,7 @@ export class DatabaseService {
         }
       );
     }
-  
+
     return toast.promise(
       handleApiRequest(
         () => axiosInstace.delete(`/api/v1/user/deleteFile`, config), // Pass `data` in `config`
@@ -257,7 +257,6 @@ export class DatabaseService {
       }
     );
   }
-  
 
   async getUserById(userId = null) {
     if (userId) {
@@ -351,16 +350,14 @@ export class DatabaseService {
     );
   }
 
-  async updateAchivement({ title, description, image,cloudFiles }, achievementId, userId = null) {
-
-    
+  async updateAchivement({ title, description, image, cloudFiles }, achievementId, userId = null) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
-    formData.append('cloudFiles',cloudFiles);
+    formData.append('cloudFiles', cloudFiles);
     console.log('Formdata', formData);
     console.log('Images', image);
 
@@ -680,14 +677,14 @@ export class DatabaseService {
       }
     );
   }
-  async updateTalent({ heading, description, image,cloudFiles }, talentId, userId = null) {
+  async updateTalent({ heading, description, image, cloudFiles }, talentId, userId = null) {
     const formData = new FormData();
     formData.append('heading', heading);
     formData.append('description', description);
     if (image && image.length > 0) {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
-    formData.append('cloudFiles',cloudFiles);
+    formData.append('cloudFiles', cloudFiles);
     console.log('Images', image);
     if (userId) {
       return toast.promise(
@@ -774,22 +771,18 @@ export class DatabaseService {
       }
     );
   }
-  async addEvent({
-      title,description,media,cloudMediaFiles,
-      startAt,endAt,venue
-  }){
+
+  async addEvent({ title, description, media, cloudMediaFiles, startAt, endAt, venue }) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
-    if(media && media.length > 0){
+    if (media && media.length > 0) {
       Array.from(media).forEach((img) => formData.append('media', img));
     }
     formData.append('cloudMediaFiles', cloudMediaFiles);
     formData.append('startAt', startAt);
     formData.append('endAt', endAt);
     formData.append('venue', venue);
-
-
 
     return toast.promise(
       handleApiRequest(
@@ -840,7 +833,7 @@ export class DatabaseService {
     );
   }
 
-  async deleteEvent({eventId}){
+  async deleteEvent({ eventId }) {
     return toast.promise(
       handleApiRequest(() => axiosInstace.delete(`/api/v1/event/${eventId}`), 'deleteEvent'),
       {
@@ -853,14 +846,92 @@ export class DatabaseService {
       }
     );
   }
-  async getEvents(){
+  async getEvents() {
     return handleApiRequest(() => axiosInstace.get('/api/v1/event'), 'getEvents');
   }
   async getEventById({ eventId }) {
     return handleApiRequest(() => axiosInstace.get(`/api/v1/event/${eventId}`), 'getEventById');
   }
-  
 
+  
+  async getAllNotifications() {
+    return handleApiRequest(() => axiosInstace.get('/api/v1/notification'), 'getAllNotifications');
+  }
+
+  async createNotification({
+    createdFor,
+    isBroadcast,
+    targetGroup,
+    title,
+    message,
+    notificatinoType,
+    link,
+    poster,
+    isReadBy,
+    deliveredTo,
+  }) {
+    const formData = new FormData();
+    formData.append('createdFor', createdFor);
+    formData.append('isBroadcast', isBroadcast);
+    formData.append('targetGroup', targetGroup);
+    formData.append('title', title);
+
+    formData.append('message', message);
+    formData.append('notificatinoType', notificatinoType);
+    formData.append('link', link);
+    formData.append('isReadBy', isReadBy);
+    formData.append('deliveredTo', deliveredTo);
+    if (poster && poster.length > 0) {
+      Array.from(poster).forEach((img) => formData.append('poster', img));
+    }
+
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/admin/notification', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }),
+        'createNotification'
+      ),
+      {
+        loading: 'Creating Notification',
+        success: 'Notification Created successfully',
+        error: 'Error while creating notification',
+      },
+      {
+        id: 'createNotification',
+      }
+    );
+  }
+
+  async getUserNotifications({ userId }) {
+    if (userId != null) {
+      return handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/notification/user?userId=${userId}`),
+        'getUserNotifications'
+      );
+    }
+    return handleApiRequest(
+      () => axiosInstace.get('/api/v1/notification/user'),
+      'getUserNotifications'
+    );
+  }
+
+  async getNotificationsByCreaterId() {
+    return handleApiRequest(
+      () => axiosInstace.get('/api/v1/admin/notification/creater'),
+      'getNotificationsByCreaterId'
+    );
+  }
+  async getNotificationById({ notificationId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/notification/${notificationId}`),
+      'getNotificationById'
+    );
+  }
 }
+
 const databaseService = new DatabaseService();
 export default databaseService;

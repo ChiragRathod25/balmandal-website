@@ -6,6 +6,7 @@ import userRoutes from "./user.routes.js";
 import parentRoutes from "./parent.routes.js";
 import talentRoutes from "./talent.routes.js";
 import achievementRoutes from "./achievement.routes.js";
+import notificationRoutes from "./notification.routes.js";
 
 //admin routes
 const router = Router();
@@ -16,5 +17,7 @@ router.use("/user", userRoutes);
 router.use("/parent", parentRoutes);
 router.use("/talent", talentRoutes);
 router.use("/achievement", achievementRoutes);
+router.use('/notification', notificationRoutes);
+
 router.use("/all-users", getAllUsers);
 export default router;

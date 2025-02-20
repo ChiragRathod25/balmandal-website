@@ -8,7 +8,7 @@ import useScrollToTop from './utils/useScrollToTop';
 import MyToaster from './MyToaster';
 import { io } from 'socket.io-client';
 import socketClient  from 'socket.io-client' 
-const socket = socketClient('https://super-duper-pancake-976j9v5wrw9hxrg9-5000.app.github.dev',{
+const socket = socketClient('http://localhost:5000/',{
   transports: ['websocket'],
 });
 

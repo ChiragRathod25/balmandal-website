@@ -27,3 +27,7 @@ Notification
 Event   - Add/Edit/Delete Event, 
         - View Events -> 
         - Fields - Title, deescription, start and end time, poster, Status, 
+
+
+implement createdFor Notification
+implement readBy,deleveredTo

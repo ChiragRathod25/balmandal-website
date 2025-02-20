@@ -47,6 +47,7 @@ import achievementRoutes from "./routes/achievement.routes.js";
 import talentRoutes from "./routes/talent.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import eventRoutes from "./routes/event.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/parent", parentRoutes);
@@ -54,6 +55,7 @@ app.use("/api/v1/achievement", achievementRoutes);
 app.use("/api/v1/talent", talentRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/event", eventRoutes);
+app.use("/api/v1/notification", notificationRoutes);
 
 app.use(errorHandler)
 
