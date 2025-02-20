@@ -12,10 +12,9 @@ const createNotification = asyncHandler(async (req, res) => {
     targetGroup,
     title,
     message,
-    notificatinoType,
+ notificationType,
     link,
-    isReadBy,
-    deliveredTo,
+    
   } = req.body;
 
   if ([title, message].some((field) => (field?.trim() ?? "") === "")) {
@@ -25,9 +24,10 @@ const createNotification = asyncHandler(async (req, res) => {
   if (isBroadcast && targetGroup === "individual" && !createdFor) {
     throw new ApiError(404, "Created for is required for individual broadcast");
   }
+
   let poster = null;
   if (req.file) {
-    try {
+    try {``
       poster = await uploadOnCloudinary(req.file);
       if (!poster)
         throw new ApiError(404, "Error while uploading image on cloudinary");
@@ -37,19 +37,18 @@ const createNotification = asyncHandler(async (req, res) => {
     }
   }
 
+
   try {
     const notification = await Notification.create({
       createdBy: req.user._id,
-      createdFor,
       isBroadcast,
       targetGroup,
       title,
       poster,
       message,
-      notificatinoType,
+   notificationType,
       link,
-      isReadBy,
-      deliveredTo,
+
     });
 
     if (!notification)
@@ -154,6 +153,7 @@ const getNotificationsByCreaterId = asyncHandler(async (req, res) => {
 });
 const getNotificationById = asyncHandler(async (req, res) => {
   const { notificationId } = req.params;
+  console.log(req.params)
   if (!notificationId) throw new ApiError(404, `Notification Id is required`);
   try {
     const notifiacation = await Notification.findById(notificationId);

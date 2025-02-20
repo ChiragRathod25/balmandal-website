@@ -31,7 +31,7 @@ const notificationSchema = new Schema(
       type: String,
       required: true,
     },
-    notificatinoType: {
+    notificationType: {
       type: String,
       enum: ["info", "error", "warning", "success"],
       default: "info",

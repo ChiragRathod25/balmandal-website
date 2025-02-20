@@ -6,22 +6,39 @@ import { login, logout } from './slices/userSlice/authSlice';
 import { Header, Footer } from './pages';
 import useScrollToTop from './utils/useScrollToTop';
 import MyToaster from './MyToaster';
+import {subscribeUser,regSw} from "./subscriptionHelper"
 import { io } from 'socket.io-client';
 import socketClient  from 'socket.io-client' 
-const socket = socketClient('http://localhost:5000/',{
+export const socket = socketClient('https://x0qzmk95-5000.inc1.devtunnels.ms/',{
   transports: ['websocket'],
 });
-
+``
 function App() {
+  async function requestNotificationPermission() {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      throw new Error('Permission not granted for notifications');
+    }
+  }
+
+  const registerAndSubscribe =async ()=>{
+    try {
+        const serviceWorkerReg=await regSw();
+        const readyReg = await navigator.serviceWorker.ready;
+    console.log('Service Worker Ready:', readyReg);
+
+    requestNotificationPermission()
+        await subscribeUser(serviceWorkerReg)
+    } catch (error) {
+      console.log(`Error while registerAndSubscribe `,error)
+    }
+  }
+  registerAndSubscribe()
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useScrollToTop();
   useEffect(()=>{
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('Service Worker Registered:', reg))
-        .catch(err => console.error('Service Worker Registration Failed:', err));
-    }
+   
 
     socket.on('connect', () => {
       console.log('new user is connected', socket.id);
@@ -32,8 +49,19 @@ function App() {
     socket.on("hello",(payload)=>{
       console.log('payload',payload)
     })
-    socket.on('new',()=>{
-      // alert('hey welcome')
+    socket.on('notify',(data)=>{
+      Notification.requestPermission().then((perm)=>{
+        if(perm==='granted'){
+          navigator.serviceWorker.getRegistration().then((reg)=>{
+            if(reg){
+              reg.showNotification(data?.title,{
+                body:data?.message,
+                tag:data?._id
+              })
+            }
+          })
+        }
+      })
     })
     // socket.on('event',(data)=>{
 

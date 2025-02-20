@@ -65,6 +65,13 @@ function Header() {
             Event
           </Link>
           <Link
+           onClick={() => setIsMenuOpen(false)}
+            to="/notification"
+            className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"
+          >
+            Notification
+          </Link>
+          <Link
             to="/profile"
             onClick={() => setIsMenuOpen(false)}
             className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"

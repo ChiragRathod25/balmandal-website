@@ -30,7 +30,10 @@ import {
   AddEvent,
   EditEvent,
   AllEvent,
-  Event
+  Event,
+  Notification,
+  AddNotification,
+  AllNotification,
 
 } from './pages/index.js';
 import { AuthLayout } from './components';
@@ -228,6 +231,36 @@ const router = createBrowserRouter([
 
           }
         ]
+      },
+      {
+        path:'notification',
+        children:[
+          {
+            path:'',
+            element:(
+              <AuthLayout>
+                <AllNotification/>
+              </AuthLayout>
+            )
+          },
+          {
+            path:'add',
+            element:(
+              <AuthLayout>
+                <AddNotification/>
+              </AuthLayout>
+            )
+          },
+          {
+            path:':notificationId',
+            element:(
+              <AuthLayout>
+                <Notification/>
+              </AuthLayout>
+            )
+          }
+        ]
+
       }
     ],
   },

@@ -1,7 +1,6 @@
 import axiosInstace from '../utils/axios';
 import { handleApiRequest } from '../utils/apiHelper';
 import toast from 'react-hot-toast';
-import { getUserNotifications } from '../../../Backend/src/controllers/notification.controller';
 
 export class DatabaseService {
   async register({ firstName, lastName, mobile, password }) {
@@ -853,7 +852,6 @@ export class DatabaseService {
     return handleApiRequest(() => axiosInstace.get(`/api/v1/event/${eventId}`), 'getEventById');
   }
 
-  
   async getAllNotifications() {
     return handleApiRequest(() => axiosInstace.get('/api/v1/notification'), 'getAllNotifications');
   }
@@ -926,9 +924,18 @@ export class DatabaseService {
     );
   }
   async getNotificationById({ notificationId }) {
+    console.log('notificationId', notificationId);
     return handleApiRequest(
       () => axiosInstace.get(`/api/v1/notification/${notificationId}`),
       'getNotificationById'
+    );
+  }
+
+  async createSubscription({ subscription }) {
+    console.log('Creating subscription in db',{subscription});
+    return handleApiRequest(
+      () => axiosInstace.post(`/api/v1/subscription/add`, { subscription }),
+      'createSubscription'
     );
   }
 }

@@ -48,6 +48,7 @@ import talentRoutes from "./routes/talent.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import eventRoutes from "./routes/event.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
+import subscriptionRoutes from "./routes/subscription.routes.js"
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/parent", parentRoutes);
@@ -56,7 +57,7 @@ app.use("/api/v1/talent", talentRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/event", eventRoutes);
 app.use("/api/v1/notification", notificationRoutes);
-
+app.use("/api/v1/subscription",subscriptionRoutes)
 app.use(errorHandler)
 
 export { app };

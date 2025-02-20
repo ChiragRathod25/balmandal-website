@@ -4,6 +4,7 @@ import "dotenv/config.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
+import  webpush from "web-push"
 const httpServer = createServer(app);
 export const io=new Server(httpServer,{
   cors:{
@@ -22,6 +23,9 @@ io.on('connection', (socket) => {
   socket.on("disconnect", () => {
     console.log("User is disconnected"); 
   });
+  socket.on('notify',(payload)=>{
+    io.emit('notify',payload)
+  })
 });
 io.on("connect_error", (err) => {
   console.log("Connection Error:", err.message);
@@ -37,7 +41,9 @@ ConnectDB()
 
     } catch (error) {
       console.log(`Error while starting the server : `, error);
-    }
+    } 
+
+
   })
   .then((server) => {})
   .catch((err) => {
