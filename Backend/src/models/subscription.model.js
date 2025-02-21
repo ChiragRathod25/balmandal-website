@@ -1,6 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 const subscriptionSchema = new Schema(
   {
+    userId:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"User",
+    },
     endpoint: {
       type: String,
     },

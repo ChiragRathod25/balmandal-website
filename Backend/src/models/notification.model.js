@@ -13,16 +13,7 @@ const notificationSchema = new Schema(
         default: null, // null means it is a broadcast notification,
       },
     ],
-    isBroadcast: {
-      type: Boolean,
-      default: true,
-    },
-    targetGroup: {
-      type: String,
-      enum: ['all', 'admin', 'individual'],
-      default: 'all',
-    },
-
+   
     title: {
       type: String,
       required: true,
@@ -36,8 +27,14 @@ const notificationSchema = new Schema(
       enum: ["info", "error", "warning", "success"],
       default: "info",
     },
+    targetGroup: {
+      type: String,
+      enum: ['All', 'Admin', 'Individual','Custom'],
+      default: 'All',
+    },
     link: {
       type: String,
+      required: true,
     },
     poster:{
         type:String,

@@ -6,63 +6,50 @@ import { login, logout } from './slices/userSlice/authSlice';
 import { Header, Footer } from './pages';
 import useScrollToTop from './utils/useScrollToTop';
 import MyToaster from './MyToaster';
-import {subscribeUser,regSw} from "./subscriptionHelper"
+import { registerAndSubscribe } from './utils/subscriptionHelper';
+import config from './conf/config';
+
+//socket io connection
 import { io } from 'socket.io-client';
-import socketClient  from 'socket.io-client' 
-export const socket = socketClient('https://x0qzmk95-5000.inc1.devtunnels.ms/',{
+import socketClient from 'socket.io-client';
+export const socket = socketClient(config.apiURL, {
   transports: ['websocket'],
-});
-``
+}); 
+
+
+//App Component
 function App() {
-  async function requestNotificationPermission() {
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') {
-      throw new Error('Permission not granted for notifications');
-    }
-  }
-
-  const registerAndSubscribe =async ()=>{
-    try {
-        const serviceWorkerReg=await regSw();
-        const readyReg = await navigator.serviceWorker.ready;
-    console.log('Service Worker Ready:', readyReg);
-
-    requestNotificationPermission()
-        await subscribeUser(serviceWorkerReg)
-    } catch (error) {
-      console.log(`Error while registerAndSubscribe `,error)
-    }
-  }
-  registerAndSubscribe()
+ 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useScrollToTop();
-  useEffect(()=>{
-   
 
+  //socket io connection and events
+  /*
+  useEffect(() => {
     socket.on('connect', () => {
       console.log('new user is connected', socket.id);
     });
-    socket.on("disconnect", () => {
-      console.log("User disconnect", socket.id); // undefined
+    socket.on('disconnect', () => {
+      console.log('User disconnect', socket.id); // undefined
     });
-    socket.on("hello",(payload)=>{
-      console.log('payload',payload)
-    })
-    socket.on('notify',(data)=>{
-      Notification.requestPermission().then((perm)=>{
-        if(perm==='granted'){
-          navigator.serviceWorker.getRegistration().then((reg)=>{
-            if(reg){
-              reg.showNotification(data?.title,{
-                body:data?.message,
-                tag:data?._id
-              })
+    socket.on('hello', (payload) => {
+      console.log('payload', payload);
+    });
+    socket.on('notify', (data) => {
+      Notification.requestPermission().then((perm) => {
+        if (perm === 'granted') {
+          navigator.serviceWorker.getRegistration().then((reg) => {
+            if (reg) {
+              reg.showNotification(data?.title, {
+                body: data?.message,
+                tag: data?._id,
+              });
             }
-          })
+          });
         }
-      })
-    })
+      });
+    });
     // socket.on('event',(data)=>{
 
     //   Notification.requestPermission().then((perm)=>{
@@ -77,8 +64,8 @@ function App() {
     // })
     socket.on('event', (data) => {
       Notification.requestPermission().then((perm) => {
-        if (perm === "granted") {
-          navigator.serviceWorker.getRegistration().then(reg => {
+        if (perm === 'granted') {
+          navigator.serviceWorker.getRegistration().then((reg) => {
             if (reg) {
               reg.showNotification(data.title, {
                 body: data.body,
@@ -89,8 +76,9 @@ function App() {
         }
       });
     });
+  });
+*/
 
-  })
   useEffect(() => {
     const getCurrentUser = async () => {
       await databaseService
@@ -98,6 +86,10 @@ function App() {
         .then((response) => {
           if (response.data) {
             dispatch(login(response.data));
+            //if the user is logged in then only create service worker
+            setTimeout(()=>{
+              registerAndSubscribe();
+            },10000)
           } else {
             dispatch(logout());
           }

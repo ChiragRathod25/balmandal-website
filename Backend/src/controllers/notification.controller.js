@@ -3,31 +3,115 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponce } from "../utils/ApiResponce.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Notification } from "../models/notification.model.js";
+import { Subscription } from "../models/subscription.model.js";
+import webpush from "web-push";
+
+const pushNotification = asyncHandler(
+  async (notification, targetGroup, createdFor) => {
+    //this fun. will send notifications to all the user
+    let subscriptions = [];
+
+    switch (targetGroup) {
+      case "Individual":
+        const individualUser = createdFor[0];
+        subscriptions = await Subscription.find({ userId: individualUser });
+        break;
+      case "Custom":
+        subscriptions = await Subscription.aggregate([
+          {
+            $match: {
+              userId: {
+                $in: createdFor,
+              },
+            },
+          },
+        ]);
+        break;
+      case "Admin":
+        subscriptions = await Subscription.aggregate([
+          {
+            $lookup: {
+              from: "users",
+              localField: "userId",
+              foreignField: "_id",
+              as: "result",
+            },
+          },
+          {
+            $addFields: {
+              isAdmin: {
+                $first: "$result.isAdmin",
+              },
+            },
+          },
+          {
+            $match: {
+              isAdmin: true,
+            },
+          },
+        ]);
+        break;
+      case "All":
+        subscriptions = await Subscription.find({});
+        break;
+      default:
+        subscriptions = [];
+    }
+
+    const options = {
+      vapidDetails: {
+        subject: "mailto:myemail@example.com",
+        publicKey: process.env.VAPID_PUBLIC_KEY,
+        privateKey: process.env.VAPID_PRIVATE_KEY,
+      },
+    };
+    try {
+      subscriptions.forEach(async (subscription) => {
+        await webpush
+          .sendNotification(
+            subscription,
+            JSON.stringify({
+              title: notification?.title,
+              message: notification?.message,
+              link: notification?.link,
+              poster:
+                notification?.poster ||
+                "https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Baps_logo.svg/286px-Baps_logo.svg.png?20210729212719",
+              badge:
+                "https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Baps_logo.svg/286px-Baps_logo.svg.png?20210729212719",
+            }),
+            options
+          )
+          .catch((err) =>
+            console.log(
+              `Error while sending push notification\n It may expired or unsubscribed by user`,
+              err
+            )
+          );
+      });
+    } catch (error) {
+      throw new ApiError(404, `Error while sending push notifications`, error);
+    }
+  }
+);
 
 const createNotification = asyncHandler(async (req, res) => {
   // createdBy -> from req.user._id
-  const {
-    createdFor,
-    isBroadcast,
-    targetGroup,
-    title,
-    message,
- notificationType,
-    link,
-    
-  } = req.body;
+  const { createdFor, targetGroup, title, message, notificationType, link } =
+    req.body;
 
   if ([title, message].some((field) => (field?.trim() ?? "") === "")) {
     throw new ApiError(404, "Title and message are required");
   }
 
-  if (isBroadcast && targetGroup === "individual" && !createdFor) {
+  if (targetGroup === "individual" && !createdFor) {
     throw new ApiError(404, "Created for is required for individual broadcast");
   }
 
   let poster = null;
   if (req.file) {
-    try {``
+    try {
+      ``;
       poster = await uploadOnCloudinary(req.file);
       if (!poster)
         throw new ApiError(404, "Error while uploading image on cloudinary");
@@ -37,22 +121,23 @@ const createNotification = asyncHandler(async (req, res) => {
     }
   }
 
-
   try {
     const notification = await Notification.create({
       createdBy: req.user._id,
-      isBroadcast,
       targetGroup,
       title,
       poster,
       message,
-   notificationType,
+      notificationType,
       link,
-
     });
 
     if (!notification)
       throw new ApiError(404, "Error while creating new notification");
+
+    //send notification to the user
+    pushNotification(notification, targetGroup);
+    // TODO: Set user specific notification, as of now it is only broadcast notification
 
     res
       .status(200)
@@ -75,7 +160,7 @@ const createNotification = asyncHandler(async (req, res) => {
 const getAllNotifications = asyncHandler(async (req, res) => {
   // it will return all broadcasted notifications
   try {
-    const notifications = await Notification.find({ isBroadcast: true });
+    const notifications = await Notification.find({ targetGroup: "All" });
     if (!notifications) throw new ApiError(404, `No notifications found`);
 
     res
@@ -104,7 +189,7 @@ const getUserNotifications = asyncHandler(async (req, res) => {
     const notifications = await Notification.find({
       $or: [
         {
-          isBroadcast: true,
+          targetGroup: "All",
         },
         { createdFor: { $in: [userId] } },
       ],
@@ -153,7 +238,7 @@ const getNotificationsByCreaterId = asyncHandler(async (req, res) => {
 });
 const getNotificationById = asyncHandler(async (req, res) => {
   const { notificationId } = req.params;
-  console.log(req.params)
+  console.log(req.params);
   if (!notificationId) throw new ApiError(404, `Notification Id is required`);
   try {
     const notifiacation = await Notification.findById(notificationId);
@@ -172,10 +257,63 @@ const getNotificationById = asyncHandler(async (req, res) => {
   }
 });
 
+const markNotificationAsRead = asyncHandler(async (req, res) => {
+  const { notificationId } = req.params;
+  const userId = req.user._id;
+  try {
+    const notification = await Notification.findById(notificationId);
+    if (!notification) throw new ApiError(404, `Notification not found`);
+    const isRead = notification.isReadBy.find((user) => user.userId == userId);
+    if (isRead) throw new ApiError(404, `Notification is already read`);
+    notification.isReadBy.push({ userId, readAt: new Date() });
+    await notification.save();
+    res
+      .status(200)
+      .json(
+        new ApiResponce(
+          200,
+          notification,
+          `Notification marked as read successfully !!`
+        )
+      );
+  } catch (error) {
+    throw new ApiError(404, `Error while marking notification as read`, error);
+  }
+});
+
+const markNotificationAsDelivered = asyncHandler(async (req, res) => {
+  const { notificationId } = req.params;
+  try {
+    const notification = await Notification.findById(notificationId);
+    if (!notification) throw new ApiError(404, `Notification not found`);
+    notification.deliveredTo.push({
+      userId: req.user._id,
+      deliveredAt: new Date(),
+    });
+    await notification.save();
+    res
+      .status(200)
+      .json(
+        new ApiResponce(
+          200,
+          notification,
+          `Notification marked as delivered successfully !!`
+        )
+      );
+  } catch (error) {
+    throw new ApiError(
+      404,
+      `Error while marking notification as delivered`,
+      error
+    );
+  }
+});
 export {
   createNotification,
   getAllNotifications,
   getNotificationById,
   getUserNotifications,
   getNotificationsByCreaterId,
+  markNotificationAsRead,
+  markNotificationAsDelivered
 };

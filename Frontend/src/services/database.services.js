@@ -858,7 +858,7 @@ export class DatabaseService {
 
   async createNotification({
     createdFor,
-    isBroadcast,
+
     targetGroup,
     title,
     message,
@@ -870,7 +870,7 @@ export class DatabaseService {
   }) {
     const formData = new FormData();
     formData.append('createdFor', createdFor);
-    formData.append('isBroadcast', isBroadcast);
+
     formData.append('targetGroup', targetGroup);
     formData.append('title', title);
 
@@ -931,8 +931,21 @@ export class DatabaseService {
     );
   }
 
+  async markNotificationAsRead({ notificationId }) {
+    return handleApiRequest(
+      () => axiosInstace.put(`/api/v1/notification/markAsRead/${notificationId}`),
+      'markNotificationAsRead'
+    );
+  }
+  async markNotificationAsDelivered({ notificationId }) {
+    return handleApiRequest(
+      () => axiosInstace.put(`/api/v1/notification/markAsDelivered/${notificationId}`),
+      'markNotificationAsDelivered'
+    );
+  }
+
   async createSubscription({ subscription }) {
-    console.log('Creating subscription in db',{subscription});
+    console.log('Creating subscription in db', { subscription });
     return handleApiRequest(
       () => axiosInstace.post(`/api/v1/subscription/add`, { subscription }),
       'createSubscription'

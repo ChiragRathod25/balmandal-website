@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from '../components';
 import databaseService from '../services/database.services';
 import { login } from '../slices/userSlice/authSlice';
-
+import {registerAndSubscribe} from "../utils/subscriptionHelper"
 function Login() {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState(null);
@@ -26,6 +26,9 @@ function Login() {
 
         if (user) {
           dispatch(login(user.data));
+          setTimeout(()=>{
+            registerAndSubscribe();
+          },10000)
         }
         navigate('/');
       }
