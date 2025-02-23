@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from '../components';
 import { useNavigate } from 'react-router-dom';
-
+import { ImageCarousel } from '../components';
 function Home() {
   const authStatus = useSelector((store) => store.auth.status);
   const isAdmin = useSelector((store) => store.auth.userData?.isAdmin);
@@ -10,6 +10,18 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+      {/* Image Carousel */}
+      <div className="w-full max-w-lg mx-auto mb-6 rounded-lg shadow-lg overflow-hidden">
+        <ImageCarousel
+          images={[
+            'https://th.bing.com/th/id/OIP.4pED-q1sgWSjlAAHMGh2wwHaJ4?rs=1&pid=ImgDetMain',
+            'https://th.bing.com/th/id/OIP.vjqkpnRF0w74OFPVbA4LzgHaLG?rs=1&pid=ImgDetMain',
+            'https://i.pinimg.com/originals/c1/40/b3/c140b38336cdb7f3db13fdb9d3eed853.jpg',
+          ]}
+          mode="fade"
+        />
+      </div>
+
       {/* Hero Section */}
       <div className="relative w-full flex flex-col items-center text-center py-16 px-6 bg-gradient-to-b from-blue-200 to-gray-100 border-none">
         <div className="absolute inset-0 bg-[url('/assets/hero-pattern.svg')] opacity-10"></div>
@@ -23,23 +35,19 @@ function Home() {
       </div>
 
       {/* Authentication Actions */}
-      {!authStatus ? (
-     <div className="flex flex-row justify-around w-full max-w-md mb-6">
-     <Button
-       onClick={() => navigate('/login')}
-       className="w-32 sm:w-36 md:w-40 text-center"
-     >
-       Login
-     </Button>
-     <Button
-       onClick={() => navigate('/register')}
-       className="w-32 sm:w-36 md:w-40 text-center"
-     >
-       Register
-     </Button>
-   </div>
-   
-      ) : null}
+      {/* {!authStatus ? (
+        <div className="flex flex-row justify-around w-full max-w-md mb-6">
+          <Button onClick={() => navigate('/login')} className="w-32 sm:w-36 md:w-40 text-center">
+            Login
+          </Button>
+          <Button
+            onClick={() => navigate('/register')}
+            className="w-32 sm:w-36 md:w-40 text-center"
+          >
+            Register
+          </Button>
+        </div>
+      ) : null} */}
 
       {/* Feature Sections */}
       {

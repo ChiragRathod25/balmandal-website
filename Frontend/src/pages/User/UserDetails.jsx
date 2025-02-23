@@ -46,6 +46,9 @@ function UserDetails({ userId }) {
     );
   }
 
+  const handleCall = () => {
+    window.open(`tel:${user.mobile}`);
+  };
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white shadow-md rounded-lg p-6 sm:p-10">
@@ -81,10 +84,10 @@ function UserDetails({ userId }) {
               <span className="font-semibold">Middle Name:</span> {user?.middleName}
             </p>
             <p>
-              <span className="font-semibold">Email:</span> {user?.email}
+              <span className="font-semibold">Email:</span> {user?.email} 
             </p>
             <p>
-              <span className="font-semibold">Mobile:</span> {user?.mobile}
+              <span className="font-semibold">Mobile:</span> {user?.mobile} { isAdmin && <span className="text-sm text-gray-500" onClick={handleCall}>( 📞 Call)</span> }
             </p>
             <p>
               <span className="font-semibold">DOB:</span> {user?.DOB}

@@ -46,7 +46,7 @@ export const subscribeUser = async (serviceWorkerReg) => {
 
 
     //if there is service worker exist, no need to re create it, it is already register
-    if (!subscription) {
+    if (!subscription || subscription) {
       try {
         const appServerKey = urlBase64ToUint8Array(config.vapidPublicKey);
 
@@ -60,7 +60,8 @@ export const subscribeUser = async (serviceWorkerReg) => {
         // if there is a new service worker, register it to database
         const response = await databaseService.createSubscription({ subscription });
         console.log('Subscription response', response);
-      } catch (err) {
+      } 
+      catch (err) {
         if (err instanceof DOMException) {
           console.error(`DOMException during subscribe: ${err.name} - ${err.message}`);
         } else {

@@ -52,9 +52,15 @@ function Event() {
           </h2>
 
           <div className="space-y-4 text-gray-700">
-            <p>
-              <span className="font-semibold">Description:</span> {event?.description}
-            </p>
+            <div className="whitespace-pre-wrap flex flex-row gap-2">
+              <div>
+              <p className="font-semibold text-gray-800 mb-1">Description:</p>
+              </div>
+              <div>
+              <p className="text-gray-700 text-sm sm:text-base">{event?.description}</p>
+              </div>
+            </div>
+
             <p>
               <span className="font-semibold">Venue:</span> {event?.venue}
             </p>

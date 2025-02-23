@@ -48,6 +48,7 @@ function NotificationForm() {
         <Input
           label="Message"
           type="textarea"
+          rows={5}
           placeholder="Enter Notification Message"
           {...register('message', { required: true })}
           className="w-full"
@@ -69,7 +70,7 @@ function NotificationForm() {
           label="Link"
           type="text"
           placeholder="Enter Link"
-          {...register('link',{ required: true }) }
+          {...register('link') }
           className="w-full"
         />
 

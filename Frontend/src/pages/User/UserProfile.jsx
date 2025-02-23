@@ -17,7 +17,7 @@ function UserProfile() {
 
       {/* Navigation Buttons */}
       <div className="flex flex-wrap gap-4 justify-center mb-6">
-        <Button
+        {/* <Button
           onClick={() => navigate("/talent")}
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition"
         >
@@ -34,7 +34,21 @@ function UserProfile() {
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition"
         >
           My Parent Details
-        </Button>
+        </Button> */}
+
+<div className="space-y-4 text-center">
+  <Button 
+    onClick={() => navigate("/")}
+    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-transform transform hover:scale-105"
+  >
+    Edit My Profile Details
+  </Button>
+
+  <p className="text-sm text-gray-600 italic text-left mx-auto w-11/12">
+    * You can manage your profile details like <span className="font-medium text-gray-800">Achievements</span>, <span className="font-medium text-gray-800">Talents</span>, and <span className="font-medium text-gray-800">Parent Details</span> directly from the home pages.
+  </p>
+</div>
+
       </div>
     </div>
   );

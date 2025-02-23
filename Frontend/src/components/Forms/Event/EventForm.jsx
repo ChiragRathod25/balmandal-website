@@ -78,12 +78,13 @@ function EventForm({ event }) {
         />
 
         <Input
-          label="Description"
+          label="Description: "
           name="description"
-          placeholder="Enter description"
+          placeholder="Description about Event"
           {...register('description')}
           type="textarea"
           className="w-full"
+          rows={5}
         />
 
         <Input

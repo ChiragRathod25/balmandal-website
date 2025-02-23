@@ -1,4 +1,4 @@
-import databaseService from '../src/services/database.services';
+// import databaseService from '../src/services/database.services';
 
 self.addEventListener('push', (event) => {
   console.log('Notification will be displayed here');
@@ -21,29 +21,30 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification(title, options).then(() =>
-      databaseService
-        .markNotificationAsDelivered({ notificationId: _id })
-        .then((response) => response.data)
-        .catch((err) => console.error('Error while marking notification as delivered', err))
-    )
+    self.registration.showNotification(title, options)
+    // .then(() =>
+    //   databaseService
+    //     .markNotificationAsDelivered({ notificationId: _id })
+    //     .then((response) => response.data)
+    //     .catch((err) => console.error('Error while marking notification as delivered', err))
+    // )
   );
 });
 
-self.addEventListener('notificationclick', (event) => {
-  const clickedNotification = event.notification;
-  clickedNotification.close();
+// self.addEventListener('notificationclick', (event) => {
+//   const clickedNotification = event.notification;
+//   clickedNotification.close();
 
-  // Do something as the result of the notification click
-  const promiseChain = self.clients.openWindow(clickedNotification.image).then(() => {
-    // Add notificationIsReadBy to the database
-    databaseService
-      .markNotificationAsRead({ notificationId: clickedNotification.tag })
-      .then((response) => response.data)
-      .catch((err) => console.error('Error while marking notification as read', err));
-  });
-  event.waitUntil(promiseChain);
-});
+//   // Do something as the result of the notification click
+//   const promiseChain = self.clients.openWindow(clickedNotification.image).then(() => {
+//     // Add notificationIsReadBy to the database
+//     databaseService
+//       .markNotificationAsRead({ notificationId: clickedNotification.tag })
+//       .then((response) => response.data)
+//       .catch((err) => console.error('Error while marking notification as read', err));
+//   });
+//   event.waitUntil(promiseChain);
+// });
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

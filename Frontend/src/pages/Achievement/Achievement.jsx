@@ -61,7 +61,7 @@ function Achievement() {
                         <hr className="mb-4 border-gray-300" />
 
                         {/* Achievement Description */}
-                        <p className="text-gray-700 text-sm sm:text-base mb-4">
+                        <p className="text-gray-700 text-sm sm:text-base mb-4 whitespace-pre-wrap">
                             {achievement.description}
                         </p>
 

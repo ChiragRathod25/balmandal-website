@@ -43,9 +43,19 @@ function Talent() {
     <QueryHandler queries={[{ loading, error }]}>
       {talent && (
         <div className="container mx-auto p-4">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800">{talent.heading}</h2>
           <div className="bg-white p-6 shadow-lg rounded-lg mb-4">
-            <p className="text-gray-700 mb-4">{talent.description}</p>
+          <h2 className="text-2xl font-bold mb-4 text-gray-800">{talent.heading}</h2>
+          <hr className="mb-4 border-gray-300" />
+          <div className="whitespace-pre-wrap flex flex-row gap-2">
+              <div>
+              <p className="font-semibold text-gray-800 mb-1">Description:</p>
+              </div>
+              <div>
+              <p className="text-gray-700 text-sm sm:text-base">{talent?.description}</p>
+              </div>
+            </div>
+
+
 
             {/* Image Section */}
             {/* {Array.isArray(talent.images) && talent.images.length > 0 && (

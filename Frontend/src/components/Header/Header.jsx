@@ -36,27 +36,27 @@ function Header() {
           <Link to="/" className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2">
             Home
           </Link>
-          <Link
+          {/* <Link
             to="/parent"
             onClick={() => setIsMenuOpen(false)}
             className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"
           >
             Parent
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
            onClick={() => setIsMenuOpen(false)}
             to="/achievement"
             className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"
           >
             Achievement
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
            onClick={() => setIsMenuOpen(false)}
             to="/talent"
             className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"
           >
             Talent
-          </Link>
+          </Link> */}
           <Link
            onClick={() => setIsMenuOpen(false)}
             to="/event"
@@ -69,7 +69,7 @@ function Header() {
             to="/notification"
             className="block md:inline hover:text-[#F2AE66] transition-all px-00 py-2"
           >
-            Notification
+            Notifications
           </Link>
           <Link
             to="/profile"

@@ -119,6 +119,8 @@ function TalentForm({ talent, setAdd }) {
         />
         <Input
           label="Description: "
+          type="textarea"
+          rows={5}
           placeholder="Describe talent "
           {...register('description', { required: true })}
           className="w-full"

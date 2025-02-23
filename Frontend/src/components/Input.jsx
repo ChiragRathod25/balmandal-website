@@ -9,13 +9,24 @@ function Input({ type = "text", label, className = "", ...props }, ref) {
           {label}
         </label>
       )}
-      <input
-        type={type}
-        className={`block w-full px-4 py-2 text-base text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C30E59] focus:border-[#C30E59] ${className}`}
-        id={id}
-        ref={ref}
-        {...props}
-      />
+      {type === "textarea" ? (
+  <textarea
+    className={`block w-full px-4 py-2 text-base text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C30E59] focus:border-[#C30E59] ${className}`}
+    id={id}
+    ref={ref}
+    rows={props.rows || 5} // Default rows to 5 if not provided
+    {...props}
+  />
+) : (
+  <input
+    type={type}
+    className={`block w-full px-4 py-2 text-base text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C30E59] focus:border-[#C30E59] ${className}`}
+    id={id}
+    ref={ref}
+    {...props}
+  />
+)}
+
     </div>
   );
 }

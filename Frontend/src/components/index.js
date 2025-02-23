@@ -17,6 +17,7 @@ import CloudFilesManager from "./Forms/CloudeFilesManager";
 import FilesDisplayHelper from "./FilesDisplayHelper";
 import EventForm from "./Forms/Event/EventForm";
 import NotificationForm from "./Forms/Notification/NotificationForm";
+import ImageCarousel from "./ImageCarousal";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -36,5 +37,6 @@ export {
   CloudFilesManager,
   FilesDisplayHelper,
   EventForm,
-  NotificationForm
+  NotificationForm,
+  ImageCarousel,
 };

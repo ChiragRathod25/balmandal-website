@@ -20,15 +20,14 @@ function AchievementForm({ achievement, setAdd }) {
     },
   });
   const navigate = useNavigate();
-  
+
   const [cloudFiles, setCloudFiles] = React.useState(achievement?.images || []);
-  
+
   useEffect(() => {
     console.log('Achievement file manager', achievement);
     console.log('Rerendering for cloudFiles file manager', cloudFiles);
     setFinalCloudFiles(cloudFiles);
   }, [cloudFiles]);
-
 
   let FinalCloudFiles = cloudFiles;
   const submit = async (data) => {
@@ -61,7 +60,7 @@ function AchievementForm({ achievement, setAdd }) {
           .then((response) => response.data);
         if (response) {
           console.log('here');
-          
+
           navigate(`/achievement/${response._id}`);
         }
       } else {
@@ -83,21 +82,21 @@ function AchievementForm({ achievement, setAdd }) {
     navigate('/achievement');
   };
 
-  const setFinalCloudFiles=(nf)=>{
-    FinalCloudFiles=nf;
-  }
+  const setFinalCloudFiles = (nf) => {
+    FinalCloudFiles = nf;
+  };
   const handleDeleteFile = async (index) => {
     const url = cloudFiles[index];
-      console.log("url",url);
-      await databaseService.deleteFile({deleteUrl : url}).then(() => {
-        setCloudFiles((prev) => prev.filter((img, i) => i !== index));
-      });
-      const newFiles=cloudFiles.filter((img, i) => i !== index);
-      console.log("newFiles",newFiles);
+    console.log('url', url);
+    await databaseService.deleteFile({ deleteUrl: url }).then(() => {
+      setCloudFiles((prev) => prev.filter((img, i) => i !== index));
+    });
+    const newFiles = cloudFiles.filter((img, i) => i !== index);
+    console.log('newFiles', newFiles);
 
-      // setCloudFiles((prev)=>newFiles);
-      setFinalCloudFiles(newFiles);
-      handleSubmit(submit)();
+    // setCloudFiles((prev)=>newFiles);
+    setFinalCloudFiles(newFiles);
+    handleSubmit(submit)();
   };
 
   return (
@@ -111,16 +110,17 @@ function AchievementForm({ achievement, setAdd }) {
         className="w-full"
       />
       <Input
-        type="text"
-        label="Description: "
+        type="textarea"
+        label="Description:"
         placeholder="Description about achievement"
         {...register('description')}
         className="w-full"
+        rows={5}
       />
-        {
-          cloudFiles && cloudFiles.length > 0 &&
-          <CloudeFilesManager  cloudFiles={cloudFiles} handleDeleteFile={handleDeleteFile}/>
-        }
+
+      {cloudFiles && cloudFiles.length > 0 && (
+        <CloudeFilesManager cloudFiles={cloudFiles} handleDeleteFile={handleDeleteFile} />
+      )}
 
       <FileUploader
         accept="image/png, image/jpg, image/jpeg, image/gif, video/mp4, video/mkv, video/avi"
@@ -130,14 +130,16 @@ function AchievementForm({ achievement, setAdd }) {
         className="w-full"
       />
 
-      <div className="flex space-x-4 justify-center items-center px-12"> 
+      <div className="flex space-x-4 justify-center items-center px-12">
         <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
           {achievement ? 'Update' : 'Add'}
         </Button>
 
-        <Button 
-        type="button"
-        onClick={() => handleCancel()} className="bg-gray-500 text-white px-4 py-2 rounded">
+        <Button
+          type="button"
+          onClick={() => handleCancel()}
+          className="bg-gray-500 text-white px-4 py-2 rounded"
+        >
           Cancel
         </Button>
       </div>

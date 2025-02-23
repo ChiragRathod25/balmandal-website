@@ -10,7 +10,8 @@ add parent details, => done
 Update registration and login page => added case compatibility for firstName for login, => done
 
 forgetPassword
-push Notification
+push Notification -> Implemented
+Test Notification features -> 
 
 
 Displaying Video => Done
@@ -20,14 +21,23 @@ Separate Cloude and Local File Manager => Done
 
 Pages - sanchalak, contact, invite link, about
 Footer credit 
-userName or not?
+userName or not? - I Prefer it
 Notification
 
 
-Event   - Add/Edit/Delete Event, 
-        - View Events -> 
-        - Fields - Title, deescription, start and end time, poster, Status, 
+Event   - Add/Edit/Delete Event, =>Done
+        - View Events -> Done
+        - Fields - Title, deescription, start and end time, poster, Status, =>Done
+        - Update Event status automatically based on startAt and EndAt
 
 
 implement createdFor Notification
 implement readBy,deleveredTo
+
+
+
+Home page -> balmandal photos -> Did
+navbar design -> Done
+PWA 
+User Profile -> Edit my details -> Home page
+Profile to mobile -> call -> tap => Done
