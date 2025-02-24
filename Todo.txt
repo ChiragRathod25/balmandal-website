@@ -41,3 +41,7 @@ navbar design -> Done
 PWA 
 User Profile -> Edit my details -> Home page
 Profile to mobile -> call -> tap => Done
+
+Improve Caching for the images and DB data
+redis for caching 
+Search engine indexing and seo
