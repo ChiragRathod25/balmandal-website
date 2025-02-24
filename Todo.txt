@@ -11,7 +11,7 @@ Update registration and login page => added case compatibility for firstName fo
 
 forgetPassword
 push Notification -> Implemented
-Test Notification features -> 
+Test Notification features -> Like image, Link, etc 
 
 
 Displaying Video => Done
@@ -41,3 +41,8 @@ navbar design -> Done
 PWA 
 User Profile -> Edit my details -> Home page
 Profile to mobile -> call -> tap => Done
+
+
+Improve Caching for the images and DB data
+
+setNotification -> MarkAsRead or not

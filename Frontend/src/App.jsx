@@ -3,11 +3,13 @@ import { Outlet } from 'react-router-dom';
 import databaseService from './services/database.services';
 import { useDispatch } from 'react-redux';
 import { login, logout } from './slices/userSlice/authSlice';
-import { Header, Footer } from './pages';
+
 import useScrollToTop from './utils/useScrollToTop';
 import MyToaster from './MyToaster';
 import { registerAndSubscribe } from './utils/subscriptionHelper';
 import config from './conf/config';
+
+import {Layout} from './components';
 
 //socket io connection
 import { io } from 'socket.io-client';
@@ -104,15 +106,17 @@ function App() {
   }
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Header />
-
+      <Layout>
+     
       <main>
         {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
         <MyToaster />
 
         <Outlet />
       </main>
-      <Footer />
+        </Layout>
+      
+    
     </div>
   );
 }
