@@ -11,6 +11,53 @@ Update registration and login page => added case compatibility for firstName fo
 
 forgetPassword
 push Notification -> Implemented
+Test Notification features -> Like image, Link, etc 
+
+
+Displaying Video => Done
+Enhanced user avatar, => Done 
+Enhance image management for avatar and talent => Done
+Separate Cloude and Local File Manager => Done
+
+Pages - sanchalak, contact, invite link, about
+Footer credit 
+userName or not? - I Prefer it
+Notification
+
+
+Event   - Add/Edit/Delete Event, =>Done
+        - View Events -> Done
+        - Fields - Title, deescription, start and end time, poster, Status, =>Done
+        - Update Event status automatically based on startAt and EndAt
+
+
+implement createdFor Notification
+implement readBy,deleveredTo
+
+
+
+Home page -> balmandal photos -> Did
+navbar design -> Done
+PWA 
+User Profile -> Edit my details -> Home page
+Profile to mobile -> call -> tap => Done
+
+
+Improve Caching for the images and DB data
+
+setNotification -> MarkAsRead or notdashboard display all bakak,  => done
+edit parent job/businees details => Done
+Fix ui and make it responsive =>done
+Home page steps setup => Done
+Fix Edit parent details =>done
+Achievement Add BTn =>done
+introduce react-hot-toast => Done
+Search Functionality - Dashboard => Done 
+add parent details, => done
+Update registration and login page => added case compatibility for firstName for login, => done
+
+forgetPassword
+push Notification -> Implemented
 Test Notification features -> 
 
 
