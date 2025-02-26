@@ -7,7 +7,7 @@ import {
   updateAvatar,
   updatePassword,
   forgetPassword,
-  getCurrentuser,
+  getCurrentuser, 
   refreshAccessToken,
   getUserById,
   deleteFile,
