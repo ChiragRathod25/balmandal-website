@@ -8,7 +8,7 @@ import {
   updatePassword,
   forgetPassword,
   getCurrentuser,
-  refreshAceesToken,
+  refreshAccessToken,
   getUserById,
   deleteFile,
 } from "../controllers/user.controller.js";
@@ -26,7 +26,7 @@ router.put("/updateAvatar", upload.single("avatar"), verifyJWT, updateAvatar);
 router.put("/updatePassword", verifyJWT, updatePassword);
 router.put("/forgetPassword", verifyJWT, forgetPassword);   //TODO
 router.get("/getCurrentuser", verifyJWT, getCurrentuser);
-router.post("/refreshAceesToken", verifyJWT, refreshAceesToken);
+router.post("/refreshAccessToken", refreshAccessToken);
 router.get("/:id", verifyJWT, getUserById);
 router.delete("/deleteFile", verifyJWT, deleteFile);
 

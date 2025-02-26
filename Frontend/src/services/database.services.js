@@ -196,10 +196,10 @@ export class DatabaseService {
       'getCurrentUser'
     );
   }
-  async refreshAceesToken() {
+  async refreshAccessToken() {
     return handleApiRequest(
-      () => axiosInstace.post('/api/v1/user/refreshAceesToken'),
-      'refreshAceesToken'
+      () => axiosInstace.post('/api/v1/user/refreshAccessToken'),
+      'refreshAccessToken'
     );
   }
   async logout() {
