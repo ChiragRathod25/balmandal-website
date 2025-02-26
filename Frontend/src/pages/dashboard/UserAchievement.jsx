@@ -5,39 +5,24 @@ import useCustomReactQuery from '../../utils/useCustomReactQuery.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserAchievement } from '../../slices/dashboard/dashboardSlice';
 import databaseService from '../../services/database.services';
+let i=0;
 
-function UserAchievement() {
+function UserAchievement({achievements }) {
   const { userId } = useParams();
   const dispatch = useDispatch();
-  const [achievements, setAchievements] = useState(null);
   const [add, setAdd] = useState(false);
   const navigate=useNavigate();
-
+  
   const userName = useSelector((state) => state.dashboard?.editableUser?.firstName);
   const editableAchievement = useSelector((state) => state.dashboard.editableUserAchievement);
-
-  const fetchUserAchievements = useCallback(
-    () => databaseService.getUserAchivements(userId),
-    [userId]
-  );
-  const { data, error, loading, refetch } = useCustomReactQuery(fetchUserAchievements);
-
-  useEffect(() => {
-    refetch();
-  }, [userId, editableAchievement, add]);
-
-  useEffect(() => {
-    if (data) {
-      setAchievements(data);
-    }
-  }, [data]);
+ 
 
   const handleDelete = async (achievementId) => {
     if (!window.confirm('Are you sure want to delete achievement?')) {
       return;
     }
     try {
-      await databaseService.deleteAchivement({ achievementId }, userId);
+      await databaseService.deleteAchievement({ achievementId }, userId);
       setAchievements((prev) => prev.filter((ach) => ach._id !== achievementId));
     } catch (error) {
       console.error('Error deleting achievement:', error);
@@ -53,8 +38,6 @@ function UserAchievement() {
     setAdd(true);
   };
 
-  
-
   if (add) {
     return (
       <div className="container mx-auto p-4">
@@ -68,12 +51,11 @@ function UserAchievement() {
       <div className="container mx-auto p-4">
         <AchievementForm achievement={editableAchievement} />
       </div>
-    );
+    ); 
   }
 
   return (
-    <QueryHandler queries={[{ loading, error }]}>
-      <div className="container mx-auto ">
+      <div className="container mx-auto p-4">
         {Array.isArray(achievements) && achievements.length > 0 && (
           <>
             <h2 className="text-3xl font-bold text-center text-[#C30E59] mb-6">{`${userName}'s Achievements`}</h2>
@@ -133,7 +115,6 @@ function UserAchievement() {
           </Button>
         </div>
       </div>
-    </QueryHandler>
   );
 }
 

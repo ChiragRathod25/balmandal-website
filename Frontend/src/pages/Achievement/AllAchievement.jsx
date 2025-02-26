@@ -12,7 +12,7 @@ function AllAchievement() {
   const user = useSelector((state) => state.auth.userData?.firstName);
 
   // Fetch achievements data
-  const fetchAchievements = useCallback(() => databaseService.getUserAchivements(), []);
+  const fetchAchievements = useCallback(() => databaseService.getUserAchievements(), []);
   const { data, error, loading } = useCustomReactQuery(fetchAchievements);
   useEffect(() => {
     if (data) {
@@ -26,7 +26,7 @@ function AllAchievement() {
       return;
     }
     try {
-      await databaseService.deleteAchivement({ achievementId });
+      await databaseService.deleteAchievement({ achievementId });
       setAchievements((prev) => prev.filter((ach) => ach._id !== achievementId));
       console.log('Achievement Deleted');
     } catch (error) {

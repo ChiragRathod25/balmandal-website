@@ -1,21 +1,17 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import  { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import databaseService from '../../services/database.services';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
 import { Button, QueryHandler } from '../../components';
 
 function AllEvent() {
-  const [events, setEvents] = useState([]);
+
   const navigate = useNavigate();
 
   const fetchAllEvents = useCallback(() => databaseService.getEvents(), []);
-  const { loading, error, data } = useCustomReactQuery(fetchAllEvents);
+  const { loading, error, data:events } = useCustomReactQuery(fetchAllEvents);
 
-  useEffect(() => {
-    if (data) {
-      setEvents(data);
-    }
-  }, [data]);
+ 
 
   const handleDelete = async (eventId) => {
     if (!window.confirm('Are you sure you want to delete this event?')) return;

@@ -1,42 +1,22 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import databaseService from '../../services/database.services';
-import customReactQuery from '../../utils/useCustomReactQuery';
-import { Button, UserCard, Input } from '../../components';
+import useCustomReactQuery from '../../utils/useCustomReactQuery';
+import { UserCard, Input } from '../../components';
 
 function AdminDashboard() {
   const fetchAllUsers = useCallback(() => databaseService.fetchAllUsers(), []);
-  const { data, loading, error, refetch } = customReactQuery(fetchAllUsers);
+  const { data: allUsers, loading, error } = useCustomReactQuery(fetchAllUsers);
   const [users, setUsers] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
+
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    refetch();
-    setSearch('');
-  }, []);
-
-  useEffect(() => {
-    if (users?.length > 0) console.log('users', users);
-  }, [users]);
-
-  useEffect(() => {
-    if (data) {
-      setUsers(data);
-      setAllUsers(data);
+    if (allUsers) {
+      setUsers(allUsers);
       setSearch('');
     }
-  }, [data]);
+  }, [allUsers]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen text-lg font-semibold">
-        Loading...
-      </div>
-    );
-  }
-  if (error) {
-    return <div className="text-red-500 text-center text-lg font-semibold">{error}</div>;
-  }
   const handleSearch = (query) => {
     setSearch(query);
     if (query === '' || query.length == 0 || query.trim().length == 0) {
@@ -56,6 +36,17 @@ function AdminDashboard() {
     );
     setUsers(filteredUsers);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-lg font-semibold">
+        Loading...
+      </div>
+    );
+  }
+  if (error) {
+    return <div className="text-red-500 text-center text-lg font-semibold">{error}</div>;
+  }
 
   return (
     <div className="container mx-auto p-6">

@@ -1,11 +1,11 @@
 import { Router } from "express";
 import {
-  addAchivement,
-  updateAchivement,
-  getUserAchivements,
+  addAchievement,
+  updateAchievement,
+  getUserAchievements,
   getAchievementById,
-  deleteAchivement,
-} from "../controllers/achivement.controller.js";
+  deleteAchievement,
+} from "../controllers/achievement.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
@@ -14,12 +14,12 @@ const router = Router();
 router.use(verifyJWT);
 router
   .route("/")
-  .get(getUserAchivements)
-  .post(upload.array("image"), addAchivement);
+  .get(getUserAchievements)
+  .post(upload.array("image"), addAchievement);
 router
   .route("/:id")
-  .put(upload.array("image"), updateAchivement)
-  .delete(deleteAchivement)
+  .put(upload.array("image"), updateAchievement)
+  .delete(deleteAchievement)
   .get(getAchievementById);
 
 export default router;

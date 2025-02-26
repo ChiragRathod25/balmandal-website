@@ -111,7 +111,7 @@ const deleteTalent = asyncHandler(async (req, res) => {
   console.log(talentId);
 
   const talent = await Talent.findByIdAndDelete(
-    new mongoose.Types.ObjectId(talentId)
+    talentId
   );
   if (!talent) throw new ApiError(404, `Invalid talent request`);
   res

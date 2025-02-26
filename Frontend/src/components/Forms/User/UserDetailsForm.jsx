@@ -1,6 +1,6 @@
 import React, { use, useCallback, useEffect, useState } from 'react';
 import { useNavigate,useParams  } from 'react-router-dom';
-import customReactQuery from '../../../utils/useCustomReactQuery';
+import useCustomReactQuery from '../../../utils/useCustomReactQuery';
 import databaseService from '../../../services/database.services';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';

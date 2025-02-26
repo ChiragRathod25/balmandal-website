@@ -1,53 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import databaseService from '../../services/database.services';
-import customReactQuery from '../../utils/useCustomReactQuery';
-import { Button, UserDetailsForm, UserAvatar } from '../../components';
-import { useParams } from 'react-router-dom';
-import { setEditableUser } from '../../slices/dashboard/dashboardSlice';
+import useCustomReactQuery from '../../utils/useCustomReactQuery';
+import { Button, UserAvatar } from '../../components';
 
-function UserDetails({ userId }) {
-  const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
-  let fetchUser;
-  if (isAdmin) fetchUser = useCallback(() => databaseService.getUserById(userId), [userId]);
-  else fetchUser = useCallback(() => databaseService.getCurrentuser(), []);
 
-  const [user, setUser] = useState({});
-  const { data, error, loading, refetch } = customReactQuery(fetchUser);
-  const [isEditing, setEditing] = useState(false);
-  const dispatch = useDispatch();
-  const editableUser = useSelector((state) => state.dashboard.editableUser);
+function UserDetails({ user,setEditing }) {
+  const isAdmin = useSelector((state) => state.auth?.userData?.isAdmin);
 
-  useEffect(() => {
-    if (data) {
-      setUser(data);
-      dispatch(setEditableUser(data));
-    }
-  }, [data, editableUser]);
-
-  useEffect(() => {
-    refetch();
-  }, [isEditing]);
-
-  if (loading) {
-    return <div className="text-center py-10 text-lg font-semibold">Loading...</div>;
-  }
-  if (error) {
-    return <div className="text-center py-10 text-lg text-red-500">Error fetching user data</div>;
-  }
-
-  if (isEditing) {
-    return (
-      <div className="container mx-auto p-4">
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <UserDetailsForm user={user} setEditing={setEditing} />
-        </div>
-      </div>
-    );
-  }
 
   const handleCall = () => {
-    window.open(`tel:${user.mobile}`);
+    window.open(`tel:${user?.mobile}`);
   };
   return (
     <div className="container mx-auto p-4">

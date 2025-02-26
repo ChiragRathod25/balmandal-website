@@ -37,7 +37,7 @@ function AchievementForm({ achievement, setAdd }) {
     if (isAdmin && userId) {
       if (achievement) {
         const response = await databaseService
-          .updateAchivement(data, achievement?._id, userId)
+          .updateAchievement(data, achievement?._id, userId)
           .then((response) => response.data);
         if (response) {
           dispatch(setEditableUserAchievement(null));
@@ -49,14 +49,14 @@ function AchievementForm({ achievement, setAdd }) {
           .then((response) => response.data);
         if (response) {
           dispatch(setEditableUserAchievement(null));
-          setAdd(false);
+          if(setAdd) setAdd(false);
           navigate(`/dashboard/user/${userId}`);
         }
       }
     } else {
       if (achievement) {
         const response = await databaseService
-          .updateAchivement(data, achievement?._id)
+          .updateAchievement(data, achievement?._id)
           .then((response) => response.data);
         if (response) {
           console.log('here');

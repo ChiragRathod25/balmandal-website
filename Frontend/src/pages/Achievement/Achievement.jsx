@@ -37,7 +37,7 @@ function Achievement() {
         }
         try {
             const response = await databaseService
-                .deleteAchivement({ achievementId })
+                .deleteAchievement({ achievementId })
                 .then((response) => response.data);
             
             if (response) {

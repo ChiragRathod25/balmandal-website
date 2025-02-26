@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const achivementSchema = new mongoose.Schema(
+const achievementSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -22,4 +22,4 @@ const achivementSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Achivement = mongoose.model("Achivement", achivementSchema);
+export const Achievement = mongoose.model("Achievement", achievementSchema);
