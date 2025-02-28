@@ -15,7 +15,7 @@ function UserAvatar({ avatar }) {
   const [avatarUrl, setAvatarUrl] = useState(
     avatar
       ? avatar
-      : '/userAvatar.jsx'
+      : '/userAvatar.png'
   );
 
   const avatarWatch = watch("avatar");
