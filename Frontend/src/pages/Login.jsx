@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from '../components';
 import databaseService from '../services/database.services';
 import { login } from '../slices/userSlice/authSlice';
-import {registerAndSubscribe} from "../utils/subscriptionHelper"
+import { registerAndSubscribe } from '../utils/subscriptionHelper';
 function Login() {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState(null);
@@ -26,9 +26,9 @@ function Login() {
 
         if (user) {
           dispatch(login(user.data));
-          setTimeout(()=>{
+          setTimeout(() => {
             registerAndSubscribe();
-          },10000)
+          }, 10000);
         }
         navigate('/');
       }
@@ -39,10 +39,10 @@ function Login() {
 
   return (
     <div className="flex items-center justify-center items-start min-h-screen bg-gray-100 p-4 py-16">
-    <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center">Login</h2>
         <form onSubmit={handleSubmit(submit)} className="space-y-4">
-          <Input
+          {/* <Input
             label="First name : "
             placeholder="Enter your first name"
             {...register('firstName', { required: true })}
@@ -53,6 +53,12 @@ function Login() {
             label="Mobile Number"
             placeholder="Enter your mobile number"
             {...register('mobile', { required: true })}
+            className="w-full px-4 py-2 border rounded-md"
+          /> */}
+          <Input
+            label="Username"
+            placeholder="Enter username"
+            {...register('username', { required: true })}
             className="w-full px-4 py-2 border rounded-md"
           />
           <Input

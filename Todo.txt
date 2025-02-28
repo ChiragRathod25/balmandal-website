@@ -41,3 +41,5 @@ navbar design -> Done
 PWA 
 User Profile -> Edit my details -> Home page
 Profile to mobile -> call -> tap => Done
+
+Password validation or not?

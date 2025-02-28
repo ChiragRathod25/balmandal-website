@@ -38,6 +38,7 @@ function Register() {
       <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center">Register</h2>
         <form onSubmit={handleSubmit(submit)} className="space-y-4">
+        {/* username, email,firstName, lastName, mobile, password */}
           <Input
             label="First name : "
             placeholder="Enter your first name"
@@ -58,9 +59,23 @@ function Register() {
             className="mb-4"
           />
           <Input
+            type="email"
+            label="Email"
+            placeholder="Enter your email"
+            {...register('email', { required: true })}
+            className="mb-4"  
+          />            
+          <Input
+            type="text"
+            label="Username"
+            placeholder="Enter username (New)" 
+            {...register('username', { required: true })}
+            className="mb-4"
+          />
+          <Input
             type="password"
             label="Password"
-            placeholder="Enter password (new)"
+            placeholder="Enter password (New)"
             {...register('password', { required: true })}
             className="mb-4"
           />

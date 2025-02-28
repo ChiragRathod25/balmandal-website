@@ -32,30 +32,27 @@ const generateRefreshAccessToken = async (userId) => {
 };
 
 const register = asyncHandler(async (req, res) => {
-  const { firstName, lastName, mobile, password } = req.body;
+  const { username, email,firstName, lastName, mobile, password } = req.body;
   if (
-    [firstName, lastName, mobile, password].some(
+    [ username, email,firstName, lastName, mobile, password ].some(
       (field) => (field?.trim() ?? "") === ""
     )
   )
     throw new ApiError(404, "All fields are required");
 
   const existedUser = await User.findOne({
-    $and: [{ firstName: { $regex: new RegExp(firstName, "i") } }, { mobile }],
+    username: { $regex: new RegExp(username, "i") },
   });
-  console.log("Already existed user: \n", existedUser);
-
-  if (existedUser && existedUser.length > 0)
+  // console.log("Username", username);
+  // console.log("existedUser", existedUser);
+  if (existedUser)
     throw new ApiError(
       404,
-      `User already exist with same name and mobile number`
+      `User already exist with same username ${username}\n Please try with different username`
     );
 
   const user = await User.create({
-    firstName,
-    lastName,
-    mobile,
-    password,
+    username, email,firstName, lastName, mobile, password 
   });
   if (!user)
     throw new ApiError(404, `Something went wrong while creating account`);
@@ -66,13 +63,11 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { firstName, mobile, password } = req.body;
-  if (
-    [firstName, mobile, password].some((field) => (field?.trim() ?? "") === "")
-  )
-    throw new ApiError(404, `All fields are required`);
+  const { username, password } = req.body;
+  if ([username, password].some((field) => (field?.trim() ?? "") === ""))
+    throw new ApiError(404, `username and password are required`);
   const user = await User.findOne({
-    $and: [{ firstName: { $regex: new RegExp(firstName, "i") } }, { mobile }],
+    username: { $regex: new RegExp(username, "i") },
   });
 
   if (!user) throw new ApiError(404, `invalid user request`);
@@ -112,7 +107,7 @@ const logout = asyncHandler(async (req, res) => {
     req.user._id,
     {
       $set: {
-        refreshToken: 1,
+        refreshToken: "",
       },
     },
     { new: true }
@@ -214,19 +209,18 @@ const updateAvatar = asyncHandler(async (req, res) => {
     .json(new ApiResponce(200, user, `User avatar updated successfully !!`));
 });
 
-const deleteFile=asyncHandler (async(req,res)=>{
-  console.log("Delete file",req.body);
-  const {url}=req.body;
-  console.log("Url",url);
-  if(!url) throw new ApiError(404, `Url is required to delete file`);
+const deleteFile = asyncHandler(async (req, res) => {
+  console.log("Delete file", req.body);
+  const { url } = req.body;
+  console.log("Url", url);
+  if (!url) throw new ApiError(404, `Url is required to delete file`);
   const deleteFile = await deleteFromCloudinary(url);
   if (deleteFile.result !== "ok")
     throw new ApiError(404, `Error while deleting file`);
   res
     .status(200)
     .json(new ApiResponce(200, {}, `File deleted successfully !!`));
-
-})
+});
 
 const updatePassword = asyncHandler(async (req, res) => {
   const { password, newPassword } = req.body;
