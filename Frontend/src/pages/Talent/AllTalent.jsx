@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import databaseService from '../../services/database.services';
 import { useSelector } from 'react-redux';
-import { Button } from '../../components';
+import { Button, UserTalentCard } from '../../components';
 import { useNavigate } from 'react-router-dom';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
 import { QueryHandler } from '../../components';
@@ -22,79 +22,19 @@ function AllTalent() {
   }, [data]);
 
   // Handle delete action
-  const handleDelete = async (talentId) => {
-    if (!window.confirm('Are you sure you want to delete this talent?')) return;
-
-    try {
-      await databaseService.deleteTalent({ talentId });
-      setTalents((prev) => prev.filter((talent) => talent._id !== talentId));
-      console.log('Talent Deleted');
-    } catch (error) {
-      console.error('Error deleting talent:', error);
-    }
-  };
-
-  const getHeroImage = (talent) => {
-    let hero =
-      'https://images.unsplash.com/photo-1620398722262-969d8f2bc875?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a2lkcyUyMGRyYXdpbmd8ZW58MHx8MHx8fDA%3D';
-    const files = talent?.images;
-    if (files && files.length > 0) {
-      for (const file of files) {
-        if (file.includes('image')) {
-          hero = file;
-          return hero;
-        }
-      }
-    }
-    return hero;
-  };
-
+ 
+  
   return (
     <QueryHandler queries={[{ loading, error }]}>
       <div className="container mx-auto p-4">
         {Array.isArray(talents) && talents.length > 0 && (
           <>
             <h2 className="text-3xl font-bold mb-6 text-center">{`${user}'s Talents`}</h2>
-            <div className="w-full">
+            <div className="w-full
+            
+            grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
               {talents.map((talent) => (
-                <div
-                  key={talent._id}
-                  className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md mb-4 lg:flex-row flex-col text-center lg:text-left"
-                >
-                  <div className="flex items-center gap-4 flex-col lg:flex-row">
-                   
-                    <img
-                      src={
-                       getHeroImage(talent)
-                      }
-                      alt={talent.heading || 'hero'}
-                      className="w-16 h-16 object-cover rounded-lg"
-                      // className="w-16 h-16 object-cover rounded-lg"
-                    />
-
-                    <p className="font-semibold text-lg">{talent.heading}</p>
-                  </div>
-                  <div className="flex gap-2 mt-4 lg:mt-0">
-                    <Button
-                      onClick={() => navigate(`/talent/${talent._id}`)}
-                      className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-                    >
-                      View
-                    </Button>
-                    <Button
-                      onClick={() => navigate(`/talent/edit/${talent._id}`)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(talent._id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
+              <UserTalentCard talent={talent} key={talent?._id}/>
               ))}
             </div>
           </>

@@ -20,7 +20,7 @@ function Layout({ children }) {
           <SideDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         </div>
         <div>{children}</div>
-        <div className="sm:hidden z-200">
+        <div className="sm:hidden z-200 mt-[4rem]">
           <BottomTabBar />
         </div>
         <footer className={`bg-[#C30E59] text-white py-4 hidden sm:block `}>

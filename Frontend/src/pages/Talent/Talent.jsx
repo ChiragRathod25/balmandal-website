@@ -1,30 +1,29 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import databaseService from '../../services/database.services';
 import { Button } from '../../components';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
 import { QueryHandler } from '../../components';
-import { useSelector } from 'react-redux';
-import {FilesDisplayHelper} from '../../components';
+import { FilesDisplayHelper } from '../../components';
 
-function Talent() {
-  const { talentId } = useParams();
-  const [talent, setTalent] = useState(null);
+function Talent({ id, isUsedWithModal = false }) {
+  // here id is a talentId passed from the admin page to get the talent details without using the useParams hook
+  // hook is used to get the talentId from the url by the regular user
+  console.log('Talent Page');
+  console.log('isUsedWithModal:', isUsedWithModal);
+  console.log('id:', id);
+  const talentId = useParams().talentId || id;
   const navigate = useNavigate();
 
-  const isAdmin=useSelector((state)=>state.auth.userData.isAdmin);
   const fetchTalent = useCallback(() => databaseService.getTalentById({ talentId }), [talentId]);
-  const { data, loading, error } = useCustomReactQuery(fetchTalent);
+  const { data: talent, loading, error } = useCustomReactQuery(fetchTalent);
 
   useEffect(() => {
     if (!talentId) {
       navigate('/');
       return;
     }
-    if (data) {
-      setTalent(data);
-    }
-  }, [data, talentId, navigate]);
+  }, [talentId, navigate]);
 
   const handleDelete = async (talentId) => {
     if (!window.confirm('Are you sure you want to delete this talent?')) return;
@@ -37,81 +36,52 @@ function Talent() {
       console.log('Error Deleting Talent', error);
     }
   };
-  console.log('talent images', talent?.images);
 
   return (
     <QueryHandler queries={[{ loading, error }]}>
-      {talent && (
+      {talent ? (
         <div className="container mx-auto p-4">
           <div className="bg-white p-6 shadow-lg rounded-lg mb-4">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800">{talent.heading}</h2>
-          <hr className="mb-4 border-gray-300" />
-          <div className="whitespace-pre-wrap flex flex-row gap-2">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">{talent.heading}</h2>
+            <hr className="mb-4 border-gray-300" />
+            <div className="whitespace-pre-wrap flex flex-row gap-2">
               <div>
-              <p className="font-semibold text-gray-800 mb-1">Description:</p>
+                <p className="font-semibold text-gray-800 mb-1">Description:</p>
               </div>
               <div>
-              <p className="text-gray-700 text-sm sm:text-base">{talent?.description}</p>
+                <p className="text-gray-700 text-sm sm:text-base">{talent?.description}</p>
               </div>
             </div>
 
-
-
             {/* Image Section */}
-            {/* {Array.isArray(talent.images) && talent.images.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                {talent.images && talent?.images.length>0  && talent.images.map((img, index) =>
-                  img.includes('image') ? (
-                    <div key={index} className="flex justify-center">
-                      <img
-                        src={img}
-                        alt={talent.heading}
-                        className="max-w-full h-auto rounded-lg shadow-md"
-                        onError={(e) => (e.target.src = '/fallback-image.jpg')}
-                      />
-                    </div>
-                  ) : (
-                    <div key={index} className="flex justify-center">
-                      <video
-                        src={img}
-                        controls
-                        className="max-w-full h-auto rounded-lg shadow-md"
-                      />
-                    </div>
-                  )
-                )}
-              </div>
-            )} */}
             <FilesDisplayHelper cloudFiles={talent?.images} />
-        
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center sm:justify-start">
-              <Button
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md"
-                onClick={() => navigate(`/talent/edit/${talent._id}`)}
-              >
-                Edit Talent
-              </Button>
-              <Button
-                className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md"
-                onClick={() => handleDelete(talent._id)}
-              >
-                Delete Talent
-              </Button>
-              {
 
-                !isAdmin && <Button
+            {/* Buttons */}
+            {!isUsedWithModal && (
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center sm:justify-start">
+                <Button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md"
+                  onClick={() => navigate(`/talent/edit/${talent._id}`)}
+                >
+                  Edit Talent
+                </Button>
+                <Button
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md"
+                  onClick={() => handleDelete(talent._id)}
+                >
+                  Delete Talent
+                </Button>
+                <Button
                   className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md"
                   onClick={() => navigate('/talent')}
                 >
                   Manage Talents
                 </Button>
-              }
- 
-            </div>
+              </div>
+            )}
           </div>
         </div>
-      )}
+      ) : null}
     </QueryHandler>
   );
 }

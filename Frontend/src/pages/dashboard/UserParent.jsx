@@ -1,18 +1,28 @@
 import { useState } from 'react';
+import { X, Pencil, Trash } from 'lucide-react';
 import databaseService from '../../services/database.services';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ParentForm, QueryHandler, Button } from '../../components';
+import { ParentForm, Modal, Button } from '../../components';
 import { setEditableUserParent } from '../../slices/dashboard/dashboardSlice';
+import { Parent } from '../index';
+import { UserParentCard } from '../../components/';
 
-function UserParent({parents}) {
+function UserParent() {
   const { userId } = useParams();
+  const parents = useSelector((state) => state.dashboard.editableUserParent);
   const userName = useSelector((state) => state.dashboard.editableUser?.firstName);
-  const [add, setAdd] = useState(false);
-  const editableParent = useSelector((state) => state.dashboard.editableUserParent);
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
+  //for Modal
+  const [modalTitle, setModalTitle] = useState('');
+  const [ModalContent, setModalContent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'auto';
+  };
 
   const handleDelete = async (parentId) => {
     if (!window.confirm('Are you sure you want to delete this parent?')) {
@@ -20,89 +30,73 @@ function UserParent({parents}) {
     }
     try {
       await databaseService.deleteParentDetails({ parentId }, userId);
-      setParents((prev) => prev.filter((parent) => parent._id !== parentId));
+      dispatch(
+        setEditableUserParent(parents.filter((parent) => (parent._id != parentId ? true : false)))
+      );
+      closeModal();
     } catch (error) {
       console.error('Error deleting parent:', error);
     }
   };
 
   const handleEdit = (parent) => {
-    dispatch(setEditableUserParent(parent));
+    setModalTitle('Edit Parent');
+    setModalContent(<ParentForm isUsedWithModal={true} parent={parent} closeForm={closeModal} />);
+    openModal();
   };
 
   const handleAdd = () => {
-    dispatch(setEditableUserParent(null));
-    setAdd(true);
+    setModalTitle('Add Parent');
+    setModalContent(<ParentForm closeForm={closeModal} isUsedWithModal={true} />);
+    openModal();
   };
 
-  if (add) {
-    return (
-      <div className="container mx-auto p-4">
-        <ParentForm setAdd={setAdd} />
-      </div>
+  const handleClick = (parent) => {
+    console.log('clicked');
+    setModalTitle(parent.title);
+    setModalContent(
+      <>
+        <Parent id={parent?._id} isUsedWithModal={true} />
+        <div className="flex justify-between items-center mt-4">
+          <Button onClick={() => handleEdit(parent)} variant="ghost">
+            <Pencil className="w-5 h-5" />
+          </Button>
+          <Button onClick={() => handleDelete(parent._id)} variant="ghost">
+            <Trash className="w-5 h-5 text-red-500" />
+          </Button>
+          <Button onClick={closeModal} variant="ghost">
+            <X className="w-5 h-5" />
+          </Button>
+        </div>
+      </>
     );
-  }
-
-  if (editableParent) {
-    return (
-      <div className="container mx-auto p-4">
-        <ParentForm parent={editableParent} setAdd={setAdd} />
-      </div>
-    );
-  }
+    openModal();
+  };
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6">{`${userName}'s Parent Details`}</h2>
-
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={modalTitle}>
+        {ModalContent}
+      </Modal>
       {Array.isArray(parents) && parents.length > 0 && (
-        <div className="w-full space-y-6">
-          {parents.map((parent) => (
-            <div key={parent._id} className="bg-white shadow-lg rounded-xl p-6">
-              <h3 className="text-xl font-semibold mb-2">Parent Details</h3>
-              <hr className="mb-4" />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <p className="text-gray-700 font-semibold">
-                  Role: <span className="font-normal">{parent.role}</span>
-                </p>
-                <p className="text-gray-700">
-                  Full Name: <span className="font-normal">{parent.fullName}</span>
-                </p>
-                <p className="text-gray-700">
-                  Email: <span className="font-normal">{parent.email}</span>
-                </p>
-                <p className="text-gray-700">
-                  Mobile: <span className="font-normal">{parent.mobileNumber}</span>
-                </p>
-                <p className="text-gray-700">
-                  Occupation: <span className="font-normal">{parent.occupation}</span>
-                </p>
-              </div>
-
-              <div className="flex flex-row justify-center sm:justify-end gap-4 mt-6">
-                <Button
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-auto min-w-max"
-                  onClick={() => handleEdit(parent)}
-                >
-                  Edit Parent
-                </Button>
-                <Button
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-auto min-w-max"
-                  onClick={() => handleDelete(parent._id)}
-                >
-                  Delete Parent
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
+        <>
+          <h2 className="text-3xl font-bold text-center text-[#C30E59] mb-6">{`${userName}'s Parents`}</h2>
+          <div
+            className="w-full space-y-4
+          grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4
+          "
+          >
+            {parents.map((parent) => (
+              <UserParentCard key={parent._id} parent={parent} handleClick={handleClick} />
+            ))}
+          </div>
+        </>
       )}
 
-      <div className="mt-6 flex justify-center sm:justify-start">
+      <div className="w-full flex justify-center mt-6">
         <Button
-          className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md"
           onClick={handleAdd}
+          className="bg-[#10B981] text-white hover:bg-[#059669] px-6 py-3 rounded-lg shadow-md transition-all duration-300"
         >
           Add Parent
         </Button>

@@ -46,3 +46,4 @@ Profile to mobile -> call -> tap => Done
 Improve Caching for the images and DB data
 
 setNotification -> MarkAsRead or not
+Add Modal Functionality for the admin to edit the user

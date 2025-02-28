@@ -36,18 +36,14 @@ function AllNotifications() {
             <div
               key={notification._id}
               className="p-4 bg-white shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition"
+              onClick={() => navigate(`/notification/${notification._id}`)}
             >
               <h3 className="text-lg font-semibold text-gray-800">{notification?.title}</h3>
               <p className="text-gray-600 mt-1">{notification?.message}</p>
               <p className="text-sm text-gray-400 mt-2">
                 Created At: {new Date(notification?.createdAt).toLocaleString()}
               </p>
-              <Button 
-                onClick={() => navigate(`/notification/${notification._id}`)}
-                className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
-              >
-                View Notification
-              </Button>
+
             </div>
           ))}
         </div>

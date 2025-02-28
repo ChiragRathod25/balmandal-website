@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, Button, FileUploader } from '../../index';
 import databaseService from '../../../services/database.services';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardSlice';
+import {
+  setEditableUser,
+  setEditableUserAchievement,
+} from '../../../slices/dashboard/dashboardSlice';
 import CloudeFilesManager from '../CloudeFilesManager';
 
-function AchievementForm({ achievement, setAdd }) {
+function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
@@ -29,6 +32,22 @@ function AchievementForm({ achievement, setAdd }) {
     setFinalCloudFiles(cloudFiles);
   }, [cloudFiles]);
 
+  const achievements = useSelector((state) => state.dashboard.editableUserAchievement);
+
+  const updateStoreAchievements = (newAchievement) => {
+    let updatedAchievements;
+
+    if (achievement) {
+      updatedAchievements = achievements.map((achieve) =>
+        achieve._id === newAchievement._id ? newAchievement : achieve
+      );
+    } else {
+      updatedAchievements = [...achievements, newAchievement];
+    }
+    dispatch(setEditableUserAchievement(updatedAchievements));
+    console.log('updatedAchievements', updatedAchievements);
+  };
+
   let FinalCloudFiles = cloudFiles;
   const submit = async (data) => {
     data['cloudFiles'] = JSON.stringify(FinalCloudFiles);
@@ -40,7 +59,18 @@ function AchievementForm({ achievement, setAdd }) {
           .updateAchievement(data, achievement?._id, userId)
           .then((response) => response.data);
         if (response) {
-          dispatch(setEditableUserAchievement(null));
+          updateStoreAchievements(response);
+          if (isUsedWithModal) {
+            closeForm();
+            return;
+          }
+          navigate(`/dashboard/user/${userId}`);
+        }
+        if (response) {
+          if (isUsedWithModal) {
+            closeForm();
+            return;
+          }
           navigate(`/dashboard/user/${userId}`);
         }
       } else {
@@ -48,8 +78,12 @@ function AchievementForm({ achievement, setAdd }) {
           .addAchievement(data, userId)
           .then((response) => response.data);
         if (response) {
-          dispatch(setEditableUserAchievement(null));
-          if(setAdd) setAdd(false);
+          if (isUsedWithModal) {
+            updateStoreAchievements(response);
+            closeForm();
+            return;
+          }
+
           navigate(`/dashboard/user/${userId}`);
         }
       }
@@ -60,7 +94,6 @@ function AchievementForm({ achievement, setAdd }) {
           .then((response) => response.data);
         if (response) {
           console.log('here');
-
           navigate(`/achievement/${response._id}`);
         }
       } else {
@@ -74,8 +107,10 @@ function AchievementForm({ achievement, setAdd }) {
 
   const handleCancel = () => {
     if (isAdmin && userId) {
-      dispatch(setEditableUserAchievement(null));
-      if (setAdd) setAdd(false);
+      if (isUsedWithModal) {
+        closeForm();
+        return;
+      }
       navigate(`/dashboard/user/${userId}`);
       return;
     }
