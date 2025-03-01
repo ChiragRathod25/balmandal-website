@@ -42,6 +42,8 @@ PWA
 User Profile -> Edit my details -> Home page
 Profile to mobile -> call -> tap => Done
 
+Password validation or not?
+
 
 Improve Caching for the images and DB data
 
