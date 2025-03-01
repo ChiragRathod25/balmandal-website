@@ -28,16 +28,18 @@ function Notification() {
         <h2 className="text-2xl font-bold text-gray-800 mb-4">{Notification?.title}</h2>
 
         <div className="whitespace-pre-wrap flex flex-row gap-2">
-              <div>
-              <p className="font-semibold text-gray-800 mb-1">Message:</p>
-              </div>
-              <div>
-              <p >{Notification?.message}</p>
-              </div>
-            </div>
+          <div>
+            <p className="font-semibold text-gray-800 mb-1">Message:</p>
+          </div>
+          <div className="whitespace-pre-wrap flex flex-row gap-2">
+            <p className="text-gray-700 text-sm sm:text-base">{Notification?.message}</p>
+          </div>
+        </div>
 
         {/* <p className="text-gray-700 mb-2"><span className="font-semibold">Message:</span> {}</p> */}
-        <p className="text-gray-600 mb-4"><span className="font-semibold">Created By:</span> {Notification?.createdBy}</p>
+        <p className="text-gray-600 mb-4">
+          <span className="font-semibold">Created By:</span> {Notification?.createdBy}
+        </p>
 
         {/* Add more fields as necessary */}
 

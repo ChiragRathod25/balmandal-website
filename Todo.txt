@@ -46,6 +46,11 @@ Password validation or not?
 
 
 Improve Caching for the images and DB data
+redis for caching 
+Search engine indexing and seo
 
 setNotification -> MarkAsRead or not
 Add Modal Functionality for the admin to edit the user
+Password validation or not?
+setNotification -> MarkAsRead or not
+Password validation or not?
