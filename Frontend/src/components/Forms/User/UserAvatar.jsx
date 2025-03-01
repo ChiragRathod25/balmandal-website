@@ -8,14 +8,14 @@ function UserAvatar({ avatar }) {
   console.log("Initial User avatar:", avatar);
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
   console.log("userId:", userId);
-
   const { register, handleSubmit, reset, watch } = useForm();
   const [isEditing, setEditing] = useState(false);
 
+  //  `https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png`
   const [avatarUrl, setAvatarUrl] = useState(
     avatar
       ? avatar
-      : `https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png`
+      : '/userAvatar.png'
   );
 
   const avatarWatch = watch("avatar");
@@ -65,6 +65,9 @@ function UserAvatar({ avatar }) {
         alt="avatar"
         className={`w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48  rounded-full shadow-lg ${isEditing ? "" : "sm:scale-[120%] scale-[140%] sm:mb-6 mb-8"}`}
       />
+
+      {/* username */}
+      {/* <h2 className="text-xl font-semibold">@{username}</h2> */}
 
       {/* Change Button */}
       {!isEditing && (
