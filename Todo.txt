@@ -47,5 +47,6 @@ redis for caching
 Search engine indexing and seo
 
 setNotification -> MarkAsRead or not
-
+Password validation or not?
+setNotification -> MarkAsRead or not
 Password validation or not?
