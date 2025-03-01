@@ -32,10 +32,6 @@ const notificationSchema = new Schema(
       enum: ['All', 'Admin', 'Individual','Custom'],
       default: 'All',
     },
-    link: {
-      type: String,
-      required: true,
-    },
     poster:{
         type:String,
         default : null

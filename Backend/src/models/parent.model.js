@@ -35,10 +35,6 @@ const parentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    businessId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "business",
-    },
   },
   {
     timestamps: true,

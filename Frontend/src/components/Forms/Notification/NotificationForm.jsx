@@ -14,11 +14,6 @@ function NotificationForm() {
     if (!confirm('Are you sure you want to create notification?')) {
       return;
     }
-    if(!data.link){
-      if(!confirm('link is not provided, do you want to continue?\n Base link will be used for notification'))
-        return;
-      data.link =config.baseUrl;
-    }
     console.log('Submitting form data', data);
     await databaseService
       .createNotification(data)
@@ -65,15 +60,6 @@ function NotificationForm() {
           options={['All', 'Admin', 'Individual','Custom']}
           {...register('targetGroup')}
         />
-
-        <Input
-          label="Link"
-          type="text"
-          placeholder="Enter Link"
-          {...register('link') }
-          className="w-full"
-        />
-
         <FileUploader
           name="poster"
           register={register}

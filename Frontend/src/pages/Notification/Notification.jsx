@@ -44,14 +44,14 @@ function Notification() {
         {/* Add more fields as necessary */}
 
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center sm:justify-start mt-6">
-          {Notification?.link && (
+          {/* {Notification?.link && (
             <Button
               onClick={() => window.open(Notification.link, '_blank')}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
             >
               Open Link
             </Button>
-          )}
+          )} */}
 
           <Button
             onClick={() => navigate('/notification')}

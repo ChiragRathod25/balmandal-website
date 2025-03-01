@@ -881,7 +881,6 @@ export class DatabaseService {
     title,
     message,
     notificatinoType,
-    link,
     poster,
     isReadBy,
     deliveredTo,
@@ -894,7 +893,6 @@ export class DatabaseService {
 
     formData.append('message', message);
     formData.append('notificatinoType', notificatinoType);
-    formData.append('link', link);
     formData.append('isReadBy', isReadBy);
     formData.append('deliveredTo', deliveredTo);
     if (poster && poster.length > 0) {

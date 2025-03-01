@@ -19,10 +19,12 @@ Enhanced user avatar, => Done
 Enhance image management for avatar and talent => Done
 Separate Cloude and Local File Manager => Done
 
-Pages - sanchalak, contact, invite link, about
+Pages - sanchalak, contact, invite link, about, Terms & condition, Privacy Policy, 
+Attendance 
 Footer credit 
 userName or not? - I Prefer it
-Notification
+Notification Link and MSG and poster
+
 
 
 Event   - Add/Edit/Delete Event, =>Done
@@ -54,3 +56,16 @@ Add Modal Functionality for the admin to edit the user
 Password validation or not?
 setNotification -> MarkAsRead or not
 Password validation or not?
+
+// user model
+Allow multiple mobile number
+Address
+
+//Notification
+remove Notification link
+
+
+Modules to implement
+Attendance
+post
+Activity

@@ -73,7 +73,6 @@ const pushNotification = asyncHandler(
             JSON.stringify({
               title: notification?.title,
               message: notification?.message,
-              link: notification?.link,
               poster:
                 notification?.poster ||
                 "https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Baps_logo.svg/286px-Baps_logo.svg.png?20210729212719",
@@ -97,7 +96,7 @@ const pushNotification = asyncHandler(
 
 const createNotification = asyncHandler(async (req, res) => {
   // createdBy -> from req.user._id
-  const { createdFor, targetGroup, title, message, notificationType, link } =
+  const { createdFor, targetGroup, title, message, notificationType } =
     req.body;
 
   if ([title, message].some((field) => (field?.trim() ?? "") === "")) {
@@ -129,7 +128,6 @@ const createNotification = asyncHandler(async (req, res) => {
       poster,
       message,
       notificationType,
-      link,
     });
 
     if (!notification)

@@ -8,7 +8,7 @@ self.addEventListener('push', (event) => {
     console.error('❌ Notification permissions not granted');
   }
 
-  const { title, message, poster, _id, link, badge } = data;
+  const { title, message, poster, _id, badge } = data;
   console.log('Notification Data', data);
 
   const options = {
@@ -16,7 +16,7 @@ self.addEventListener('push', (event) => {
     tag: _id,
     icon: poster,
     badge: badge,
-    image: link,
+    // image: poster,
     actions: [],
   };
 
