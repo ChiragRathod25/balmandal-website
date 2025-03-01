@@ -47,8 +47,24 @@ self.addEventListener('push', (event) => {
 // });
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
-  console.log('Service Worker Installed');
+  event.waitUntil(
+    caches.open('static-cache-v1').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/styles.css',
+        '/main.js',
+        '/icons/icon-192x192.png'
+      ]);
+    })
+  );
+});
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
 
 self.addEventListener('activate', (event) => {
