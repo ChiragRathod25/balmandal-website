@@ -340,7 +340,7 @@ const getCurrentuser = asyncHandler(async (req, res) => {
     .json(new ApiResponce(200, user, `User details fetched successfully !!`));
 });
 
-const refreshAceesToken = asyncHandler(async (req, res) => {
+const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
   if (!incomingRefreshToken)
@@ -401,7 +401,7 @@ export {
   resetPassword,
   forgetPassword,
   getCurrentuser,
-  refreshAceesToken,
+  refreshAccessToken,
   getUserById,
   deleteFile,
 };
