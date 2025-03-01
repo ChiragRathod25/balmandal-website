@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function customReactQuery(apiCall) {
+function useCustomReactQuery(apiCall) {
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState(null);
-
+  
   const fetchData = async () => {
+    // console.log('useCustomReactQuery API called');
     try {
       setLoading(true);
       setError('');
@@ -22,7 +24,6 @@ function customReactQuery(apiCall) {
   useEffect(() => {
     fetchData();
   }, [apiCall]);
-
   return {
     error,
     data,
@@ -31,4 +32,4 @@ function customReactQuery(apiCall) {
   };
 }
 
-export default customReactQuery;
+export default useCustomReactQuery;

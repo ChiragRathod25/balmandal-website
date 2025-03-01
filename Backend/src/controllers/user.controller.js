@@ -351,7 +351,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   );
 
   try {
+    // console.log("Incoming refresh token", incomingRefreshToken);
     const user = await User.findById(decodeToken._id);
+    // console.log("User", user);
+
     if (!user) throw new ApiError(404, `Invalid refresh token`);
     if (user.refreshToken !== incomingRefreshToken)
       throw new ApiError(404, `Invalid refresh token or token is expired`);

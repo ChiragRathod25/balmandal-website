@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { QueryHandler, Button, FilesDisplayHelper } from '../../components';
 import databaseService from '../../services/database.services';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
+import { useSelector } from 'react-redux';
 
 function Event() {
   const { eventId } = useParams();
@@ -10,6 +11,7 @@ function Event() {
   const fetchEvent = useCallback(() => databaseService.getEventById({ eventId }), [eventId]);
   const { data, loading, error } = useCustomReactQuery(fetchEvent);
   const navigate = useNavigate();
+  const isAdmin=useSelector((state)=>state.auth.userData?.isAdmin)
 
   useEffect(() => {
     if (!eventId) {
@@ -57,7 +59,7 @@ function Event() {
               <p className="font-semibold text-gray-800 mb-1">Description:</p>
               </div>
               <div>
-              <p className="text-gray-700 text-sm sm:text-base">{event?.description}</p>
+              <p >{event?.description}</p>
               </div>
             </div>
 
@@ -87,7 +89,9 @@ function Event() {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start mt-6">
+         {
+          isAdmin && (
+            <div className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start mt-6">
             <Button
               onClick={() => navigate(`/event/edit/${event._id}`)}
               className="bg-blue-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
@@ -107,6 +111,8 @@ function Event() {
               Manage Events
             </Button>
           </div>
+          )
+         }
         </div>
       )}
     </QueryHandler>

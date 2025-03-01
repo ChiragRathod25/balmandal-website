@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import databaseService from '../../services/database.services';
 import { useSelector } from 'react-redux';
-import { Button } from '../../components';
+import { Button, UserParentCard } from '../../components';
 import { useNavigate } from 'react-router-dom';
 import useCustomeReactQuery from '../../utils/useCustomReactQuery';
 import { QueryHandler } from '../../components';
@@ -20,19 +20,6 @@ function AllParent() {
 
   const user = useSelector((state) => state.auth.userData.firstName);
 
-  const handleDelete = async (parentId) => {
-    try {
-      const response = await databaseService
-        .deleteParentDetails({ parentId })
-        .then((response) => response.data);
-      if (response) {
-        console.log(`Deleted successfully !!`);
-        setParents((prevParents) => prevParents.filter((parent) => parent._id !== parentId));
-      }
-    } catch (error) {
-      console.log('Error Deleting Parent', error);
-    }
-  };
   const handleAdd = (role) => {
     navigate('/parent/add?role=' + role);
   };
@@ -45,37 +32,11 @@ function AllParent() {
 
         {/* Parent List */}
         {Array.isArray(parents) && parents.length > 0 ? (
-          <div className="w-full">
+          <div className="w-full
+          grid grid-cols-1 sm:grid-cols-2 gap-4
+          ">
             {parents.map((parent) => (
-              <div
-                key={parent._id}
-                className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md mb-4 lg:flex-row flex-col text-center lg:text-left"
-              >
-                {/* Parent Info */}
-                <p className="font-semibold text-lg text-center sm:text-left">{`${parent.role} - ${parent.fullName}`}</p>
-
-                {/* Action Buttons */}
-                <div className="flex gap-2 w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-end">
-                  <Button
-                    onClick={() => navigate(`/parent/${parent._id}`)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-                  >
-                    View
-                  </Button>
-                  <Button
-                    onClick={() => navigate(`/parent/edit/${parent._id}`)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(parent._id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
+             <UserParentCard parent={parent} key={parent?._id} />
             ))}
           </div>
         ) : (

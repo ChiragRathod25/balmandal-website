@@ -54,7 +54,7 @@ function Notification() {
           )}
 
           <Button
-            onClick={() => navigate('/notifications')}
+            onClick={() => navigate('/notification')}
             className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600"
           >
             Back to Notifications

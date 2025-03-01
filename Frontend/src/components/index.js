@@ -22,6 +22,11 @@ import Layout from "./Layout";
 import TopBar from "./Header/TopBar";
 import SideDrawer from "./Header/SideDrawer";
 import BottomTabBar from "./Footer/BottomTabBar";
+import Modal from "./Modal"
+import UserAchievementCard from "./Profile/UserAchievementCard";
+import UserTalentCard from "./Profile/UserTalentCard";
+import UserParentCard from "./Profile/UserParentCard";
+import EventCard from "./Event/EventCard";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -47,5 +52,10 @@ export {
   TopBar,
   SideDrawer,
   BottomTabBar,
-  
+  Modal,
+  UserAchievementCard,
+  UserTalentCard,
+  UserParentCard,
+  EventCard,
+
 };

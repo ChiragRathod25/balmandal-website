@@ -6,3 +6,7 @@
     padding-top: 80px !important; /* Ensures all toasts start a bit lower */
   }
   
+  .modal-backdrop {
+    backdrop-filter: blur(8px);
+  }
+  

@@ -1,10 +1,10 @@
 import { ApiResponce } from "../utils/ApiResponce.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { Achivement } from "../models/achivement.model.js";
+import { Achievement } from "../models/achievement.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
-const addAchivement = asyncHandler(async (req, res) => {
+const addAchievement = asyncHandler(async (req, res) => {
   const id = req?.user?._id || 500;
   console.log(req.body);
   console.log(req.files);
@@ -35,7 +35,7 @@ const addAchivement = asyncHandler(async (req, res) => {
     }
   }
 
-  const achivement = await Achivement.create({
+  const achievement = await Achievement.create({
     title,
     description,
     userId: id,
@@ -44,16 +44,16 @@ const addAchivement = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(
-      new ApiResponce(200, achivement, `Achievement added successfully !!`)
+      new ApiResponce(200, achievement, `Achievement added successfully !!`)
     );
 });
 
-const updateAchivement = asyncHandler(async (req, res) => {
+const updateAchievement = asyncHandler(async (req, res) => {
   try {
     const { title, description,cloudFiles} = req.body;
-    const achivementId = req.params.id;
-    const achivement = await Achivement.findById(achivementId);
-    if (!achivement) throw new ApiError(404, `Invalid achivement request`);
+    const achievementId = req.params.id;
+    const achievement = await Achievement.findById(achievementId);
+    if (!achievement) throw new ApiError(404, `Invalid achievement request`);
 
     console.log("cloudFiles", typeof cloudFiles, Array.isArray(cloudFiles));
     console.log("req.files", req.files);
@@ -93,8 +93,8 @@ const updateAchivement = asyncHandler(async (req, res) => {
 
     console.log("newFiles", newFiles);
     console.log("files", files);
-    const updatedAchivement = await Achivement.findByIdAndUpdate(
-      achivementId,
+    const updatedAchievement = await Achievement.findByIdAndUpdate(
+      achievementId,
       {
         title,
         description,
@@ -102,8 +102,8 @@ const updateAchivement = asyncHandler(async (req, res) => {
       },
       { new: true }
     );
-    if (!updatedAchivement) {
-      throw new ApiError(404, `Error while updating achivement`);
+    if (!updatedAchievement) {
+      throw new ApiError(404, `Error while updating achievement`);
     }
 
     console.log("here");
@@ -112,50 +112,50 @@ const updateAchivement = asyncHandler(async (req, res) => {
       .json(
         new ApiResponce(
           200,
-          updatedAchivement,
+          updatedAchievement,
           `Achievement updated successfully !!`
         )
       );
   } catch (error) {
-    console.error(`Error while updating achivement`, error);
+    console.error(`Error while updating achievement`, error);
   }
 });
 
-const getUserAchivements = asyncHandler(async (req, res) => {
-  const achivements = await Achivement.find({ userId: req?.user?._id });
-  if (!achivements) throw new ApiError(404, `No achivements found for user`);
+const getUserAchievements = asyncHandler(async (req, res) => {
+  const achievements = await Achievement.find({ userId: req?.user?._id });
+  if (!achievements) throw new ApiError(404, `No achievements found for user`);
 
   res
     .status(200)
     .json(
-      new ApiResponce(200, achivements, `Achivements found successfully !!`)
+      new ApiResponce(200, achievements, `Achievements found successfully !!`)
     );
 });
 
 const getAchievementById = asyncHandler(async (req, res) => {
-  const achivementId = req.params.id;
-  if (!achivementId) throw new ApiError(400, `Achivement id is required`);
-  const achivement = await Achivement.findById(achivementId);
-  if (!achivement) throw new ApiError(404, `Invalid achivement request`);
+  const achievementId = req.params.id;
+  if (!achievementId) throw new ApiError(400, `Achievement id is required`);
+  const achievement = await Achievement.findById(achievementId);
+  if (!achievement) throw new ApiError(404, `Invalid achievement request`);
   res
     .status(200)
-    .json(new ApiResponce(200, achivement, `Achivement found successfully !!`));
+    .json(new ApiResponce(200, achievement, `Achievement found successfully !!`));
 });
 
-const deleteAchivement = asyncHandler(async (req, res) => {
-  const achivementId = req.params.id;
-  if (!achivementId) throw new ApiError(400, `Achivement id is required`);
-  const achivement = await Achivement.findByIdAndDelete(achivementId);
-  if (!achivement) throw new ApiError(404, `Invalid achivement request`);
+const deleteAchievement = asyncHandler(async (req, res) => {
+  const achievementId = req.params.id;
+  if (!achievementId) throw new ApiError(400, `Achievement id is required`);
+  const achievement = await Achievement.findByIdAndDelete(achievementId);
+  if (!achievement) throw new ApiError(404, `Invalid achievement request`);
   res
     .status(200)
-    .json(new ApiResponce(200, {}, `Achivement deleted successfully !!`));
+    .json(new ApiResponce(200, {}, `Achievement deleted successfully !!`));
 });
 
 export {
-  addAchivement,
-  updateAchivement,
-  getUserAchivements,
+  addAchievement,
+  updateAchievement,
+  getUserAchievements,
   getAchievementById,
-  deleteAchivement,
+  deleteAchievement,
 };

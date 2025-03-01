@@ -192,6 +192,7 @@ export class DatabaseService {
     );
   }
   async getCurrentuser() {
+
     return handleApiRequest(
       () => axiosInstace.get('/api/v1/user/getCurrentuser'),
       'getCurrentUser'
@@ -274,18 +275,18 @@ export class DatabaseService {
     }
   }
 
-  async getUserAchivements(userId = null) {
+  async getUserAchievements(userId = null) {
     //if userId is passed then it will return all achievements of the user
     //and also check if the user is admin or not
     if (userId != null) {
       return handleApiRequest(
         () => axiosInstace.get(`/api/v1/admin/achievement?userId=${userId}`),
-        'getUserAchivements'
+        'getUserAchievements'
       );
     }
 
     //if userId is not passed then it will return all achievements of the logged in user
-    return handleApiRequest(() => axiosInstace.get('/api/v1/achievement'), 'getUserAchivements');
+    return handleApiRequest(() => axiosInstace.get('/api/v1/achievement'), 'getUserAchievements');
   }
 
   async getAchievementById({ achievementId }, userId = null) {
@@ -350,7 +351,7 @@ export class DatabaseService {
     );
   }
 
-  async updateAchivement({ title, description, image, cloudFiles }, achievementId, userId = null) {
+  async updateAchievement({ title, description, image, cloudFiles }, achievementId, userId = null) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -374,7 +375,7 @@ export class DatabaseService {
                 },
               }
             ),
-          'updateAchivement'
+          'updateAchievement'
         ),
         {
           loading: 'Updating Achievement',
@@ -382,7 +383,7 @@ export class DatabaseService {
           error: 'Error while updating achievement',
         },
         {
-          id: 'updateAchivement',
+          id: 'updateAchievement',
         }
       );
     }
@@ -395,7 +396,7 @@ export class DatabaseService {
               'Content-Type': 'multipart/form-data',
             },
           }),
-        'updateAchivement'
+        'updateAchievement'
       ),
       {
         loading: 'Updating Achievement',
@@ -403,16 +404,16 @@ export class DatabaseService {
         error: 'Error while updating achievement',
       },
       {
-        id: 'updateAchivement',
+        id: 'updateAchievement',
       }
     );
   }
-  async deleteAchivement({ achievementId }, userId = null) {
+  async deleteAchievement({ achievementId }, userId = null) {
     if (userId) {
       return toast.promise(
         handleApiRequest(
           () => axiosInstace.delete(`/api/v1/admin/achievement/${achievementId}?userId=${userId}`),
-          'deleteAchivement'
+          'deleteAchievement'
         ),
         {
           loading: 'Deleting Achievement',
@@ -420,7 +421,7 @@ export class DatabaseService {
           error: 'Error while deleting achievement',
         },
         {
-          id: 'deleteAchivement',
+          id: 'deleteAchievement',
         }
       );
     }
@@ -428,7 +429,7 @@ export class DatabaseService {
     return toast.promise(
       handleApiRequest(
         () => axiosInstace.delete(`/api/v1/achievement/${achievementId}`),
-        'deleteAchivement'
+        'deleteAchievement'
       ),
       {
         loading: 'Deleting Achievement',
@@ -436,7 +437,7 @@ export class DatabaseService {
         error: 'Error while deleting achievement',
       },
       {
-        id: 'deleteAchivement',
+        id: 'deleteAchievement',
       }
     );
   }
@@ -771,7 +772,19 @@ export class DatabaseService {
       }
     );
   }
-
+  async getUserProfile(userId){
+    return toast.promise(
+      handleApiRequest(() => axiosInstace.get(`/api/v1/admin/user-profile/${userId}`), 'getUserProfile'),
+      {
+        loading: 'Fetching User',
+        success: 'User Fetched successfully',
+        error: 'Error while fetching user',
+      },
+      {
+        id: 'getUserProfile',
+      }
+    );
+  }
   async addEvent({ title, description, media, cloudMediaFiles, startAt, endAt, venue }) {
     const formData = new FormData();
     formData.append('title', title);

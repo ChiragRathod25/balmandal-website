@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Input, Button } from "../../";
-import databaseService from "../../../services/database.services";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Input, Button } from '../../';
+import databaseService from '../../../services/database.services';
+import { useSelector } from 'react-redux';
 
 function UserAvatar({ avatar }) {
-  console.log("Initial User avatar:", avatar);
+  // console.log("Initial User avatar:", avatar);
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
+  // console.log('Editable user',useSelector((state)=>state.dashboard.editableUser))
+  // console.log("userId:", userId);
+  const isAdmin = useSelector((state) => state.auth.userData?.isAdmin);
+
   console.log("userId:", userId);
   const { register, handleSubmit, reset, watch } = useForm();
   const [isEditing, setEditing] = useState(false);
@@ -18,7 +22,7 @@ function UserAvatar({ avatar }) {
       : '/userAvatar.png'
   );
 
-  const avatarWatch = watch("avatar");
+  const avatarWatch = watch('avatar');
 
   useEffect(() => {
     if (avatar) setAvatarUrl(avatar);
@@ -42,19 +46,34 @@ function UserAvatar({ avatar }) {
   };
 
   const submit = async (data) => {
-    console.log("submitting avatar");
-    databaseService
-      .updateAvatar(data, userId)
-      .then((response) => response.data)
-      .then((data) => {
-        console.log("avatar updated", data);
-        reset();
-        setEditing(false);
-        setAvatarUrl(data.avatar);
-      })
-      .catch((error) => {
-        console.log("error:", error);
-      });
+    console.log('submitting avatar');
+    if (isAdmin) {
+      databaseService
+        .updateAvatar(data, userId)
+        .then((response) => response.data)
+        .then((data) => {
+          console.log('avatar updated', data);
+          reset();
+          setEditing(false);
+          setAvatarUrl(data.avatar);
+        })
+        .catch((error) => {
+          console.log('error:', error);
+        });
+    } else {
+      databaseService
+        .updateAvatar(data)
+        .then((response) => response.data)
+        .then((data) => {
+          console.log('avatar updated', data);
+          reset();
+          setEditing(false);
+          setAvatarUrl(data.avatar);
+        })
+        .catch((error) => {
+          console.log('error:', error);
+        });
+    }
   };
 
   return (
@@ -63,7 +82,7 @@ function UserAvatar({ avatar }) {
       <img
         src={avatarUrl}
         alt="avatar"
-        className={`w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48  rounded-full shadow-lg ${isEditing ? "" : "sm:scale-[120%] scale-[140%] sm:mb-6 mb-8"}`}
+        className={`w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48  rounded-full shadow-lg ${isEditing ? '' : 'sm:scale-[120%] scale-[140%] sm:mb-6 mb-8'}`}
       />
 
       {/* username */}
@@ -71,22 +90,17 @@ function UserAvatar({ avatar }) {
 
       {/* Change Button */}
       {!isEditing && (
-         <Button onClick={() => setEditing(true)}
-         className="w-32 sm:w-40 md:w-48"
-        >
-         Change</Button>
+        <Button onClick={() => setEditing(true)} className="w-32 sm:w-40 md:w-48">
+          Change
+        </Button>
       )}
 
       {/* Avatar Upload Form */}
       {isEditing && (
         <form onSubmit={handleSubmit(submit)} className="flex flex-col items-center space-y-4">
-          <Input type="file"
-            accept="image/*"
-          {...register("avatar", { required: true })} />
+          <Input type="file" accept="image/*" {...register('avatar', { required: true })} />
           <div className="flex space-x-4">
-            <Button type="submit" >
-              Upload
-            </Button>
+            <Button type="submit">Upload</Button>
             <Button type="button" onClick={handleCancel} className="bg-gray-400 hover:bg-gray-500">
               Cancel
             </Button>

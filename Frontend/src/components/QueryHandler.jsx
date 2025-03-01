@@ -19,7 +19,7 @@ function QueryHandler({ queries, children }) {
       );
     }
     return (
-      <div className="p-4">
+      <div className="w-full">
         {children}
       </div>
     );

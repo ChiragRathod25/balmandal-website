@@ -46,7 +46,7 @@ export const subscribeUser = async (serviceWorkerReg) => {
 
 
     //if there is service worker exist, no need to re create it, it is already register
-    if (!subscription || subscription) {
+    if (!subscription) {
       try {
         const appServerKey = urlBase64ToUint8Array(config.vapidPublicKey);
 
