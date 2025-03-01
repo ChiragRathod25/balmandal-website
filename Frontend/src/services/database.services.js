@@ -3,7 +3,7 @@ import { handleApiRequest } from '../utils/apiHelper';
 import toast from 'react-hot-toast';
 
 export class DatabaseService {
-  async register({ firstName, lastName, mobile, password }) {
+  async register({ username, email, firstName, lastName, mobile, password }) {
     return toast.promise(
       handleApiRequest(
         () =>
@@ -12,6 +12,8 @@ export class DatabaseService {
             lastName,
             mobile,
             password,
+            username,
+            email,
           }),
         'register'
       ),
@@ -25,13 +27,12 @@ export class DatabaseService {
       }
     );
   }
-  async login({ firstName, mobile, password }) {
+  async login({ username, password }) {
     return toast.promise(
       handleApiRequest(
         () =>
           axiosInstace.post('/api/v1/user/login', {
-            firstName,
-            mobile,
+            username,
             password,
           }),
         'login'

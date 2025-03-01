@@ -54,7 +54,12 @@ function UserDetails({ userId }) {
       <div className="bg-white shadow-md rounded-lg p-6 sm:p-10">
         {/* Header Section - Aligned in One Line */}
         <div className="flex justify-between items-center border-b pb-4 mb-6">
-          <h2 className="text-2xl font-bold  ">User Details</h2>
+          <div>
+            <h2 className="text-2xl font-bold  ">User Details</h2>
+            <p className="text-m text-gray-500 font-semibold">
+              <span className="font-semibold  cursor-pointer">@{user?.username} </span>
+            </p>
+          </div>
           <div className="flex justify-cente align-center">
             <Button
               onClick={() => setEditing(true)}
@@ -84,10 +89,15 @@ function UserDetails({ userId }) {
               <span className="font-semibold">Middle Name:</span> {user?.middleName}
             </p>
             <p>
-              <span className="font-semibold">Email:</span> {user?.email} 
+              <span className="font-semibold">Email:</span> {user?.email}
             </p>
             <p>
-              <span className="font-semibold">Mobile:</span> {user?.mobile} { isAdmin && <span className="text-sm text-gray-500" onClick={handleCall}>( 📞 Call)</span> }
+              <span className="font-semibold">Mobile:</span> {user?.mobile}{' '}
+              {isAdmin && (
+                <span className="text-sm text-gray-500 cursor-pointer" onClick={handleCall}>
+                  ( 📞 Call)
+                </span>
+              )}
             </p>
             <p>
               <span className="font-semibold">DOB:</span> {user?.DOB}
@@ -103,8 +113,6 @@ function UserDetails({ userId }) {
             </p>
           </div>
         </div>
-
-        
       </div>
     </div>
   );
