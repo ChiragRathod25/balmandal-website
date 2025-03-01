@@ -621,6 +621,8 @@ export class DatabaseService {
     return handleApiRequest(() => axiosInstace.get('/api/v1/talent'), 'getUserTalents');
   }
   async getTalentById({ talentId }, userId = null) {
+    console.log("userId", userId);
+    console.log("talentId", talentId);
     if (userId) {
       return handleApiRequest(
         () => axiosInstace.get(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
@@ -640,11 +642,13 @@ export class DatabaseService {
       return toast.promise(
         handleApiRequest(
           () =>
-            axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`, {
-              heading,
-              description,
-              image,
-            }),
+            axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`,
+              formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+            ),
           'addTalent'
         ),
         {

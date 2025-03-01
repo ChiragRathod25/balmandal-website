@@ -131,6 +131,7 @@ const getUserTalents = asyncHandler(async (req, res) => {
 
 const getTalentById = asyncHandler(async (req, res) => {
   const talentId = req.params.id;
+  console.log("get talent by id called", talentId);
   const talent = await Talent.findById(talentId);
   if (!talent) throw new ApiError(404, `No talent found`);
   res

@@ -21,7 +21,7 @@ function Parent({ id, isUsedWithModal = false }) {
   const { data: parent, loading, error } = useCustomReactQuery(fetchParent);
 
   useEffect(() => {
-    if (!parentId) {
+    if (!parentId && !isUsedWithModal) {
       navigate('/');
       return;
     }

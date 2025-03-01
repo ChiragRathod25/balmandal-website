@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { setEditableUserParent } from '../../../slices/dashboard/dashboardSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
-function ParentForm({ parent, setAdd }) {
+function ParentForm({ parent, isUsedWithModal = false, closeForm}) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
@@ -27,6 +27,19 @@ function ParentForm({ parent, setAdd }) {
 
   const navigate = useNavigate();
 
+  const parents= useSelector((state) => state.dashboard.editableUserParent);
+
+  const updateStoreParent = (newParent) => {
+    let updatedParent;
+    if(parent) {
+      updatedParent = parents.map((par) => par._id === newParent._id ? newParent : par);
+    } else {
+      updatedParent = [...parents, newParent];
+    }
+    dispatch(setEditableUserParent(updatedParent));
+    console.log('updatedParent', updatedParent);
+  };
+
   const submit = async (data) => {
     if (isAdmin && userId) {
       if (parent) {
@@ -34,7 +47,11 @@ function ParentForm({ parent, setAdd }) {
           .updateParentDetails(data, parent?._id, userId)
           .then((response) => response.data);
         if (response) {
-          dispatch(setEditableUserParent(null));
+          updateStoreParent(response);
+          if(isUsedWithModal) {
+            closeForm();
+            return;
+          }
           navigate(`/dashboard/user/${userId}`);
         }
       } else {
@@ -42,8 +59,11 @@ function ParentForm({ parent, setAdd }) {
           .addParentDetails(data, userId)
           .then((response) => response.data);
         if (response) {
-          dispatch(setEditableUserParent(null));
-          setAdd(false);
+          updateStoreParent(response);
+          if(isUsedWithModal) {
+            closeForm();
+            return;
+          }
           navigate(`/dashboard/user/${userId}`);
         }
       }
@@ -64,8 +84,15 @@ function ParentForm({ parent, setAdd }) {
 
   const handleCancel = () => {
     if (isAdmin && userId) {
-      dispatch(setEditableUserParent(null));
-      setAdd(false);
+      
+      if(isAdmin && userId) {
+        if(isUsedWithModal) {
+          closeForm();
+          return;
+        }
+        navigate(`/dashboard/user/${userId}`);
+        return;
+      }
       navigate(`/dashboard/user/${userId}`);
       return;
     }

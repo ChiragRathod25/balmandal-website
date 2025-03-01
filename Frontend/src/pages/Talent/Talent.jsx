@@ -19,7 +19,7 @@ function Talent({ id, isUsedWithModal = false }) {
   const { data: talent, loading, error } = useCustomReactQuery(fetchTalent);
 
   useEffect(() => {
-    if (!talentId) {
+    if (!talentId && !isUsedWithModal) {
       navigate('/');
       return;
     }

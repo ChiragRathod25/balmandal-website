@@ -87,7 +87,11 @@ function UserParent() {
           "
           >
             {parents.map((parent) => (
-              <UserParentCard key={parent._id} parent={parent} handleClick={handleClick} />
+              <UserParentCard 
+              isUsedWithModal={true}
+              key={parent._id} 
+              parent={parent} 
+              handleClick={handleClick} />
             ))}
           </div>
         </>
