@@ -1,0 +1,88 @@
+import mongoose from "mongoose";
+const postSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    featuredImage: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    slug: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    status: {
+      type: String,
+      enum: [
+        "draft",
+        "published",
+        "deleted",
+        "archived",
+        "scheduled",
+        "markedForReview",
+      ],
+      default: "draft",
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    tags: [
+      {
+        type: String,
+        required: true,
+        trim: true,
+      },
+    ],
+    views: {
+      type: Number,
+      default: 0,
+    },
+    commentsEnabled: {
+      type: Boolean,
+      default: true,
+    },
+    publishedAt: {
+      type: Date,
+    },
+    approvalStatus: {
+      type: String,
+      enum: ["approved", "rejected", "review", "pending"],
+      default: "pending",
+    },
+    approvedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    meta: {
+      title: {
+        type: String,
+        trim: true,
+      },
+      description: {
+        type: String,
+        trim: true,
+      },
+      keywords: {
+        type: String,
+        trim: true,
+      },
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export const Post = mongoose.model("Post", postSchema);
