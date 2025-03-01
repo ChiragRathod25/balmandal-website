@@ -51,8 +51,8 @@ function UserTalent() {
     openModal();
   };
   const handleClick = (talent) => {
-    console.log('clicked');
-    setModalTitle(talent.title);
+    console.log('Talent clicked', talent);
+    setModalTitle(talent?.heading);
     setModalContent(
       <>
         <Talent id={talent?._id} isUsedWithModal={true} />
@@ -84,14 +84,19 @@ function UserTalent() {
 
       {Array.isArray(talents) && talents.length > 0 && (
         <>
-          <h2 className="text-3xl font-bold text-center text-[#C30E59] mb-6">{`${userName}'s Achievements`}</h2>
+          <h2 className="text-3xl font-bold text-center text-[#C30E59] mb-6">{`${userName}'s Talents`}</h2>
           <div
             className="w-full space-y-4
         grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4
         "
           >
             {talents.map((talent) => (
-              <UserTalentCard key={talent._id} talent={talent} handleClick={handleClick} />
+              <UserTalentCard
+                isUsedWithModal={true}
+                key={talent._id}
+                talent={talent}
+                handleClick={handleClick}
+              />
             ))}
           </div>
         </>

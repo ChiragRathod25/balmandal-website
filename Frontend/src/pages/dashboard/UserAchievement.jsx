@@ -7,7 +7,6 @@ import UserAchievementCard from '../../components/Profile/UserAchievementCard.js
 import { Achievement } from '../index';
 import databaseService from '../../services/database.services.js';
 import { setEditableUserAchievement } from '../../slices/dashboard/dashboardSlice.js';
-let i = 0;
 
 function UserAchievement() {
   const dispatch = useDispatch();
@@ -98,7 +97,8 @@ function UserAchievement() {
           >
             {achievements.map((achievement) => (
               <UserAchievementCard
-                key={achievement._id}
+              key={achievement._id}
+              isUsedWithModal={true}
                 achievement={achievement}
                 handleClick={handleClick}
               />

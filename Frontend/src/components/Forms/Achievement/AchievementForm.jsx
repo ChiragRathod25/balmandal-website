@@ -4,10 +4,7 @@ import { Input, Button, FileUploader } from '../../index';
 import databaseService from '../../../services/database.services';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  setEditableUser,
-  setEditableUserAchievement,
-} from '../../../slices/dashboard/dashboardSlice';
+import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardSlice';
 import CloudeFilesManager from '../CloudeFilesManager';
 
 function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
@@ -36,7 +33,6 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
 
   const updateStoreAchievements = (newAchievement) => {
     let updatedAchievements;
-
     if (achievement) {
       updatedAchievements = achievements.map((achieve) =>
         achieve._id === newAchievement._id ? newAchievement : achieve
@@ -66,13 +62,6 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
           }
           navigate(`/dashboard/user/${userId}`);
         }
-        if (response) {
-          if (isUsedWithModal) {
-            closeForm();
-            return;
-          }
-          navigate(`/dashboard/user/${userId}`);
-        }
       } else {
         const response = await databaseService
           .addAchievement(data, userId)
@@ -83,7 +72,6 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
             closeForm();
             return;
           }
-
           navigate(`/dashboard/user/${userId}`);
         }
       }
@@ -135,7 +123,6 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
   };
 
   return (
-    // <div className="max-w-2xl mx-auto p-2">
     <form onSubmit={handleSubmit(submit)} className="space-y-4">
       <Input
         type="text"
@@ -179,7 +166,6 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
         </Button>
       </div>
     </form>
-    // </div>
   );
 }
 

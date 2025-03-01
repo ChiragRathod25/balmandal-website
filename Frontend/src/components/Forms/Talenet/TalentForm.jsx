@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import databaseService from '../../../services/database.services';
 import { Button, Input, FileUploader } from '../../';
@@ -7,12 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setEditableUserTalent } from '../../../slices/dashboard/dashboardSlice';
 import CloudeFilesManager from '../CloudeFilesManager';
 
-function TalentForm({ talent, setAdd }) {
+function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
+
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
-  const userId=useSelector((state)=>state.dashboard.editableUser?._id);
+  const userId = useSelector((state) => state.dashboard.editableUser?._id);
 
-  const { register, handleSubmit, watch,setValue ,getValues} = useForm({
+  const { register, handleSubmit, watch, setValue, getValues } = useForm({
     defaultValues: {
       heading: talent?.heading || '',
       description: talent?.description || '',
@@ -24,25 +25,36 @@ function TalentForm({ talent, setAdd }) {
 
   const [cloudFiles, setCloudFiles] = React.useState(talent?.images || []);
 
-  
   useEffect(() => {
-    console.log("talent file manager",talent);
-    console.log("Rerendering for cloudFiles file manager",cloudFiles);
+    console.log('talent file manager', talent);
+    console.log('Rerendering for cloudFiles file manager', cloudFiles);
     setFinalCloudFiles(cloudFiles);
   }, [cloudFiles]);
 
+  const talents = useSelector((state) => state.dashboard.editableUserTalent);
+  const updateStoreTalents = (newTalent) => {
+    console.log('Now updating store talents', newTalent);
+    let updatedTalents;
+    if (talent) {
+      updatedTalents = talents.map((talent) => (talent._id === newTalent._id ? newTalent : talent));
+    } else {
+      updatedTalents = [...talents, newTalent];
+    }
+    dispatch(setEditableUserTalent(updatedTalents));
+    console.log('updatedTalents', updatedTalents);
+  };
 
-  let FinalCloudFiles=cloudFiles;
+  let FinalCloudFiles = cloudFiles;
   const submit = async (data) => {
-    console.log("Submitting form...",data);
+    console.log('Submitting form...', data);
     // // const uploaded=getValues('image');
     // data.image=[...cloudFiles,...data.image];
     // console.log("Submitting form...",data);
     // console.log("cloudFiles",cloudFiles);
     // console.log(JSON.stringify(cloudFiles));
-
-
-      data["cloudFiles"]=JSON.stringify(FinalCloudFiles);
+    
+    data['cloudFiles'] = JSON.stringify(FinalCloudFiles);
+    console.log("Submitting form...",data);
     // setValue('image', [...cloudFiles,...uploaded]); // Update form value
     if (isAdmin && userId) {
       if (talent) {
@@ -50,17 +62,27 @@ function TalentForm({ talent, setAdd }) {
           .updateTalent(data, talent?._id, userId)
           .then((response) => response.data);
         if (response) {
-          dispatch(setEditableUserTalent(null));
+          console.log("Talent added response" ,response);
+          updateStoreTalents(response);
+          if (isUsedWithModal) {
+            closeForm();
+            return;
+          }
           navigate(`/dashboard/user/${userId}`);
         }
       } else {
         const response = await databaseService
           .addTalent(data, userId)
           .then((response) => response.data);
+
         if (response) {
-          dispatch(setEditableUserTalent(null));
+          updateStoreTalents(response);
+          if (isUsedWithModal) {
+            closeForm();
+            return;
+          }
+
           navigate(`/dashboard/user/${userId}`);
-          setAdd(false);
         }
       }
     } else {
@@ -80,32 +102,31 @@ function TalentForm({ talent, setAdd }) {
 
   const handleCancel = () => {
     if (isAdmin && userId) {
-      dispatch(setEditableUserTalent(null));
+      if (isUsedWithModal) {
+        closeForm();
+        return;
+      }
       navigate(`/dashboard/user/${userId}`);
-    
-      setAdd(false);
-      return;
     } else {
       navigate(`/talent`);
     }
   };
 
-  const setFinalCloudFiles=(nf)=>{
-    FinalCloudFiles=nf;
-  }
+  const setFinalCloudFiles = (nf) => {
+    FinalCloudFiles = nf;
+  };
   const handleDeleteFile = async (index) => {
     const url = cloudFiles[index];
-      console.log("url",url);
-      await databaseService.deleteFile({deleteUrl : url}).then(() => {
-        setCloudFiles((prev) => prev.filter((img, i) => i !== index));
-      });
-      const newFiles=cloudFiles.filter((img, i) => i !== index);
-      console.log("newFiles",newFiles);
+    console.log('url', url);
+    await databaseService.deleteFile({ deleteUrl: url }).then(() => {
+      setCloudFiles((prev) => prev.filter((img, i) => i !== index));
+    });
+    const newFiles = cloudFiles.filter((img, i) => i !== index);
+    console.log('newFiles', newFiles);
 
-      // setCloudFiles((prev)=>newFiles);
-      setFinalCloudFiles(newFiles);
-      handleSubmit(submit)();
-    
+    // setCloudFiles((prev)=>newFiles);
+    setFinalCloudFiles(newFiles);
+    handleSubmit(submit)();
   };
 
   return (
@@ -122,14 +143,17 @@ function TalentForm({ talent, setAdd }) {
           type="textarea"
           rows={5}
           placeholder="Describe talent "
-          {...register('description', { required: true })}
+          {...register('description')}
           className="w-full"
         />
 
-        {
-          cloudFiles && cloudFiles.length > 0 &&
-          <CloudeFilesManager  cloudFiles={cloudFiles} setCloudFiles={setCloudFiles} handleDeleteFile={handleDeleteFile}/>
-        }
+        {cloudFiles && cloudFiles.length > 0 && (
+          <CloudeFilesManager
+            cloudFiles={cloudFiles}
+            setCloudFiles={setCloudFiles}
+            handleDeleteFile={handleDeleteFile}
+          />
+        )}
         <FileUploader
           register={register}
           name="image"
@@ -141,7 +165,6 @@ function TalentForm({ talent, setAdd }) {
         <div className="flex space-x-4">
           <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
             {talent ? 'Update' : 'Add'}
-         
           </Button>
           <Button
             type="button"

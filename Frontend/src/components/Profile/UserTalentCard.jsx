@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 function UserTalentCard({ talent,handleClick,isUsedWithModal=false }) {
+  console.log('Rendering UserTalentCard',talent);
   const navigate=useNavigate()
   const handleCardClick = (talent) => {
     if (isUsedWithModal) {
@@ -32,7 +33,7 @@ function UserTalentCard({ talent,handleClick,isUsedWithModal=false }) {
       className="flex flex-col sm:flex-row justify-between items-center 
       bg-rgba(255,255,255,0.8)
       p-2 rounded-lg shadow-md hover:bg-gray-200 transition-all" 
-      onClick={() => handleCardClick()} 
+      onClick={() => handleCardClick(talent)} 
     >
       {/* Image & Title */}
        <div className="flex items-center gap-4 w-full sm:w-auto">

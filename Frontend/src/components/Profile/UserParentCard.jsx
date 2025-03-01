@@ -15,7 +15,7 @@ function UserParentCard({ parent, hanleClick, isUsedWithModal = false }) {
       className="flex flex-col sm:flex-row justify-between items-center 
       bg-rgba(255,255,255,0.8)
       p-4 rounded-lg shadow-md hover:bg-gray-200 transition-all"
-      onClick={() => handleCardClick()}
+      onClick={() => handleCardClick(parent)}
     >
       {/* Parent Info */}
       <p className="font-semibold text-lg text-center sm:text-left">{`${parent.role} - ${parent.fullName}`}</p>

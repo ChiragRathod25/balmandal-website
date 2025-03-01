@@ -10,7 +10,7 @@ const MyToaster = () => {
       if (window.innerWidth >= 640) {
         setPosition("top-right"); // PC
       } else {
-        setPosition("top-center"); // Mobile
+        setPosition("top-right"); // Mobile
       }
     };
 
