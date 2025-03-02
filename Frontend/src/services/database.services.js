@@ -192,7 +192,6 @@ export class DatabaseService {
     );
   }
   async getCurrentuser() {
-
     return handleApiRequest(
       () => axiosInstace.get('/api/v1/user/getCurrentuser'),
       'getCurrentUser'
@@ -621,8 +620,8 @@ export class DatabaseService {
     return handleApiRequest(() => axiosInstace.get('/api/v1/talent'), 'getUserTalents');
   }
   async getTalentById({ talentId }, userId = null) {
-    console.log("userId", userId);
-    console.log("talentId", talentId);
+    console.log('userId', userId);
+    console.log('talentId', talentId);
     if (userId) {
       return handleApiRequest(
         () => axiosInstace.get(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
@@ -642,13 +641,11 @@ export class DatabaseService {
       return toast.promise(
         handleApiRequest(
           () =>
-            axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`,
-              formData, {
+            axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
-            }
-            ),
+            }),
           'addTalent'
         ),
         {
@@ -776,9 +773,12 @@ export class DatabaseService {
       }
     );
   }
-  async getUserProfile(userId){
+  async getUserProfile(userId) {
     return toast.promise(
-      handleApiRequest(() => axiosInstace.get(`/api/v1/admin/user-profile/${userId}`), 'getUserProfile'),
+      handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/user-profile/${userId}`),
+        'getUserProfile'
+      ),
       {
         loading: 'Fetching User',
         success: 'User Fetched successfully',
@@ -822,7 +822,7 @@ export class DatabaseService {
       }
     );
   }
-  async updateEvent({ title, description, media, cloudMediaFiles,eventType }, eventId) {
+  async updateEvent({ title, description, media, cloudMediaFiles, eventType }, eventId) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -969,6 +969,104 @@ export class DatabaseService {
       'createSubscription'
     );
   }
+
+  // attendance
+  // this addAttendance will be used by admin to add, update and delete attendance of the users
+  async addAttendance({ attendanceList, eventId }) {
+    console.log('attendanceList', attendanceList);
+    console.log('eventId', eventId);
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/attendance/${eventId}`, {
+            attendanceList,
+          }),
+        'addAttendance'
+      ),
+      {
+        loading: 'Marking Attendance',
+        success: 'Attendance Marked successfully',
+        error: 'Error while marking attendance',
+      },
+      {
+        id: 'addAttendance',
+      }
+    );
+  }
+  async getAttendanceByEventId({ eventId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.get(`/api/v1/attendance/event/${eventId}`),
+        'getAttendanceByEventId'
+      ),
+      {
+        loading: 'Fetching Attendance',
+        success: 'Attendance Fetched successfully',
+        error: 'Error while fetching attendance',
+      },
+      {
+        id: 'getAttendanceByEventId',
+      }
+    );
+  }
+
+  async getAttendanceByUserId({ userId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/attendance/user/${userId}`),
+      'getAttendanceByUserId'
+    );
+  }
+  async getAttendanceStatusByEventIdAndUserId({ eventId, userId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/attendance/status/${eventId}/${userId}`),
+      'getAttendanceStatusByEventIdAndUserId'
+    );
+  }
+
+  // unregistered attendance
+  async addUnregisteredAttendance({ fullName, mobile, email, remark, status   },eventId) {
+    return handleApiRequest(
+      () =>
+        axiosInstace.post(`/api/v1/unregisteredAttendance/${eventId}`, {
+          fullName,
+          mobile,
+          email,
+          remark,
+          status,
+        }),
+      'addUnregisteredAttendance'
+    );
+
+  }
+
+  async updateUnregisteredAttendance({ fullName, mobile, email, remark, status },unregisteredAttendanceId) {
+    return handleApiRequest(
+      () =>
+        axiosInstace.put(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`, {
+          fullName,
+          mobile,
+          email,
+          remark,
+          status,
+        }),
+      'updateUnregisteredAttendance'
+    );
+  }
+
+  async deleteUnregisteredAttendance({ unregisteredAttendanceId }) {
+    return handleApiRequest(
+      () => axiosInstace.delete(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`),
+      'deleteUnregisteredAttendance'
+    );
+  } 
+
+  async getUnregisteredAttendanceByEventId({ eventId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/unregisteredAttendance/event/${eventId}`),
+      'getUnregisteredAttendanceByEventId'
+    );
+  }
+
 }
 
 const databaseService = new DatabaseService();

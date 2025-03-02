@@ -58,7 +58,7 @@ app.use("/api/v1/event", eventRoutes);
 app.use("/api/v1/notification", notificationRoutes);
 app.use("/api/v1/subscription", subscriptionRoutes);
 app.use("/api/v1/attendance", attendanceRoutes);
-app.use("/api/v1/unregistered-attendance", unregisteredAttendanceRoutes);
+app.use("/api/v1/unregisteredAttendance", unregisteredAttendanceRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/like", likeRoutes);
 app.use("/api/v1/comment", commentRoutes);

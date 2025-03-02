@@ -76,3 +76,7 @@ Enhance response for queires
 
 // Event
 Define Event Types for the event
+
+
+//attendance
+Enhance attendance addding, updating Functionality

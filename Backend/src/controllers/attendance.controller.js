@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { Attendance } from "../models/attendance.model.js";
 import { Event } from "../models/event.model.js";
 import { User } from "../models/user.model.js";
+import mongoose from "mongoose";
 
 // controllers list
 // 1. addAttendance
@@ -15,35 +16,77 @@ import { User } from "../models/user.model.js";
 // 7. updateAttendanceStatus
 
 const addAttendance = asyncHandler(async (req, res, next) => {
-  const { eventId, userId, status } = req.body;
-  if ([eventId, userId, status].some((field) => (field.trim() ?? "") === "")) {
-    throw new ApiError(400, "EventId, UserId and Status are required");
+  const { eventId } = req.params;
+  if (!eventId) {
+    throw new ApiError(400, "Event Id is required");
   }
   const event = await Event.findById(eventId);
   if (!event) {
     throw new ApiError(404, "Event not found");
   }
-  const user = await User.findById(userId);
-  if (!user) {
+
+  const { attendanceList } = req.body;
+  // attendanceList is an array of objects
+  // each object should have userId and status
+  // status should be a boolean value
+  if (!attendanceList) {
+    throw new ApiError(400, "Attendance List is required");
+  }
+  if (!Array.isArray(attendanceList)) {
+    throw new ApiError(400, "Attendance List should be an array");
+  }
+  if (attendanceList.length === 0) {
+    throw new ApiError(400, "Attendance List should not be empty");
+  }
+  const userIds = attendanceList.map((attendance) => attendance.userId);
+  const users = await User.find({ _id: { $in: userIds } });
+  if (users.length !== userIds.length) {
     throw new ApiError(404, "User not found");
   }
-  const existingAttendance = await Attendance.findOne({ eventId, userId });
-  if (existingAttendance) {
-    throw new ApiError(400, "Attendance already marked");
-  }
-  const attendance = await Attendance.create({
-    eventId,
-    userId,
-    status,
-    markedBy: req.user._id,
-  });
 
-  if (!attendance) {
-    throw new ApiError(500, "Error in creating attendance");
+  //check if attendance of the user is marked or not, if marked then update the status else create a new attendance
+  const createdAttendances = [];
+  for (let attendance of attendanceList) {
+    const { userId, status } = attendance;
+    const attendanceExist = await Attendance.findOne({ eventId, userId });
+    if (attendanceExist) {
+      const updatedAttendance = await Attendance.findByIdAndUpdate(
+        attendanceExist._id,
+        {
+          status: status === true ? "present" : "absent",
+          markedBy: req.user._id,
+        },
+        { new: true }
+      );
+      if (!updatedAttendance) {
+        console.log("Error in updating attendance of user", userId);
+        throw new ApiError(500, "Error in updating attendance");
+      }
+    } else {
+      const newAttendance = {
+        eventId,
+        userId,
+        status: status === true ? "present" : "absent",
+        markedBy: req.user._id,
+      };
+      createdAttendances.push(newAttendance);
+    }
   }
+  let attendance = null;
+  if (createdAttendances.length > 0) {
+    console.log("Before inserting attendances", createdAttendances);
+    attendance = await Attendance.insertMany(createdAttendances);
+    console.log("After inserting attendances", attendance);
+    if (!attendance) {
+      throw new ApiError(500, "Error in marking attendance");
+    }
+  }
+
+  console.log("Attendance marked successfully", attendance);
   res
-    .status(201)
-    .json(new ApiResponce("Attendance marked successfully", attendance));
+    .status(200)
+    .json(new ApiResponce(200, attendance, "Attendance marked successfully"));
+
 });
 
 const updateAttendance = asyncHandler(async (req, res, next) => {
@@ -54,7 +97,7 @@ const updateAttendance = asyncHandler(async (req, res, next) => {
   }
   const attendance = await Attendance.findByIdAndUpdate(
     attendanceId,
-    { status, updatedBy: req.user._id },
+    { status, markedBy: req.user._id },
     { new: true }
   );
   if (!attendance) {
@@ -62,7 +105,7 @@ const updateAttendance = asyncHandler(async (req, res, next) => {
   }
   res
     .status(200)
-    .json(new ApiResponce("Attendance updated successfully", attendance));
+    .json(new ApiResponce(200, "Attendance updated successfully", attendance));
 });
 
 const deleteAttendance = asyncHandler(async (req, res, next) => {
@@ -76,7 +119,7 @@ const deleteAttendance = asyncHandler(async (req, res, next) => {
   }
   res
     .status(200)
-    .json(new ApiResponce("Attendance deleted successfully", attendance));
+    .json(new ApiResponce(200, "Attendance deleted successfully", attendance));
 });
 
 const getAttendanceByEventId = asyncHandler(async (req, res, next) => {
@@ -84,10 +127,52 @@ const getAttendanceByEventId = asyncHandler(async (req, res, next) => {
   if (!eventId) {
     throw new ApiError(400, "Event Id is required");
   }
-  const attendances = await Attendance.find({ eventId });
+  const attendances = await Attendance.aggregate([
+    {
+      $match: {
+        eventId: new mongoose.Types.ObjectId(eventId),
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+        pipeline: [
+          {
+            $project: {
+              firstName: 1,
+              lastName: 1,
+              username: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        user: {
+          $first: "$user",
+        },
+      },
+    },
+    {
+      $sort: {
+        status: -1
+      }
+    }
+  ]);
+  if(!attendances){
+    throw new ApiError(404, "Attendances not found");
+  }
+  // console.log('attendances', attendances);
   res
     .status(200)
-    .json(new ApiResponce("Attendances fetched successfully", attendances));
+    .json(
+      new ApiResponce(200, attendances, "Attendances fetched successfully")
+    );
 });
 
 const getAttendanceByUserId = asyncHandler(async (req, res, next) => {
@@ -98,7 +183,9 @@ const getAttendanceByUserId = asyncHandler(async (req, res, next) => {
   const attendances = await Attendance.find({ userId });
   res
     .status(200)
-    .json(new ApiResponce("Attendances fetched successfully", attendances));
+    .json(
+      new ApiResponce(200, "Attendances fetched successfully", attendances)
+    );
 });
 
 const getAttendanceStatusByEventIdAndUserId = asyncHandler(
@@ -111,7 +198,7 @@ const getAttendanceStatusByEventIdAndUserId = asyncHandler(
     if (!attendance) {
       throw new ApiError(404, "Attendance not found");
     }
-    res.status(200).json(new ApiResponce("Attendance found", attendance));
+    res.status(200).json(new ApiResponce(200, "Attendance found", attendance));
   }
 );
 
@@ -137,7 +224,7 @@ const updateAttendanceStatus = asyncHandler(async (req, res, next) => {
   res
     .status(200)
     .json(
-      new ApiResponce("Attendance status updated successfully", attendance)
+      new ApiResponce(200, "Attendance status updated successfully", attendance)
     );
 });
 
