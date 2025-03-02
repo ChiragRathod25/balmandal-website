@@ -2,7 +2,7 @@ import { ApiResponce } from "../utils/ApiResponce.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { Post } from "../models/post.model";
+import { Post } from "../models/post.model.js";
 
 //controllers list
 //1. addPost
