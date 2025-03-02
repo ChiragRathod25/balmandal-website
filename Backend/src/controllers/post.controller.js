@@ -154,7 +154,7 @@ const getPostsByUserId = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponce("Posts found", posts));
 });
 const getPostsByTag = asyncHandler(async (req, res, next) => {
-  const { tag } = req.params;
+  const { tag } = req.query;
   if (!tag) {
     throw new ApiError(400, "Tag is required");
   }
