@@ -24,7 +24,7 @@ const unregisteredAttendanceSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["present", "absent", "pending"],
-      default: "pending",
+      default: "present",
     },
     markedBy: {
       type: mongoose.Schema.Types.ObjectId,

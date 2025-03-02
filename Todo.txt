@@ -69,3 +69,7 @@ Modules to implement
 Attendance
 post
 Activity
+
+
+//like & Comment controller
+Enhance response for queires
