@@ -11,7 +11,7 @@ import {
     getPublishedPosts,
     togglePublishStatus,
     toggleIsCommentsEnabled,
-    updatePostApprovalStatus,
+    toggleIsApproved,
     updatePostStatus,
 } from "../controllers/post.controller.js";
 
@@ -25,7 +25,7 @@ router.route("/user/:userId").get(getPostsByUserId);
 router.route("/:postId").get(getPostById).put(updatePost).delete(deletePost);
 router.route("/:postId/publish").put(togglePublishStatus);
 router.route("/:postId/comments").put(toggleIsCommentsEnabled);
-router.route("/:postId/approval").put(updatePostApprovalStatus);
+router.route("/:postId/approval").put(toggleIsApproved);
 router.route("/:postId/status").put(updatePostStatus);
 
 

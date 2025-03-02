@@ -6,10 +6,10 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { io } from "../index.js";
 
  const addEvent = asyncHandler(async (req, res, next) => {
-  const { title, description, status, startAt, endAt,venue } = req.body;
+  const { title, description, status, startAt, endAt,venue,eventType } = req.body;
 
-  if (!title) {
-    throw new ApiError(400, "Title is required");
+  if (!title || !eventType) {
+    throw new ApiError(400, "Title and Event type is required");
   }
 
   if (endAt && new Date(endAt) < new Date(startAt)) {
@@ -40,6 +40,7 @@ import { io } from "../index.js";
     startAt,
     endAt,
     venue,
+    eventType,
     media: mediaFiles,
   });
   io.emit('event',event)
@@ -63,6 +64,7 @@ const updateEvent = asyncHandler(async (req, res, next) => {
     description,
     createdBy,
     status,
+    eventType,
     startAt,
     endAt,
     venue,
@@ -116,6 +118,7 @@ const updateEvent = asyncHandler(async (req, res, next) => {
       startAt,
       endAt,
       venue,
+      eventType,
       media: files,
     },
     { new: true }

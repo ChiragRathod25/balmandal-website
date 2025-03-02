@@ -11,7 +11,7 @@ function Event() {
   const fetchEvent = useCallback(() => databaseService.getEventById({ eventId }), [eventId]);
   const { data, loading, error } = useCustomReactQuery(fetchEvent);
   const navigate = useNavigate();
-  const isAdmin=useSelector((state)=>state.auth.userData?.isAdmin)
+  const isAdmin = useSelector((state) => state.auth.userData?.isAdmin);
 
   useEffect(() => {
     if (!eventId) {
@@ -56,16 +56,21 @@ function Event() {
           <div className="space-y-4 text-gray-700">
             <div className="whitespace-pre-wrap flex flex-row gap-2">
               <div>
-              <p className="font-semibold text-gray-800 mb-1">Description:</p>
+                <p className="font-semibold text-gray-800 mb-1">Description:</p>
               </div>
               <div>
-              <p >{event?.description}</p>
+                <p>{event?.description}</p>
               </div>
             </div>
 
             <p>
               <span className="font-semibold">Venue:</span> {event?.venue}
             </p>
+            {isAdmin && (
+              <p>
+                <span className="font-semibold">Event Type:</span> {event?.eventType}
+              </p>
+            )}
             <p>
               <span className="font-semibold">Start:</span>{' '}
               {new Date(event?.startAt).toLocaleDateString()} |{' '}
@@ -76,9 +81,11 @@ function Event() {
               {new Date(event?.endAt).toLocaleDateString()} |{' '}
               {new Date(event?.endAt).toLocaleTimeString()}
             </p>
-            <p>
-              <span className="font-semibold">Created By:</span> {event?.createdBy}
-            </p>
+            {isAdmin && (
+              <p>
+                <span className="font-semibold">Created By:</span> {event?.createdBy}
+              </p>
+            )}
           </div>
 
           {/* File Display Section */}
@@ -89,30 +96,28 @@ function Event() {
             </div>
           )}
 
-         {
-          isAdmin && (
+          {isAdmin && (
             <div className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start mt-6">
-            <Button
-              onClick={() => navigate(`/event/edit/${event._id}`)}
-              className="bg-blue-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
-            >
-              Edit Event
-            </Button>
-            <Button
-              onClick={() => handleDelete(event?._id)}
-              className="bg-red-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-red-600 transition"
-            >
-              Delete Event
-            </Button>
-            <Button
-              onClick={() => navigate('/event')}
-              className="bg-green-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-green-600 transition"
-            >
-              Manage Events
-            </Button>
-          </div>
-          )
-         }
+              <Button
+                onClick={() => navigate(`/event/edit/${event._id}`)}
+                className="bg-blue-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Edit Event
+              </Button>
+              <Button
+                onClick={() => handleDelete(event?._id)}
+                className="bg-red-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-red-600 transition"
+              >
+                Delete Event
+              </Button>
+              <Button
+                onClick={() => navigate('/event')}
+                className="bg-green-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-green-600 transition"
+              >
+                Manage Events
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </QueryHandler>

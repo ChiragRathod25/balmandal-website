@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+// Define the event schema
+
 const eventSchema = new mongoose.Schema(
   {
     title: {
@@ -18,8 +20,11 @@ const eventSchema = new mongoose.Schema(
       enum: ["upcoming", "ongoing", "completed","cancelled"],
       default: "upcoming",
     },
-
-
+    eventType: {
+      type: String,
+      enum: ["Bal Sabha", "Satsang Diksha","Samuh Puja","Other"],
+      required: true,
+    },
     //date and time
     startAt: {
       type: Date,

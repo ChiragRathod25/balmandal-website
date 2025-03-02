@@ -15,11 +15,11 @@ import { Post } from "../models/post.model.js";
 //8. getPublishedPosts
 //9. togglePublishStatus
 //10. toggleIsCommentsEnabled
-//11. updatePostApprovalStatus
+//11. toggleIsApproved
 //12. updatePostStatus
 
 const addPost = asyncHandler(async (req, res, next) => {
-  const { title, content, slug, status, tags, commentsEnabled } = req.body;
+  const { title, content, slug, status, tags, isCommentEnable } = req.body;
   if ([title, content, slug].some((field) => (field.trim() ?? "") === "")) {
     throw new ApiError(400, "Title, Content and Slug are required");
   }
@@ -43,7 +43,7 @@ const addPost = asyncHandler(async (req, res, next) => {
     slug,
     status,
     tags,
-    commentsEnabled,
+    isCommentEnable,
     meta: {
       title,
       description: content.slice(0, 100),
@@ -59,7 +59,7 @@ const addPost = asyncHandler(async (req, res, next) => {
 });
 
 const updatePost = asyncHandler(async (req, res, next) => {
-  const { title, content, slug, status, tags, commentsEnabled } = req.body;
+  const { title, content, slug, status, tags, isCommentEnable } = req.body;
 
   const { postId } = req.params;
   if (!postId) {
@@ -93,7 +93,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
       slug,
       status,
       tags,
-      commentsEnabled,
+      isCommentEnable,
       meta: {
         title,
         description: content.slice(0, 100),
@@ -208,7 +208,7 @@ const toggleIsCommentsEnabled = asyncHandler(async (req, res, next) => {
   const updatedPost = await Post.findByIdAndUpdate(
     postId,
     {
-      commentsEnabled: !post.commentsEnabled,
+      isCommentEnable: !post.isCommentEnable,
     },
     { new: true }
   );
@@ -225,9 +225,8 @@ const toggleIsCommentsEnabled = asyncHandler(async (req, res, next) => {
     );
 });
 
-const updatePostApprovalStatus = asyncHandler(async (req, res, next) => {
+const toggleIsApproved = asyncHandler(async (req, res, next) => {
   const { postId } = req.params;
-  const { approvalStatus } = req.body;
   if (!postId) {
     throw new ApiError(400, "Post Id is required");
   }
@@ -238,7 +237,7 @@ const updatePostApprovalStatus = asyncHandler(async (req, res, next) => {
   const updatedPost = await Post.findByIdAndUpdate(
     postId,
     {
-      approvalStatus,
+      isApproved: !post.isApproved,
     },
     { new: true }
   );
@@ -288,6 +287,6 @@ export {
   getPublishedPosts,
   togglePublishStatus,
   toggleIsCommentsEnabled,
-  updatePostApprovalStatus,
+  toggleIsApproved,
   updatePostStatus,
 };

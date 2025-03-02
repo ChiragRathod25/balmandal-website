@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Input, Button, FileUploader, CloudFilesManager } from '../../index';
+import { Input, Button, FileUploader, CloudFilesManager, Select } from '../../index';
 import databaseService from '../../../services/database.services';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ function EventForm({ event }) {
       startAt: event?.startAt || '',
       endAt: event?.endAt || '',
       venue: event?.venue || '',
+      eventType: event?.eventType || '',
       media: null,
     },
   });
@@ -92,6 +93,13 @@ function EventForm({ event }) {
           name="venue"
           placeholder="Enter venue"
           {...register('venue', { required: true })}
+          className="w-full"
+        />
+        <Select
+          label="Event Type"
+          name="eventType"
+          {...register('eventType', { required: true })}
+          options={["Bal Sabha", "Satsang Diksha","Samuh Puja","Other"]}
           className="w-full"
         />
 

@@ -56,7 +56,7 @@ const postSchema = new mongoose.Schema(
     publishedAt: {
       type: Date,
     },
-    approvalStatus: {
+    isApproved: {
       type: String,
       enum: ["approved", "rejected", "review", "pending"],
       default: "pending",

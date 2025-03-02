@@ -73,3 +73,6 @@ Activity
 
 //like & Comment controller
 Enhance response for queires
+
+// Event
+Define Event Types for the event
