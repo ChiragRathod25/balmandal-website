@@ -5,17 +5,19 @@ import {
   updateUnregisteredAttendance,
   deleteUnregisteredAttendance,
   getUnregisteredAttendanceByEventId,
+  getUnregisteredAttendanceById,
 } from "../controllers/unregistered_attendance.controller.js";
 
 const router = Router();
 router.use(verifyJWT);
 
 router
-  .route("/:eventId")
+  .route("/event/:eventId")
   .post(addUnregisteredAttendance)
   .get(getUnregisteredAttendanceByEventId);
 router
   .route("/:unregisteredAttendanceId")
+  .get(getUnregisteredAttendanceById)
   .put(updateUnregisteredAttendance)
   .delete(deleteUnregisteredAttendance);
 

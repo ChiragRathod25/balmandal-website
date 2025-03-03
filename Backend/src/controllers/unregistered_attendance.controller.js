@@ -21,9 +21,13 @@ const addUnregisteredAttendance = asyncHandler(async (req, res, next) => {
     throw new ApiError(404, "Event not found");
   }
   const { fullName, mobile, email, remark, status } = req.body;
-  if (!fullName) {
+  if (!fullName || !fullName.trim() || fullName.trim().length === 0) {
     throw new ApiError(400, "Full name is required");
   }
+  if (!status ) {
+    throw new ApiError(400, "Status is required and should be a boolean value");
+  }
+
   const unregisteredAttendance = await UnregisteredAttendance.create({
     eventId,
     fullName,
@@ -58,8 +62,11 @@ const updateUnregisteredAttendance = asyncHandler(async (req, res, next) => {
     throw new ApiError(404, "Unregistered attendance not found");
   }
   const { fullName, mobile, email, remark, status } = req.body;
-  if (!fullName) {
+  if (!fullName || !fullName.trim() || fullName.trim().length === 0) {
     throw new ApiError(400, "Full name is required");
+  }
+  if(!status ){
+    throw new ApiError(400, "Status is required and should be a boolean value");
   }
   const updatedUnregisteredAttendance =
     await UnregisteredAttendance.findByIdAndUpdate(
@@ -70,6 +77,7 @@ const updateUnregisteredAttendance = asyncHandler(async (req, res, next) => {
         email,
         remark,
         status,
+        markedBy: req.user._id,
       },
       { new: true }
     );
@@ -101,6 +109,20 @@ const deleteUnregisteredAttendance = asyncHandler(async (req, res, next) => {
     .status(200)
     .json(new ApiResponce("Unregistered attendance deleted successfully", {}));
 });
+const getUnregisteredAttendanceById=asyncHandler(async(req,res,next)=>{
+  const {unregisteredAttendanceId}=req.params;
+  if(!unregisteredAttendanceId){
+    throw new ApiError(400,"Unregistered attendance id is required");
+  }
+  const unregisteredAttendance=await UnregisteredAttendance.findById(unregisteredAttendanceId);
+  if(!unregisteredAttendance){
+    throw new ApiError(404,"Unregistered attendance not found");
+  }
+  res.status(200).json(
+
+    new ApiResponce(300,unregisteredAttendance,"Unregistered attendance fetched successfully")
+  );
+});
 
 const getUnregisteredAttendanceByEventId = asyncHandler(
   async (req, res, next) => {
@@ -130,5 +152,6 @@ export {
   addUnregisteredAttendance,
   updateUnregisteredAttendance,
   deleteUnregisteredAttendance,
+  getUnregisteredAttendanceById,
   getUnregisteredAttendanceByEventId,
 };

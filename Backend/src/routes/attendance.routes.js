@@ -11,7 +11,7 @@ import {
 } from "../controllers/attendance.controller.js";
 const router = Router();
 router.use(verifyJWT);
-router.route("/").post(addAttendance);
+router.route("/:eventId").post(addAttendance);
 router.route("/:attendanceId").put(updateAttendance).delete(deleteAttendance);
 router.route("/event/:eventId").get(getAttendanceByEventId);
 router.route("/user/:userId").get(getAttendanceByUserId);

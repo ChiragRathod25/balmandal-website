@@ -34,6 +34,11 @@ import {
   Notification,
   AddNotification,
   AllNotification,
+  EditAttendance,
+  Attendance,
+  AddUnregisteredAttendance,
+  UnregisteredAttendance,
+  EditUnregisteredAttendance,
 
 } from './pages/index.js';
 import { AuthLayout } from './components';
@@ -228,8 +233,52 @@ const router = createBrowserRouter([
                 <EditEvent />
               </AuthLayout>
             )
-
-          }
+          },
+          {
+            path:'attendance',
+            children:[
+              {
+                path:':eventId',
+                element:(
+                  <AuthLayout>
+                    <Attendance/>
+                  </AuthLayout>
+                )
+              },
+              {
+                path:'edit/:eventId',
+                element:(
+                  <AuthLayout>
+                    <EditAttendance/>
+                  </AuthLayout>
+                )
+              },
+              {
+                path:'unregistered/add/:eventId',
+                element:(
+                  <AuthLayout>
+                    <AddUnregisteredAttendance/>
+                  </AuthLayout>
+                )
+              },
+              {
+                path:'unregistered/:unregisteredAttendanceId',
+                element:(
+                  <AuthLayout>
+                    <UnregisteredAttendance/>
+                  </AuthLayout>
+                )
+              },
+              {
+                path:'unregistered/edit/:unregisteredAttendanceId',
+                element:(
+                  <AuthLayout>
+                    <EditUnregisteredAttendance/>
+                  </AuthLayout>
+                )
+              }
+            ]
+          },
         ]
       },
       {

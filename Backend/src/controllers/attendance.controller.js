@@ -180,11 +180,54 @@ const getAttendanceByUserId = asyncHandler(async (req, res, next) => {
   if (!userId) {
     throw new ApiError(400, "User Id is required");
   }
-  const attendances = await Attendance.find({ userId });
+  const attendances = await Attendance.aggregate([
+    {
+      $match: {
+        userId: new mongoose.Types.ObjectId(userId),
+      }
+    },
+    {
+      $lookup: {
+        from: "events",
+        localField: "eventId",
+        foreignField: "_id",
+        as: "event"
+      }
+    },
+    {
+      $addFields: {
+        event: {
+          $first: "$event"
+        }
+      }
+    },
+    {
+      $group: {
+        _id:   "$event.eventType",
+        total: {
+          $sum: 1
+        },
+          present: {
+          $sum: { $cond: [{ $eq: ["$status", "present"] }, 1, 0] }
+        },
+        absent: {
+          $sum: { $cond: [{ $eq: ["$status", "absent"] }, 1, 0] }
+        }
+      }
+    },
+    {
+      $addFields: {
+        eventType: "$_id"
+      }
+    }
+  ]);
+  if (!attendances) {
+    throw new ApiError(404, "Attendances not found");
+  }
   res
     .status(200)
     .json(
-      new ApiResponce(200, "Attendances fetched successfully", attendances)
+      new ApiResponce(200, attendances, "Attendances fetched successfully")
     );
 });
 

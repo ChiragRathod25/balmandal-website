@@ -99,6 +99,12 @@ function Event() {
           {isAdmin && (
             <div className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start mt-6">
               <Button
+                onClick={() => navigate(`/event/attendance/${event._id}`)}
+                className="bg-pink-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Attendance
+              </Button>
+              <Button
                 onClick={() => navigate(`/event/edit/${event._id}`)}
                 className="bg-blue-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
               >

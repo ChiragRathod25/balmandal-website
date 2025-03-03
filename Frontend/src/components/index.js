@@ -27,6 +27,17 @@ import UserAchievementCard from "./Profile/UserAchievementCard";
 import UserTalentCard from "./Profile/UserTalentCard";
 import UserParentCard from "./Profile/UserParentCard";
 import EventCard from "./Event/EventCard";
+import AttendanceForm from "./Forms/Event/Attendance/AttendanceForm";
+import UnregisteredAttendanceForm from "./Forms/Event/UnregisteredAttendance/UnregisteredAttendanceForm";
+import EventAttendance from "./Event/Attendance/EventAttendance";
+import EventUnregisteredAttendace from "./Event/Unregistered_attendance/EventUnregisteredAttendace";
+import UserAttendanceCard from "./Event/Attendance/UserAttendanceCard";
+import UserAchievement from "./Dashbord/UserAchievement";
+import UserAttendanceDashboard from "./Dashbord/UserAttendance";
+import UserAttendanceProfile from "./Profile/UserAttendance";
+import UserTalent from "./Dashbord/UserTalent";
+import UserParent from "./Dashbord/UserParent";
+import UserDetails from "./Dashbord/UserDetails";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -57,5 +68,16 @@ export {
   UserTalentCard,
   UserParentCard,
   EventCard,
-
+  AttendanceForm,
+  UnregisteredAttendanceForm,
+  EventAttendance,
+  EventUnregisteredAttendace,
+  UserAttendanceCard,
+  UserAchievement,
+  UserAttendanceDashboard,
+  UserAttendanceProfile,
+  UserTalent,
+  UserParent,
+  UserDetails,
+  
 };

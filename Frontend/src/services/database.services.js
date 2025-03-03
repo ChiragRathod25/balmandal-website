@@ -1025,40 +1025,77 @@ export class DatabaseService {
 
   // unregistered attendance
   async addUnregisteredAttendance({ fullName, mobile, email, remark, status   },eventId) {
-    return handleApiRequest(
-      () =>
-        axiosInstace.post(`/api/v1/unregisteredAttendance/${eventId}`, {
-          fullName,
-          mobile,
-          email,
-          remark,
-          status,
-        }),
-      'addUnregisteredAttendance'
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/unregisteredAttendance/event/${eventId}`, {
+            fullName,
+            mobile,
+            email,
+            remark,
+            status,
+          }),
+        'addUnregisteredAttendance'
+      ),
+      {
+        loading: 'Adding Unregistered Attendance',
+        success: 'Unregistered Attendance Added successfully',
+        error: 'Error while adding unregistered attendance',
+      },
+      {
+        id: 'addUnregisteredAttendance'
+      }
     );
-
   }
 
   async updateUnregisteredAttendance({ fullName, mobile, email, remark, status },unregisteredAttendanceId) {
-    return handleApiRequest(
-      () =>
-        axiosInstace.put(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`, {
-          fullName,
-          mobile,
-          email,
-          remark,
-          status,
-        }),
-      'updateUnregisteredAttendance'
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`, {
+            fullName,
+            mobile,
+            email,
+            remark,
+            status,
+          }),
+        'updateUnregisteredAttendance'
+      ),
+      {
+        loading: 'Updating Unregistered Attendance',
+        success: 'Unregistered Attendance Updated successfully',
+        error: 'Error while updating unregistered attendance',
+      },
+      {
+        id: 'updateUnregisteredAttendance'
+      } 
     );
   }
 
   async deleteUnregisteredAttendance({ unregisteredAttendanceId }) {
-    return handleApiRequest(
-      () => axiosInstace.delete(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`),
-      'deleteUnregisteredAttendance'
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`),
+        'deleteUnregisteredAttendance'
+      ),
+      {
+        loading: 'Deleting Unregistered Attendance',
+        success: 'Unregistered Attendance Deleted successfully',
+        error: 'Error while deleting unregistered attendance',
+      },
+      {
+        id: 'deleteUnregisteredAttendance',
+      }
     );
+
+
   } 
+  async getUnregisteredAttendanceById({ unregisteredAttendanceId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`),
+      'getUnregisteredAttendanceById'
+    );
+  }
 
   async getUnregisteredAttendanceByEventId({ eventId }) {
     return handleApiRequest(

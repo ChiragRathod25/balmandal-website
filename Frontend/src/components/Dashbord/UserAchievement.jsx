@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { X, Pencil, Trash } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { AchievementForm, Modal, Button } from '../../components';
+import { AchievementForm, Modal, Button } from '../index.js';
 import { useSelector, useDispatch } from 'react-redux';
-import UserAchievementCard from '../../components/Profile/UserAchievementCard.jsx';
-import { Achievement } from '../index';
+import UserAchievementCard from '../Profile/UserAchievementCard.jsx';
+import { Achievement } from '../../pages/index';
 import databaseService from '../../services/database.services.js';
 import { setEditableUserAchievement } from '../../slices/dashboard/dashboardSlice.js';
 

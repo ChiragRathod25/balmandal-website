@@ -32,6 +32,11 @@ import Notification from './Notification/Notification';
 import AllNotification from './Notification/AllNotifications';
 import AddNotification from './Notification/AddNotification';
 
+import EditAttendance from './Event/Attendance/EditAttendance';
+import Attendance from './Event/Attendance/Attendance';
+import AddUnregisteredAttendance from './Event/Unregistered_attendance/AddUnregisteredAttendance';
+import UnregisteredAttendance from './Event/Unregistered_attendance/UnregisteredAttendance';
+import EditUnregisteredAttendance from './Event/Unregistered_attendance/EditUnregisteredAttendance';
 export {
   AddAchievement,
   EditAchievement,
@@ -60,4 +65,9 @@ export {
   Notification,
   AddNotification,
   AllNotification,
+  EditAttendance,
+  Attendance,
+  AddUnregisteredAttendance,
+  UnregisteredAttendance,
+  EditUnregisteredAttendance
 };
