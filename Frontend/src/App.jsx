@@ -18,7 +18,6 @@ export const socket = socketClient(config.apiURL, {
   transports: ['websocket'],
 }); 
 
-
 //App Component
 function App() {
  
@@ -126,6 +125,7 @@ function App() {
           </div>
 
         </div>
+     
         <Outlet />
       </main>
         </Layout>

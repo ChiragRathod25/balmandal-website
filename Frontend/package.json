@@ -15,7 +15,7 @@
     "@tailwindcss/vite": "^4.0.4",
     "axios": "^1.8.1",
     "bootstrap": "^5.3.3",
-    "ckeditor5": "^44.2.1",
+    "ckeditor5": "^44.3.0",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.475.0",
     "prettier": "^3.5.0",

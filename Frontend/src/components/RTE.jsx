@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -10,8 +11,10 @@ import {
 	BalloonToolbar,
 	BlockQuote,
 	Bold,
+    Base64UploadAdapter,
 	Code,
 	CodeBlock,
+    Clipboard,
 	Emoji,
 	Essentials,
 	FontBackgroundColor,
@@ -81,6 +84,7 @@ export default function RTE() {
 	const editorContainerRef = useRef(null);
 	const editorRef = useRef(null);
 	const editorWordCountRef = useRef(null);
+
 	const [isLayoutReady, setIsLayoutReady] = useState(false);
 
 	useEffect(() => {
@@ -141,6 +145,7 @@ export default function RTE() {
 					],
 					shouldNotGroupWhenFull: false
 				},
+              
 				plugins: [
 					Alignment,
 					Autoformat,
@@ -149,9 +154,11 @@ export default function RTE() {
 					Autosave,
 					BalloonToolbar,
 					BlockQuote,
+                    Base64UploadAdapter,
 					Bold,
 					Code,
 					CodeBlock,
+                    Clipboard,
 					Emoji,
 					Essentials,
 					FontBackgroundColor,
@@ -220,7 +227,9 @@ export default function RTE() {
 						{
 							model: 'paragraph',
 							title: 'Paragraph',
-							class: 'ck-heading_paragraph'
+							class: 'ck-heading_paragraph',
+                            view: 'p'
+                        
 						},
 						{
 							model: 'heading1',
@@ -257,8 +266,10 @@ export default function RTE() {
 							view: 'h6',
 							title: 'Heading 6',
 							class: 'ck-heading_heading6'
-						}
-					]
+						},
+                      
+					],
+                    
 				},
 				htmlSupport: {
 					allow: [
@@ -333,21 +344,21 @@ export default function RTE() {
 					<div ref={editorRef}
           >
 						{editorConfig && (
-							<CKEditor
-
-								onReady={editor => {
-									const wordCount = editor.plugins.get('WordCount');
-									editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
-
-									editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
-								}}
-								onAfterDestroy={() => {
-									Array.from(editorWordCountRef.current.children).forEach(child => child.remove());
-
-									Array.from(editorMenuBarRef.current.children).forEach(child => child.remove());
-								}}
-								editor={ClassicEditor}
-								config={editorConfig}
+                            <CKEditor
+                            
+                            onReady={editor => {
+                                const wordCount = editor.plugins.get('WordCount');
+                                editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
+                                
+                                editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
+                            }}
+                            onAfterDestroy={() => {
+                                Array.from(editorWordCountRef?.current.children).forEach(child => child.remove());
+                                
+                                Array.from(editorMenuBarRef.current.children).forEach(child => child.remove());
+                            }}
+                            editor={ClassicEditor}
+                            config={editorConfig}
 							/>
 						)}
 					</div>

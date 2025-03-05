@@ -1,49 +1,75 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @media print {
-	body {
-		margin: 0 !important;
-	}
+    body {
+        margin: 0 !important;
+    }
 }
 
 .main-container {
-	font-family: 'Lato';
-	width: fit-content;
-	margin-left: auto;
-	margin-right: auto;
+    font-family: 'Lato', sans-serif;
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    padding: 0 10px; /* Prevents text from touching edges */
 }
 
+/* Editor Content Styling */
 .ck-content {
-	font-family: 'Lato';
-	line-height: 1.6;
-	word-break: break-word;
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+    word-break: break-word;
+    padding-left: 20px; /* Ensures bullets and numbers are fully visible */
 }
 
+/* Editor Container */
+.editor-container__editor {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: normal;
+    border: 1px solid #ccc; /* Add a subtle border */
+    border-radius: 8px; /* Slightly rounded corners */
+    padding: 10px;
+    background: #fff; /* Background color to distinguish the editor */
+}
+
+/* Make Editor Width Responsive */
 .editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
+    min-width: 100%;
+    max-width: 100%;
 }
 
-.editor_container__word-count .ck-word-count {
-	color: var(--ck-color-text);
-	display: flex;
-	height: 20px;
-	gap: var(--ck-spacing-small);
-	justify-content: flex-end;
-	font-size: var(--ck-font-size-base);
-	line-height: var(--ck-line-height-base);
-	font-family: var(--ck-font-face);
-	padding: var(--ck-spacing-small) var(--ck-spacing-standard);
+/* Fix Bullet & Number List Visibility */
+.ck-content ol,
+.ck-content ul {
+    padding-left: 25px; /* Ensures numbers/bullets are visible */
 }
 
-.editor-container_include-word-count.editor-container_classic-editor .editor_container__word-count {
-	border: 1px solid var(--ck-color-base-border);
-	border-radius: var(--ck-border-radius);
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-	border-top: none;
+/* Word Count Section */
+.editor_container__word-count {
+    text-align: right;
+    font-size: 0.9em;
+    padding: 5px;
 }
 
-.editor-container_include-word-count.editor-container_classic-editor .editor-container__editor .ck-editor .ck-editor__editable {
-	border-radius: 0;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .editor-container__editor {
+        min-width: 100%;
+    }
+
+    .ck-toolbar {
+        flex-wrap: wrap; /* Allow toolbar buttons to wrap */
+        justify-content: center;
+    }
+
+    .ck-editor__editable {
+        min-height: 200px; /* Reduce height for smaller screens */
+    }
+
+    .editor_container__word-count {
+        font-size: 0.8em;
+    }
 }
