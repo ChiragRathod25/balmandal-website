@@ -113,18 +113,9 @@ function App() {
         <h2>
           Hi
         </h2>
-        <div className="main-container">
-          <div className="editor-container editor-container_classic-editor editor-container_include-word-count">
-            <div className="editor-container__editor">
-              <div>
-                <div>
-                  <RTE />
-                </div>
-              </div>
-            </div>
-          </div>
+       
+       <RTE/>
 
-        </div>
      
         <Outlet />
       </main>
