@@ -38,6 +38,7 @@ import UserAttendanceProfile from "./Profile/UserAttendance";
 import UserTalent from "./Dashbord/UserTalent";
 import UserParent from "./Dashbord/UserParent";
 import UserDetails from "./Dashbord/UserDetails";
+import RTE from "./RTE";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -79,5 +80,5 @@ export {
   UserTalent,
   UserParent,
   UserDetails,
-  
+  RTE
 };

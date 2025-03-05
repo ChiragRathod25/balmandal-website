@@ -9,7 +9,7 @@ import MyToaster from './MyToaster';
 import { registerAndSubscribe } from './utils/subscriptionHelper';
 import config from './conf/config';
 
-import {Layout} from './components';
+import {Layout,RTE} from './components';
 
 //socket io connection
 import { io } from 'socket.io-client';
@@ -111,7 +111,21 @@ function App() {
       <main>
         {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
         <MyToaster />
+        <h2>
+          Hi
+        </h2>
+        <div className="main-container">
+          <div className="editor-container editor-container_classic-editor editor-container_include-word-count">
+            <div className="editor-container__editor">
+              <div>
+                <div>
+                  <RTE />
+                </div>
+              </div>
+            </div>
+          </div>
 
+        </div>
         <Outlet />
       </main>
         </Layout>
