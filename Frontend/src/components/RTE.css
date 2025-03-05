@@ -36,6 +36,15 @@
     background: #fff; /* Background color to distinguish the editor */
 }
 
+/* Set a minimum height for the CKEditor editable area */
+.ck-editor__editable {
+    min-height: 250px; /* Adjust this value as needed */
+    max-height: 600px; /* Optional: Prevent excessive growth */
+    overflow-y: auto; /* Ensures scrolling when content exceeds max height */
+}
+
+
+
 /* Make Editor Width Responsive */
 .editor-container_classic-editor .editor-container__editor {
     min-width: 100%;
@@ -122,4 +131,10 @@
     font-weight: bold;
     color: #777;
     margin-bottom: 10px;
+}
+
+
+
+.ck.ck-powered-by {
+    display: none !important;
 }
