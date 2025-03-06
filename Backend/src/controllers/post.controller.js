@@ -47,7 +47,7 @@ const addPost = asyncHandler(async (req, res, next) => {
     meta: {
       title,
       description: content.slice(0, 100),
-      keywords: tags.join(","),
+      keywords: tags
     },
     createdBy: req.user._id,
   });
@@ -55,7 +55,9 @@ const addPost = asyncHandler(async (req, res, next) => {
   if (!post) {
     throw new ApiError(500, "Error in creating post");
   }
-  res.status(201).json(new ApiResponce("Post created successfully", post));
+  res.status(201).json(
+    new ApiResponce(200,post,"Post created successfully")
+  )
 });
 
 const updatePost = asyncHandler(async (req, res, next) => {
@@ -97,7 +99,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
       meta: {
         title,
         description: content.slice(0, 100),
-        keywords: tags.join(","),
+        keywords: tags
       },
     },
     { new: true }

@@ -37,6 +37,12 @@ import Attendance from './Event/Attendance/Attendance';
 import AddUnregisteredAttendance from './Event/Unregistered_attendance/AddUnregisteredAttendance';
 import UnregisteredAttendance from './Event/Unregistered_attendance/UnregisteredAttendance';
 import EditUnregisteredAttendance from './Event/Unregistered_attendance/EditUnregisteredAttendance';
+
+import AddPost from './Post/AddPost';
+import AllPost from './Post/AllPost';
+import EditPost from './Post/EditPost';
+import Post from './Post/Post';
+import UserPosts from './Post/UserPosts';
 export {
   AddAchievement,
   EditAchievement,
@@ -69,5 +75,11 @@ export {
   Attendance,
   AddUnregisteredAttendance,
   UnregisteredAttendance,
-  EditUnregisteredAttendance
+  EditUnregisteredAttendance,
+  AddPost,
+  AllPost,
+  EditPost,
+  Post,
+  UserPosts
+  
 };

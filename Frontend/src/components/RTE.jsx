@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { Controller } from 'react-hook-form';
 import {
   ClassicEditor,
   Alignment,
@@ -79,7 +80,7 @@ import './RTE.css';
  */
 const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
 
-export default function RTE() {
+function RTE({ control, name, label, defaultValue = '' }) {
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
   const editorWordCountRef = useRef(null);
@@ -100,6 +101,7 @@ export default function RTE() {
 
     return {
       editorConfig: {
+        initialData: defaultValue,
         toolbar: {
           items: [
             'heading',
@@ -146,7 +148,6 @@ export default function RTE() {
           shouldNotGroupWhenFull: false,
         },
 
-        
         plugins: [
           Alignment,
           Autoformat,
@@ -216,7 +217,6 @@ export default function RTE() {
           WordCount,
         ],
         balloonToolbar: [
-       
           'fontSize',
           '|',
           'bold',
@@ -322,8 +322,8 @@ export default function RTE() {
             '|',
             'resizeImage',
           ],
+          
         },
-        initialData: '',
         licenseKey: LICENSE_KEY,
         link: {
           addTargetToExternalLinks: true,
@@ -380,23 +380,41 @@ export default function RTE() {
       >
         <div className="editor-container__editor">
           <div ref={editorRef}>
-            {editorConfig && (
-              <CKEditor
-                onReady={(editor) => {
-                  const wordCount = editor.plugins.get('WordCount');
-                  editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
+            {/* <label htmlFor={name}>{label}</label> */}
+            {editorConfig && control && (
+              <Controller
+                name={name || 'content'}
+                control={control}
+                render={({ field: { onChange } }) => (
+                  <CKEditor
+                    onReady={(editor) => {
+                      const wordCount = editor.plugins.get('WordCount');
+                      editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
 
-                  editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
-                }}
-                onAfterDestroy={() => {
-                  Array.from(editorWordCountRef?.current.children).forEach((child) =>
-                    child.remove()
-                  );
+                      editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
+                    }}
+                    onChange={(event, editor) => {
+                      // editor.model.document.on('change:data', () => {
+                      //   const data = editor.getData();
+                      //   onChange(data); // This updates the form value
+                      // });
 
-                  Array.from(editorMenuBarRef.current.children).forEach((child) => child.remove());
-                }}
-                editor={ClassicEditor}
-                config={editorConfig}
+                      const data = editor.getData();
+                      onChange(data);
+                    }}
+                    onAfterDestroy={() => {
+                      Array.from(editorWordCountRef?.current.children).forEach((child) =>
+                        child.remove()
+                      );
+
+                      Array.from(editorMenuBarRef.current.children).forEach((child) =>
+                        child.remove()
+                      );
+                    }}
+                    editor={ClassicEditor}
+                    config={editorConfig}
+                  />
+                )}
               />
             )}
           </div>
@@ -406,3 +424,5 @@ export default function RTE() {
     </div>
   );
 }
+
+export default RTE;

@@ -878,7 +878,6 @@ export class DatabaseService {
 
   async createNotification({
     createdFor,
-
     targetGroup,
     title,
     message,
@@ -1104,6 +1103,137 @@ export class DatabaseService {
     );
   }
 
+  //POST
+  async addPost({title, content, slug, status, tags, isCommentEnable }){
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/post', {
+            title,
+            content,
+            slug,
+            status,
+            tags,
+            isCommentEnable,
+          }),
+        'addPost'
+      ),
+      {
+        loading: 'Adding Post',
+        success: 'Post Added successfully',
+        error: 'Error while adding post',
+      },
+      {
+        id: 'addPost',
+      }
+    );
+  }
+  async updatePost({title, content, slug, status, tags, isCommentEnable }, postId){
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/post/${postId}`, {
+            title,
+            content,
+            slug,
+            status,
+            tags,
+            isCommentEnable,
+          }),
+        'updatePost'
+      ),
+      {
+        loading: 'Updating Post',
+        success: 'Post Updated successfully',
+        error: 'Error while updating post',
+      },
+      {
+        id: 'updatePost',
+      }
+    );
+  }
+  async deletePost({ postId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/post/${postId}`),
+        'deletePost'
+      ),
+      {
+        loading: 'Deleting Post',
+        success: 'Post Deleted successfully',
+        error: 'Error while deleting post',
+      },
+      {
+        id: 'deletePost',
+      }
+    ); 
+  }
+  async getPostById({ postId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/post/${postId}`),
+      'getPostById'
+    );
+  }
+  async getPosts(){
+    return handleApiRequest(
+      () => axiosInstace.get('/api/v1/post'),
+      'getPosts'
+    );
+  }
+  async getPostsByUserId({ userId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/post/user/${userId}`),
+      'getPostsByUserId'
+    );
+  }
+  async togglePublishStatus({ postId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.put(`/api/v1/post/${postId}/publish`),
+        'togglePublishStatus'
+      ),
+      {
+        loading: 'Toggling Publish Status',
+        success: 'Publish Status Toggled successfully',
+        error: 'Error while toggling publish status',
+      },
+      {
+        id: 'togglePublishStatus',
+      }
+    );
+  }
+  async toggleIsCommentsEnabled({ postId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.put(`/api/v1/post/${postId}/comments`),
+        'toggleIsCommentsEnabled'
+      ),
+      {
+        loading: 'Toggling Comment Status',
+        success: 'Comment Status Toggled successfully',
+        error: 'Error while toggling comment status',
+      },
+      {
+        id: 'toggleIsCommentsEnabled',
+      }
+    );
+  }
+  async toggleIsApproved({ postId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.put(`/api/v1/post/${postId}/approval`),
+        'toggleIsApproved'
+      ),
+      {
+        loading: 'Toggling Approval Status',
+        success: 'Approval Status Toggled successfully',
+        error: 'Error while toggling approval status',
+      },
+      {
+        id: 'toggleIsApproved',
+      }
+    );
+  }
 }
 
 const databaseService = new DatabaseService();

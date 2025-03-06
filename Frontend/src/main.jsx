@@ -6,7 +6,6 @@ import './index.css';
 import { Provider } from 'react-redux';
 import store from './store/store.js';
 
-
 import {
   AddAchievement,
   EditAchievement,
@@ -39,7 +38,11 @@ import {
   AddUnregisteredAttendance,
   UnregisteredAttendance,
   EditUnregisteredAttendance,
-
+  AddPost,
+  AllPost,
+  EditPost,
+  Post,
+  UserPosts,
 } from './pages/index.js';
 import { AuthLayout } from './components';
 
@@ -200,124 +203,168 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path:'event',
-        children:[
+        path: 'event',
+        children: [
           {
-            path:'',
-            element:(
+            path: '',
+            element: (
               <AuthLayout>
                 <AllEvent />
               </AuthLayout>
-            )
+            ),
           },
           {
-            path:'add',
-            element:(
+            path: 'add',
+            element: (
               <AuthLayout>
                 <AddEvent />
               </AuthLayout>
-            )
+            ),
           },
           {
-            path:':eventId',
-            element:(
+            path: ':eventId',
+            element: (
               <AuthLayout>
                 <Event />
               </AuthLayout>
-            )
+            ),
           },
           {
-            path:'edit/:eventId',
-            element:(
+            path: 'edit/:eventId',
+            element: (
               <AuthLayout>
                 <EditEvent />
               </AuthLayout>
-            )
+            ),
           },
           {
-            path:'attendance',
-            children:[
+            path: 'attendance',
+            children: [
               {
-                path:':eventId',
-                element:(
+                path: ':eventId',
+                element: (
                   <AuthLayout>
-                    <Attendance/>
+                    <Attendance />
                   </AuthLayout>
-                )
+                ),
               },
               {
-                path:'edit/:eventId',
-                element:(
+                path: 'edit/:eventId',
+                element: (
                   <AuthLayout>
-                    <EditAttendance/>
+                    <EditAttendance />
                   </AuthLayout>
-                )
+                ),
               },
               {
-                path:'unregistered/add/:eventId',
-                element:(
+                path: 'unregistered/add/:eventId',
+                element: (
                   <AuthLayout>
-                    <AddUnregisteredAttendance/>
+                    <AddUnregisteredAttendance />
                   </AuthLayout>
-                )
+                ),
               },
               {
-                path:'unregistered/:unregisteredAttendanceId',
-                element:(
+                path: 'unregistered/:unregisteredAttendanceId',
+                element: (
                   <AuthLayout>
-                    <UnregisteredAttendance/>
+                    <UnregisteredAttendance />
                   </AuthLayout>
-                )
+                ),
               },
               {
-                path:'unregistered/edit/:unregisteredAttendanceId',
-                element:(
+                path: 'unregistered/edit/:unregisteredAttendanceId',
+                element: (
                   <AuthLayout>
-                    <EditUnregisteredAttendance/>
+                    <EditUnregisteredAttendance />
                   </AuthLayout>
-                )
-              }
-            ]
+                ),
+              },
+            ],
           },
-        ]
+        ],
       },
       {
-        path:'notification',
-        children:[
+        path: 'notification',
+        children: [
           {
-            path:'',
-            element:(
+            path: '',
+            element: (
               <AuthLayout>
-                <AllNotification/>
+                <AllNotification />
               </AuthLayout>
-            )
+            ),
           },
           {
-            path:'add',
-            element:(
+            path: 'add',
+            element: (
               <AuthLayout>
-                <AddNotification/>
+                <AddNotification />
               </AuthLayout>
-            )
+            ),
           },
           {
-            path:':notificationId',
-            element:(
+            path: ':notificationId',
+            element: (
               <AuthLayout>
-                <Notification/>
+                <Notification />
               </AuthLayout>
-            )
+            ),
+          },
+        ],
+      },
+      {
+        path: 'post',
+        children: [
+          {
+            path: '',
+            element: (
+              <AuthLayout>
+                <AllPost />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: 'add',
+            element: (
+              <AuthLayout>
+                <AddPost />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: ':postId',
+            element: (
+              <AuthLayout>
+                <Post />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: 'edit/:postId',
+            element: (
+              <AuthLayout>
+                <EditPost />
+              </AuthLayout>
+            ),
+          },
+          {
+           path: 'user/:userId',
+            element: (
+              <AuthLayout>
+                <UserPosts />
+              </AuthLayout>
+            ) 
           }
         ]
-
       }
     ],
   },
 ]);
 createRoot(document.getElementById('root')).render(
-  <StrictMode> 
+  <StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
-   </StrictMode> 
+  </StrictMode>
 );

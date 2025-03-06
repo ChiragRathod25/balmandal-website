@@ -110,12 +110,7 @@ function App() {
       <main>
         {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
         <MyToaster />
-        <h2>
-          Hi
-        </h2>
-       
-       <RTE/>
-
+      
      
         <Outlet />
       </main>

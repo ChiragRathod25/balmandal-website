@@ -80,3 +80,7 @@ Define Event Types for the event
 
 //attendance
 Enhance attendance addding, updating Functionality
+
+
+//post
+Enhance post status functionality for Post Status and Approved

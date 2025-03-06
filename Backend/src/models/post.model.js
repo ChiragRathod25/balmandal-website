@@ -13,7 +13,6 @@ const postSchema = new mongoose.Schema(
     },
     featuredImage: {
       type: String,
-      required: true,
       trim: true,
     },
     slug: {
@@ -24,14 +23,14 @@ const postSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: [
-        "draft",
-        "published",
-        "deleted",
-        "archived",
-        "scheduled",
-        "markedForReview",
+        "Draft",
+        "Published",
+        "Deleted",
+        "Archived",
+        "Scheduled",
+        "MarkedForReview",
       ],
-      default: "draft",
+      default: "Draft",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
