@@ -40,7 +40,6 @@ const postSchema = new mongoose.Schema(
     tags: [
       {
         type: String,
-        required: true,
         trim: true,
       },
     ],

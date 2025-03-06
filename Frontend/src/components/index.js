@@ -39,7 +39,8 @@ import UserTalent from "./Dashbord/UserTalent";
 import UserParent from "./Dashbord/UserParent";
 import UserDetails from "./Dashbord/UserDetails";
 import RTE from "./RTE";
-import PostForm from "./Post/PostForm";
+import PostForm from "./Forms/Post/PostForm";
+import PostCard from "./Post/PostCard";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -83,4 +84,5 @@ export {
   UserDetails,
   RTE,
   PostForm,
+  PostCard,
 };

@@ -349,7 +349,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-           path: 'user/:userId',
+           path: 'user',
             element: (
               <AuthLayout>
                 <UserPosts />

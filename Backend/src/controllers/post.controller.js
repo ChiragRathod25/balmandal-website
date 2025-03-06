@@ -36,18 +36,21 @@ const addPost = asyncHandler(async (req, res, next) => {
       throw new ApiError(500, "Error in uploading post featured image");
     }
   }
+
+  console.log("tags", tags);
+  console.log("tags", typeof tags);
   const post = await Post.create({
     title,
     content,
     featuredImage,
     slug,
     status,
-    tags,
+    tags:Array.from(tags),
     isCommentEnable,
     meta: {
       title,
       description: content.slice(0, 100),
-      keywords: tags
+      keywords: tags,
     },
     createdBy: req.user._id,
   });
@@ -110,7 +113,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
   }
   res
     .status(200)
-    .json(new ApiResponce("Post updated successfully", updatedPost));
+    .json(new ApiResponce(200,updatedPost,"Post updated successfully"));
 });
 
 const deletePost = asyncHandler(async (req, res, next) => {
@@ -127,7 +130,7 @@ const deletePost = asyncHandler(async (req, res, next) => {
     throw new ApiError(500, "Error in deleting post");
   }
 
-  res.status(200).json(new ApiResponce("Post deleted successfully", {}));
+  res.status(200).json(new ApiResponce(200,{},"Post deleted successfully"));
 });
 
 const getPostById = asyncHandler(async (req, res, next) => {
@@ -139,12 +142,12 @@ const getPostById = asyncHandler(async (req, res, next) => {
   if (!post) {
     throw new ApiError(404, "Post not found");
   }
-  res.status(200).json(new ApiResponce("Post found", post));
+  res.status(200).json(new ApiResponce(200,post,"Post found successfully !!"));
 });
 
 const getPosts = asyncHandler(async (req, res, next) => {
   const posts = await Post.find();
-  res.status(200).json(new ApiResponce("Posts found", posts));
+  res.status(200).json(new ApiResponce(200,posts,"Posts found successfully !!"));
 });
 
 const getPostsByUserId = asyncHandler(async (req, res, next) => {
@@ -153,7 +156,7 @@ const getPostsByUserId = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "User Id is required");
   }
   const posts = await Post.find({ createdBy: userId });
-  res.status(200).json(new ApiResponce("Posts found", posts));
+  res.status(200).json(new ApiResponce(200,posts,"Posts found successfully !!"));
 });
 const getPostsByTag = asyncHandler(async (req, res, next) => {
   const { tag } = req.query;
@@ -166,12 +169,12 @@ const getPostsByTag = asyncHandler(async (req, res, next) => {
     },
     { title: 1, content: 0 }
   );
-  res.status(200).json(new ApiResponce("Posts found", posts));
+  res.status(200).json(new ApiResponce(200,posts,"Posts found successfully !!"));
 });
 
 const getPublishedPosts = asyncHandler(async (req, res, next) => {
   const posts = await Post.find({ status: "published" });
-  res.status(200).json(new ApiResponce("Posts found", posts));
+  res.status(200).json(new ApiResponce(200,posts,"Posts found successfully !!"));
 });
 
 const togglePublishStatus = asyncHandler(async (req, res, next) => {
@@ -195,7 +198,7 @@ const togglePublishStatus = asyncHandler(async (req, res, next) => {
   }
   res
     .status(200)
-    .json(new ApiResponce("Post status updated successfully", updatedPost));
+    .json(new ApiResponce(200,updatedPost,"Post status updated successfully"));
 });
 
 const toggleIsCommentsEnabled = asyncHandler(async (req, res, next) => {
@@ -220,10 +223,7 @@ const toggleIsCommentsEnabled = asyncHandler(async (req, res, next) => {
   res
     .status(200)
     .json(
-      new ApiResponce(
-        "Post comments enabled status updated successfully",
-        updatedPost
-      )
+    new ApiResponce(200,updatedPost,"Post comments enabled status updated successfully")
     );
 });
 
@@ -249,7 +249,7 @@ const toggleIsApproved = asyncHandler(async (req, res, next) => {
   res
     .status(200)
     .json(
-      new ApiResponce("Post approval status updated successfully", updatedPost)
+    new ApiResponce(200,updatedPost,"Post approval status updated successfully")
     );
 });
 
@@ -275,7 +275,7 @@ const updatePostStatus = asyncHandler(async (req, res, next) => {
   }
   res
     .status(200)
-    .json(new ApiResponce("Post status updated successfully", updatedPost));
+    .json(new ApiResponce(200,updatedPost,"Post status updated successfully"));
 });
 
 export {

@@ -392,6 +392,8 @@ function RTE({ control, name, label, defaultValue = '' }) {
                       editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
 
                       editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
+
+
                     }}
                     onChange={(event, editor) => {
                       // editor.model.document.on('change:data', () => {
