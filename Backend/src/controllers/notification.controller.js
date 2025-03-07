@@ -96,6 +96,7 @@ const pushNotification = asyncHandler(
 
 const createNotification = asyncHandler(async (req, res) => {
   // createdBy -> from req.user._id
+  
   const { createdFor, targetGroup, title, message, notificationType } =
     req.body;
 
@@ -132,7 +133,9 @@ const createNotification = asyncHandler(async (req, res) => {
 
     if (!notification)
       throw new ApiError(404, "Error while creating new notification");
-
+    else{
+      console.log("New Notification created successfully !!",notification)
+    }
     //send notification to the user
     pushNotification(notification, targetGroup);
     // TODO: Set user specific notification, as of now it is only broadcast notification
@@ -182,16 +185,21 @@ const getAllNotifications = asyncHandler(async (req, res) => {
 const getUserNotifications = asyncHandler(async (req, res) => {
   // it will return all the notificatinos of the user, including broadcasted and personal notification
   const userId = req.user._id;
+  const isAdmin=req.user._doc.isAdmin // because it is a mongoose object
+  let role="user";
+  if(isAdmin)
+    role="Admin";
 
   try {
     const notifications = await Notification.find({
       $or: [
         {
-          targetGroup: "All",
+          targetGroup: { $in: ["All", role] },
         },
         { createdFor: { $in: [userId] } },
       ],
-    });
+    }).sort({ createdAt: -1 });
+
     if (!notifications) throw new ApiError(404, `No notifications found !!`);
     res
       .status(200)

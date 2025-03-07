@@ -55,9 +55,8 @@ const postSchema = new mongoose.Schema(
       type: Date,
     },
     isApproved: {
-      type: String,
-      enum: ["approved", "rejected", "review", "pending"],
-      default: "pending",
+      type: Boolean,
+      default: false,
     },
     approvedBy: {
       type: mongoose.Schema.Types.ObjectId,

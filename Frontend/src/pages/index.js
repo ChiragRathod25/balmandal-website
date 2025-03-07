@@ -43,6 +43,7 @@ import AllPost from './Post/AllPost';
 import EditPost from './Post/EditPost';
 import Post from './Post/Post';
 import UserPosts from './Post/UserPosts';
+import PendingApproval from './Post/PendingApproval';
 export {
   AddAchievement,
   EditAchievement,
@@ -80,6 +81,7 @@ export {
   AllPost,
   EditPost,
   Post,
-  UserPosts
+  UserPosts, 
+  PendingApproval
   
 };

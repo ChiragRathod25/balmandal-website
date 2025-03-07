@@ -13,12 +13,14 @@ import {
     toggleIsCommentsEnabled,
     toggleIsApproved,
     updatePostStatus,
+
 } from "../controllers/post.controller.js";
+import { createNotification } from "../controllers/notification.controller.js";
 
 const router = Router();
 router.use(verifyJWT);
 
-router.route("/").post(addPost).get(getPosts);
+router.route("/").post(addPost,createNotification).get(getPosts);
 router.route("/published").get(getPublishedPosts);
 router.route("/filter").get(getPostsByTag);
 router.route("/user/:userId").get(getPostsByUserId);

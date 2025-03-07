@@ -1234,6 +1234,12 @@ export class DatabaseService {
       }
     );
   }
+  async getPendingPosts(){
+    return handleApiRequest(
+      () => axiosInstace.get('/api/v1/admin/pending-post'),
+      'getPendingPosts'
+    );
+  }
 }
 
 const databaseService = new DatabaseService();

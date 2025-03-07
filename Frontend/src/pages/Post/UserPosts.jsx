@@ -25,6 +25,7 @@ function UserPosts() {
         >
           <div>{post.title}</div>
           <div>{post.status}</div>
+          <div>Approved: {String(post.isApproved)}</div>
           <div>Created At: {post.createdAt}</div>
         </div>
       ))}

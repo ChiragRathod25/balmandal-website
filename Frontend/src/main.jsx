@@ -43,6 +43,7 @@ import {
   EditPost,
   Post,
   UserPosts,
+  PendingApproval,
 } from './pages/index.js';
 import { AuthLayout } from './components';
 
@@ -349,15 +350,23 @@ const router = createBrowserRouter([
             ),
           },
           {
-           path: 'user',
+            path: 'user',
             element: (
               <AuthLayout>
                 <UserPosts />
               </AuthLayout>
-            ) 
-          }
-        ]
-      }
+            ),
+          },
+          {
+            path: 'pending',
+            element: (
+              <AuthLayout>
+                <PendingApproval />
+              </AuthLayout>
+            ),
+          },
+        ],
+      },
     ],
   },
 ]);

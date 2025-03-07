@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
 import mongoose from "mongoose";
+import { Post } from "../models/post.model.js";
 
 const justCheck=asyncHandler(async(req,res,next)=>{
 
@@ -63,9 +64,15 @@ const getUserProfile=asyncHandler(async(req,res,next)=>{
 
     res.status(200).json(new ApiResponce(200,userDeatils[0],"User details fetched successfully"));
 })
+const getPendingPosts = asyncHandler(async (req, res, next) => {
 
+  const posts = await Post.find({ isApproved: false });
+  res.status(200).json(new ApiResponce(200,posts,"Posts found successfully !!"));
+
+});
 export {
     justCheck,
     getAllUsers,
-    getUserProfile
+    getUserProfile,
+    getPendingPosts
 }

@@ -31,9 +31,9 @@ self.addEventListener('push', (event) => {
   );
 });
 
-// self.addEventListener('notificationclick', (event) => {
-//   const clickedNotification = event.notification;
-//   clickedNotification.close();
+self.addEventListener('notificationclick', (event) => {
+  const clickedNotification = event.notification;
+  clickedNotification.close();
 
 //   // Do something as the result of the notification click
 //   const promiseChain = self.clients.openWindow(clickedNotification.image).then(() => {
@@ -44,7 +44,7 @@ self.addEventListener('push', (event) => {
 //       .catch((err) => console.error('Error while marking notification as read', err));
 //   });
 //   event.waitUntil(promiseChain);
-// });
+});
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
