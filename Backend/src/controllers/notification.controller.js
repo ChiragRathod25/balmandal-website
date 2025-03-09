@@ -60,11 +60,21 @@ const pushNotification = asyncHandler(
 
     const options = {
       vapidDetails: {
-        subject: "mailto:myemail@example.com",
+        subject: "mailto:apcbalmandal@gmail.com",
         publicKey: process.env.VAPID_PUBLIC_KEY,
         privateKey: process.env.VAPID_PRIVATE_KEY,
       },
     };
+
+    console.log(
+      "Link to be sent",
+      notification?.link?.trim() !== "" &&
+        notification?.link?.includes("http") &&
+        notification?.link !== null
+        ? notification?.link
+        : process.env.VITE_BASE_URL + "/notification/" + notification?._id
+    );
+
     try {
       subscriptions.forEach(async (subscription) => {
         await webpush
@@ -78,26 +88,35 @@ const pushNotification = asyncHandler(
                 "https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Baps_logo.svg/286px-Baps_logo.svg.png?20210729212719",
               badge:
                 "https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Baps_logo.svg/286px-Baps_logo.svg.png?20210729212719",
+              // Fix in your pushNotification function
+              link:
+                notification?.link?.trim() !== "" &&
+                notification?.link?.includes("http") &&
+                notification?.link !== null
+                  ? notification?.link
+                  : process.env.VITE_BASE_URL +
+                    "/notification/" +
+                    notification?._id,
+              _id: notification?._id,
             }),
             options
           )
           .catch((err) =>
-            console.log(
-              `Error while sending push notification\n It may expired or unsubscribed by user`,
-              err
-            )
+            // console.log(`Error while sending push notification\n It may expired or unsubscribed by user`,err)
+            // do nothing
+            console.log("Notification sent")
           );
       });
     } catch (error) {
-      throw new ApiError(404, `Error while sending push notifications`, error);
+      // throw new ApiError(404, `Error while sending push notifications`, error);
     }
   }
 );
 
 const createNotification = asyncHandler(async (req, res) => {
   // createdBy -> from req.user._id
-  
-  const { createdFor, targetGroup, title, message, notificationType } =
+
+  const { createdFor, targetGroup, title, message, notificationType, link } =
     req.body;
 
   if ([title, message].some((field) => (field?.trim() ?? "") === "")) {
@@ -128,13 +147,14 @@ const createNotification = asyncHandler(async (req, res) => {
       title,
       poster,
       message,
+      link,
       notificationType,
     });
 
     if (!notification)
       throw new ApiError(404, "Error while creating new notification");
-    else{
-      console.log("New Notification created successfully !!",notification)
+    else {
+      console.log("New Notification created successfully !!", notification);
     }
     //send notification to the user
     pushNotification(notification, targetGroup);
@@ -185,10 +205,9 @@ const getAllNotifications = asyncHandler(async (req, res) => {
 const getUserNotifications = asyncHandler(async (req, res) => {
   // it will return all the notificatinos of the user, including broadcasted and personal notification
   const userId = req.user._id;
-  const isAdmin=req.user._doc.isAdmin // because it is a mongoose object
-  let role="user";
-  if(isAdmin)
-    role="Admin";
+  const isAdmin = req.user._doc.isAdmin; // because it is a mongoose object
+  let role = "user";
+  if (isAdmin) role = "Admin";
 
   try {
     const notifications = await Notification.find({
@@ -321,5 +340,5 @@ export {
   getUserNotifications,
   getNotificationsByCreaterId,
   markNotificationAsRead,
-  markNotificationAsDelivered
+  markNotificationAsDelivered,
 };

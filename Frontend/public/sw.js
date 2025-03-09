@@ -8,7 +8,7 @@ self.addEventListener('push', (event) => {
     console.error('❌ Notification permissions not granted');
   }
 
-  const { title, message, poster, _id, badge } = data;
+  const { title, message, poster, _id, badge, link } = data;
   console.log('Notification Data', data);
 
   const options = {
@@ -16,34 +16,43 @@ self.addEventListener('push', (event) => {
     tag: _id,
     icon: poster,
     badge: badge,
-    // image: poster,
+    data: { url: link }, 
     actions: [],
   };
 
-  event.waitUntil(
-    self.registration.showNotification(title, options)
-    // .then(() =>
-    //   databaseService
-    //     .markNotificationAsDelivered({ notificationId: _id })
-    //     .then((response) => response.data)
-    //     .catch((err) => console.error('Error while marking notification as delivered', err))
-    // )
-  );
+  event.waitUntil(self.registration.showNotification(title, options));
 });
 
 self.addEventListener('notificationclick', (event) => {
-  const clickedNotification = event.notification;
-  clickedNotification.close();
+  event.notification.close(); // Close the notification popup
 
-//   // Do something as the result of the notification click
-//   const promiseChain = self.clients.openWindow(clickedNotification.image).then(() => {
-//     // Add notificationIsReadBy to the database
-//     databaseService
-//       .markNotificationAsRead({ notificationId: clickedNotification.tag })
-//       .then((response) => response.data)
-//       .catch((err) => console.error('Error while marking notification as read', err));
-//   });
-//   event.waitUntil(promiseChain);
+  const urlToOpen = event.notification.data?.url || 'https://your-default-url.com';
+  console.log('🔗 URL to open:', urlToOpen);
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      let matchingClient = null;
+
+      // If PWA is open, focus it
+      for (const client of clientList) {
+        if (client.url.includes(self.origin) && 'focus' in client) {
+          matchingClient = client;
+          break;
+        }
+      }
+
+      if (matchingClient) {
+        console.log('Focusing existing PWA instance');
+        return matchingClient.navigate(urlToOpen).then(() => matchingClient.focus());
+      } else {
+        console.log('🆕 Opening new window');
+        return clients.openWindow(urlToOpen).catch(() => {
+          // As a fallback, open manually
+          location.href = urlToOpen;
+        });
+      }
+    })
+  );
 });
 
 self.addEventListener('install', (event) => {
@@ -54,7 +63,7 @@ self.addEventListener('install', (event) => {
         '/index.html',
         '/styles.css',
         '/main.js',
-        '/icons/icon-192x192.png'
+        '/icons/icon-192x192.png',
       ]);
     })
   );

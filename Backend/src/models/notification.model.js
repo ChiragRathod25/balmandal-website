@@ -60,6 +60,10 @@ const notificationSchema = new Schema(
         },
       },
     ],
+    link:{
+      type:String,
+      default:null
+    },
   },
   {
     timestamps: true,

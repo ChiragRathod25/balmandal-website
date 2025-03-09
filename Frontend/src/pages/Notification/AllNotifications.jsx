@@ -58,7 +58,6 @@ function AllNotifications() {
               <p className="text-sm text-gray-400 mt-2">
                 Created At: {new Date(notification?.createdAt).toLocaleString()}
               </p>
-
             </div>
           ))}
         </div>

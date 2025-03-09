@@ -884,6 +884,7 @@ export class DatabaseService {
     notificatinoType,
     poster,
     isReadBy,
+    link,
     deliveredTo,
   }) {
     const formData = new FormData();
@@ -891,6 +892,7 @@ export class DatabaseService {
 
     formData.append('targetGroup', targetGroup);
     formData.append('title', title);
+    formData.append('link', link);
 
     formData.append('message', message);
     formData.append('notificatinoType', notificatinoType);

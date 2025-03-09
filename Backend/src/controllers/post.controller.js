@@ -60,13 +60,18 @@ const addPost = asyncHandler(async (req, res, next) => {
 
   // set data for the Approval notification for the Admin Users
   // Called after this methond form post.routes.js
+  const msg = `New post with title "<strong>${title}</strong>" has been created by <strong>@${req.user.username}</strong> and is waiting for approval.<br>
+<a href="/post/${post._id}">
+  🔗 <span style="text-decoration:underline;color:blue;">Click here</span> to view the post
+</a>`;
+
   req.body = {
     targetGroup: "Admin",
     title: "New Post Approval request",
-    message: `New post with title ${title} has been created by @${req.user.username} and waiting for approval`,
+    message: msg,
     notificationType: "Approval",
   };
-  createNotification(req,res,next);
+  createNotification(req, res, next);
   res.status(201).json(new ApiResponce(200, post, "Post created successfully"));
 });
 

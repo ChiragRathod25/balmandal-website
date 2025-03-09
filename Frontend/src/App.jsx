@@ -9,18 +9,17 @@ import MyToaster from './MyToaster';
 import { registerAndSubscribe } from './utils/subscriptionHelper';
 import config from './conf/config';
 
-import {Layout,RTE} from './components';
+import { Layout, RTE } from './components';
 
 //socket io connection
 import { io } from 'socket.io-client';
 import socketClient from 'socket.io-client';
 export const socket = socketClient(config.apiURL, {
   transports: ['websocket'],
-}); 
+});
 
 //App Component
 function App() {
- 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useScrollToTop();
@@ -88,9 +87,9 @@ function App() {
           if (response.data) {
             dispatch(login(response.data));
             //if the user is logged in then only create service worker
-            setTimeout(()=>{
+            setTimeout(() => {
               registerAndSubscribe();
-            },10000)
+            }, 10000);
           } else {
             dispatch(logout());
           }
@@ -100,23 +99,51 @@ function App() {
     getCurrentUser();
   }, []);
 
+  // PWA Install Prompt
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallButton(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('PWA installed');
+        }
+        setDeferredPrompt(null);
+        setShowInstallButton(false);
+      });
+    }
+  };
+
   if (loading) {
     return <h2>Loading...</h2>;
   }
   return (
     <div className="bg-gray-100 min-h-screen">
       <Layout>
-     
-      <main>
-        {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
-        <MyToaster />
-      
-     
-        <Outlet />
-      </main>
-        </Layout>
-      
-    
+        <main>
+          {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
+          <MyToaster />
+
+          <Outlet />
+          {showInstallButton && <button onClick={handleInstallClick}>Install PWA</button>}
+        </main>
+      </Layout>
     </div>
   );
 }
