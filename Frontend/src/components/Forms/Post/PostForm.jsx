@@ -19,6 +19,7 @@ function PostForm({ post }) {
   const navigate = useNavigate();
   const submit = async (data) => {
     console.log('submitting form data(Post): ', data);
+    
     if (post) {
       const response = await databaseService
         .updatePost(data, post._id)
@@ -36,6 +37,8 @@ function PostForm({ post }) {
         navigate('/post/' + response._id);
       }
     }
+
+    
   };
   return (
     <>
@@ -85,9 +88,7 @@ function PostForm({ post }) {
           className="w-full"
         />
 
-        <Button type="submit">
-          {post ? 'Update Post' : 'Add Post'}
-        </Button>
+        <Button type="submit">{post ? 'Update Post' : 'Add Post'}</Button>
       </form>
     </>
   );

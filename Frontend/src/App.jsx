@@ -14,6 +14,7 @@ import { Layout, RTE } from './components';
 //socket io connection
 import { io } from 'socket.io-client';
 import socketClient from 'socket.io-client';
+import { InstallApp } from './pages';
 export const socket = socketClient(config.apiURL, {
   transports: ['websocket'],
 });
@@ -99,36 +100,7 @@ function App() {
     getCurrentUser();
   }, []);
 
-  // PWA Install Prompt
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showInstallButton, setShowInstallButton] = useState(false);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstallButton(true);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
-
-  const handleInstallClick = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('PWA installed');
-        }
-        setDeferredPrompt(null);
-        setShowInstallButton(false);
-      });
-    }
-  };
+ 
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -141,7 +113,7 @@ function App() {
           <MyToaster />
 
           <Outlet />
-          {showInstallButton && <button onClick={handleInstallClick}>Install PWA</button>}
+
         </main>
       </Layout>
     </div>

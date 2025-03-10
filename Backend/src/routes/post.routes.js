@@ -16,6 +16,7 @@ import {
 
 } from "../controllers/post.controller.js";
 import { createNotification } from "../controllers/notification.controller.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 router.use(verifyJWT);
@@ -30,5 +31,13 @@ router.route("/:postId/comments").put(toggleIsCommentsEnabled);
 router.route("/:postId/approval").put(toggleIsApproved);
 router.route("/:postId/status").put(updatePostStatus);
 
+router.route("/uploadFile").post(upload.single("upload"), async (req, res) => {
+    const response = await uploadOnCloudinary(req.file.path);
+    res.status(200).json({ url: response.url });
+});
+router.route("/deleteFile").post(async (req, res) => {
+    const response = await deleteFromCloudinary(req.body.url);
+    res.status(200).json({ message: response.result });
+});
 
 export default router;

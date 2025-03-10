@@ -1,34 +1,60 @@
-import { X } from "lucide-react";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import databaseService from "../../services/database.services";
-import { Link } from "react-router-dom";
+import { X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import databaseService from '../../services/database.services';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const SideDrawer = ({ isOpen, onClose }) => {
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.auth.userData);
 
-  useEffect(() => {
-    if (!user) {
-      databaseService.getCurrentuser().then((res) => {
-        setUser(res.data);
-      });
-    }
-  }, []);
+  const links = {
+    section1: [
+      {
+        name: 'Home',
+        to: '/',
+      },
+      {
+        name: 'Parent',
+        to: '/parent',
+      },
+      {
+        name: 'Achievement',
+        to: '/achievement',
+      },
+      {
+        name: 'Talent',
+        to: '/talent',
+      },
+    ],
 
-  return (
+    section2: [
+      {
+        name: 'About',
+        to: '/about',
+      },
+      {
+        name: 'Install App',
+        to: '/app',
+      },
+      {
+        name: 'Logout',
+        to: '/logout',
+      },
+    ],
+  };
+
+  return  (
     <>
       {/* Backdrop */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-transparent bg-opacity-50 z-40"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 bg-transparent bg-opacity-50 z-40" onClick={onClose} />
       )}
 
       {/* Sliding Drawer */}
       <motion.div
-        initial={{ x: "-100%" }}
-        animate={{ x: isOpen ? 0 : "-100%" }}
+        initial={{ x: '-100%' }}
+        animate={{ x: isOpen ? 0 : '-100%' }}
         transition={{ duration: 0.3 }}
         className="fixed top-0 left-0 w-64 h-full bg-[#C30E59] text-white shadow-lg z-50 p-4"
       >
@@ -38,7 +64,11 @@ const SideDrawer = ({ isOpen, onClose }) => {
         </button>
 
         {/* Profile */}
-        <div className="flex items-center gap-4 mb-4 border-b border-[#F2AE66] pb-4 flex-col">
+        {
+          user ? (
+
+
+            <div className="flex items-center gap-4 mb-4  pb-4 flex-col">
           <img
             src={
               user?.avatar ||
@@ -46,28 +76,45 @@ const SideDrawer = ({ isOpen, onClose }) => {
             }
             alt={user?.firstName}
             className="w-12 h-12 rounded-full"
-          />
+            />
           <div className="text-center">
             <h2 className="text-lg font-semibold">
               {user?.firstName} {user?.lastName}
             </h2>
           </div>
         </div>
+          ):(
+            <div className="flex items-center gap-4 mb-4 pb-4 flex-col">
+              <Link to="/login" onClick={onClose} className="text-lg font-semibold hover:text-[#F2AE66]">
+             Login to view profile
+              </Link>
+            </div>    
+          )
+          }
 
         {/* Menu Items */}
         <nav className="flex flex-col gap-4">
-          <Link to="/" className="hover:text-[#F2AE66] text-lg">
-            Home
-          </Link>
-          <Link to="/event" className="hover:text-[#F2AE66] text-lg">
-            Events
-          </Link>
-          <Link to="/profile" className="hover:text-[#F2AE66] text-lg">
-            Profile
-          </Link>
-          <Link to="/logout" className="hover:text-[#F2AE66] text-lg">
-            Logout
-          </Link>
+      
+       {
+    
+        links &&
+        Object.keys(links).map((section, index) => (
+          <div key={index} className="mb-4 space-y-2 flex flex-col"> 
+         <hr className="border-[#F2AE66] border-opacity-50" />
+
+            {links[section].map((link, index) => (
+              <Link
+                key={index}
+                to={link.to}
+                onClick={onClose}
+                className="text-lg font-semibold hover:text-[#F2AE66]"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        ))
+       }
         </nav>
       </motion.div>
     </>

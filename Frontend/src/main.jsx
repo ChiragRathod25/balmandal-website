@@ -44,6 +44,8 @@ import {
   Post,
   UserPosts,
   PendingApproval,
+  InstallApp,
+  About
 } from './pages/index.js';
 import { AuthLayout } from './components';
 
@@ -65,8 +67,23 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
+        path: '/app',
+        element: <InstallApp />,
+      },
+      {
+        path:'/about',
+        element:(
+        
+            <About />
+        )
+      },
+      {
         path: '/logout',
-        element: <Logout />,
+        element:(
+          <AuthLayout>
+            <Logout />
+          </AuthLayout>
+        ),
       },
       {
         path: '/profile',
@@ -77,36 +94,41 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/achievement',
-        element: (
-          <AuthLayout>
-            <AlltAchievement />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: '/achievement/:achievementId',
-        element: (
-          <AuthLayout>
-            <Achievement />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: '/achievement/edit/:achievementId',
-        element: (
-          <AuthLayout>
-            <EditAchievement />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: '/achievement/add',
-        element: (
-          <AuthLayout>
-            <AddAchievement />
-          </AuthLayout>
-        ),
+        path: 'achievement',
+        children: [
+          {
+            path: '',
+            element: (
+              <AuthLayout>
+                <AlltAchievement />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: 'add',
+            element: (
+              <AuthLayout>
+                <AddAchievement />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: ':achievementId',
+            element: (
+              <AuthLayout>
+                <Achievement />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: 'edit/:achievementId',
+            element: (
+              <AuthLayout>
+                <EditAchievement />
+              </AuthLayout>
+            ),
+          },
+        ],
       },
       {
         path: 'parent',

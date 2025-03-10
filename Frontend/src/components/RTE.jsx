@@ -322,7 +322,16 @@ function RTE({ control, name, label, defaultValue = '' }) {
             '|',
             'resizeImage',
           ],
-          
+          upload:{
+            types:['png','jpeg','jpg','gif','bmp','webp'],
+
+          }
+        },
+        simpleUpload: {
+          uploadUrl: 'http://localhost:5000/api/v1/upload',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          },
         },
         licenseKey: LICENSE_KEY,
         link: {
@@ -368,6 +377,8 @@ function RTE({ control, name, label, defaultValue = '' }) {
             'tableCellProperties',
           ],
         },
+    
+         
       },
     };
   }, [isLayoutReady]);

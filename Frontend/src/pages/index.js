@@ -44,6 +44,8 @@ import EditPost from './Post/EditPost';
 import Post from './Post/Post';
 import UserPosts from './Post/UserPosts';
 import PendingApproval from './Post/PendingApproval';
+import InstallApp from './InstallApp';
+import About from './About';
 export {
   AddAchievement,
   EditAchievement,
@@ -82,6 +84,7 @@ export {
   EditPost,
   Post,
   UserPosts, 
-  PendingApproval
-  
+  PendingApproval,
+  InstallApp,
+  About
 };

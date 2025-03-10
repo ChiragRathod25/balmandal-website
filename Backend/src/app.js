@@ -48,6 +48,8 @@ import unregisteredAttendanceRoutes from "./routes/unregistered_attendance.route
 import postRoutes from "./routes/post.routes.js";
 import likeRoutes from "./routes/like.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
+import { upload } from "./middlewares/multer.middleware.js";
+import { uploadOnCloudinary } from "./utils/cloudinary.js";
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/parent", parentRoutes);
@@ -62,6 +64,7 @@ app.use("/api/v1/unregisteredAttendance", unregisteredAttendanceRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/like", likeRoutes);
 app.use("/api/v1/comment", commentRoutes);
+
 
 app.use(errorHandler);
 
