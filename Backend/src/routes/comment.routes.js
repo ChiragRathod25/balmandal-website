@@ -4,7 +4,7 @@ import {
     addComment,
     updateComment,
     deleteComment,
-    getPostComments,
+    getCommentsByPostId,
     getCommentsByUserId,
 } from "../controllers/comment.controller.js";
 const router=Router();
@@ -12,7 +12,7 @@ router.use(verifyJWT);
 
 router.route("/:postId")
 .post(addComment)
-.get(getPostComments);
+.get(getCommentsByPostId);
 
 router.route("/:commentId")
 .put(updateComment)

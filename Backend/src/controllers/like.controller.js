@@ -5,7 +5,7 @@ import { Like } from "../models/like.model.js";
 
 //controllers list
 // 1. togglePostLike
-// 2. getPostLikes
+// 2. getLikesByPostId
 // 3. getUserLikedPosts
 
 const togglePostLike = asyncHandler(async (req, res, next) => {
@@ -31,12 +31,13 @@ const togglePostLike = asyncHandler(async (req, res, next) => {
   }
 });
 
-const getPostLikes = asyncHandler(async (req, res, next) => {
+const getLikesByPostId = asyncHandler(async (req, res, next) => {
   const { postId } = req.params;
   if (!postId) {
     throw new ApiError(400, "PostId is required");
   }
   const likes = await Like.find({ postId });
+  console.log("likes", likes);
   res.status(200).json(new ApiResponce("Likes found", likes));
 });
 
@@ -49,4 +50,4 @@ const getUserLikedPosts = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponce("Likes found", likes));
 });
 
-export { togglePostLike, getPostLikes, getUserLikedPosts };
+export { togglePostLike, getLikesByPostId, getUserLikedPosts };

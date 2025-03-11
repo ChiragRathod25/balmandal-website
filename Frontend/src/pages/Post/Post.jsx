@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import databaseService from '../../services/database.services';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
-import { QueryHandler, Button } from '../../components';
+import { QueryHandler, Button, PostInteractions } from '../../components';
 import { useNavigate, useParams } from 'react-router-dom';
 import Parse from 'html-react-parser';
 import { useSelector } from 'react-redux';
@@ -37,6 +37,7 @@ function Post() {
       <div>{post?.slug}</div>
       <div>Created At: {post?.createdAt}</div>
       <div>Created By : {post?.createdBy}</div>
+      <PostInteractions/>
       <Button onClick={() => navigate('/post/edit/' + postId)}>Edit</Button>
       {isAdmin && !post?.isApproved ? (
         <Button onClick={() => handleApprove(post?._id)}>Approve</Button>

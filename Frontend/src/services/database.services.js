@@ -1025,7 +1025,7 @@ export class DatabaseService {
   }
 
   // unregistered attendance
-  async addUnregisteredAttendance({ fullName, mobile, email, remark, status   },eventId) {
+  async addUnregisteredAttendance({ fullName, mobile, email, remark, status }, eventId) {
     return toast.promise(
       handleApiRequest(
         () =>
@@ -1044,12 +1044,15 @@ export class DatabaseService {
         error: 'Error while adding unregistered attendance',
       },
       {
-        id: 'addUnregisteredAttendance'
+        id: 'addUnregisteredAttendance',
       }
     );
   }
 
-  async updateUnregisteredAttendance({ fullName, mobile, email, remark, status },unregisteredAttendanceId) {
+  async updateUnregisteredAttendance(
+    { fullName, mobile, email, remark, status },
+    unregisteredAttendanceId
+  ) {
     return toast.promise(
       handleApiRequest(
         () =>
@@ -1068,8 +1071,8 @@ export class DatabaseService {
         error: 'Error while updating unregistered attendance',
       },
       {
-        id: 'updateUnregisteredAttendance'
-      } 
+        id: 'updateUnregisteredAttendance',
+      }
     );
   }
 
@@ -1088,9 +1091,7 @@ export class DatabaseService {
         id: 'deleteUnregisteredAttendance',
       }
     );
-
-
-  } 
+  }
   async getUnregisteredAttendanceById({ unregisteredAttendanceId }) {
     return handleApiRequest(
       () => axiosInstace.get(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`),
@@ -1106,7 +1107,7 @@ export class DatabaseService {
   }
 
   //POST
-  async addPost({title, content, slug, status, tags, isCommentEnable }){
+  async addPost({ title, content, slug, status, tags, isCommentEnable }) {
     return toast.promise(
       handleApiRequest(
         () =>
@@ -1130,7 +1131,7 @@ export class DatabaseService {
       }
     );
   }
-  async updatePost({title, content, slug, status, tags, isCommentEnable }, postId){
+  async updatePost({ title, content, slug, status, tags, isCommentEnable }, postId) {
     return toast.promise(
       handleApiRequest(
         () =>
@@ -1156,10 +1157,7 @@ export class DatabaseService {
   }
   async deletePost({ postId }) {
     return toast.promise(
-      handleApiRequest(
-        () => axiosInstace.delete(`/api/v1/post/${postId}`),
-        'deletePost'
-      ),
+      handleApiRequest(() => axiosInstace.delete(`/api/v1/post/${postId}`), 'deletePost'),
       {
         loading: 'Deleting Post',
         success: 'Post Deleted successfully',
@@ -1168,19 +1166,13 @@ export class DatabaseService {
       {
         id: 'deletePost',
       }
-    ); 
+    );
   }
   async getPostById({ postId }) {
-    return handleApiRequest(
-      () => axiosInstace.get(`/api/v1/post/${postId}`),
-      'getPostById'
-    );
+    return handleApiRequest(() => axiosInstace.get(`/api/v1/post/${postId}`), 'getPostById');
   }
-  async getPosts(){
-    return handleApiRequest(
-      () => axiosInstace.get('/api/v1/post'),
-      'getPosts'
-    );
+  async getPosts() {
+    return handleApiRequest(() => axiosInstace.get('/api/v1/post'), 'getPosts');
   }
   async getPostsByUserId({ userId }) {
     return handleApiRequest(
@@ -1236,12 +1228,84 @@ export class DatabaseService {
       }
     );
   }
-  async getPendingPosts(){
+  async getPendingPosts() {
     return handleApiRequest(
       () => axiosInstace.get('/api/v1/admin/pending-post'),
       'getPendingPosts'
     );
   }
+
+  //Comment
+  async addPostComment({ content }, postId) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/comment/${postId}`, {
+            content,
+          }),
+        'addPostComment'
+      ),
+      {
+        loading: 'Adding Comment',
+        success: 'Comment Added successfully',
+        error: 'Error while adding comment',
+      },
+      {
+        id: 'addPostComment',
+      }
+    );
+  }
+
+  async getCommentsByPostId({ postId }) {
+    return handleApiRequest(() => axiosInstace.get(`/api/v1/comment/${postId}`), 'getPostComment');
+  }
+  async updatePostComment({ content }, commentId) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/comment/${commentId}`, {
+            content,
+          }),
+        'updatePostComment'
+      ),
+      {
+        loading: 'Updating Comment',
+        success: 'Comment Updated successfully',
+        error: 'Error while updating comment',
+      },
+      {
+        id: 'updatePostComment',
+      }
+    );
+  }
+
+  async deletePostComment({ commentId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/comment/${commentId}`),
+        'deletePostComment'
+      ),
+      {
+        loading: 'Deleting Comment',
+        success: 'Comment Deleted successfully',
+        error: 'Error while deleting comment',
+      },
+      {
+        id: 'deletePostComment',
+      }
+    );
+  }
+
+  //like
+  // togglePostLike,
+  // getLikesByPostId,
+  async togglePostLike(postId) {
+    return handleApiRequest(() => axiosInstace.post(`/api/v1/like/${postId}`), 'togglePostLike');
+  }
+  async getLikesByPostId(postId) {
+    return handleApiRequest(() => axiosInstace.get(`/api/v1/like/${postId}`), 'getLikesByPostId');
+  }
+
 }
 
 const databaseService = new DatabaseService();

@@ -7,7 +7,7 @@ import { Comment } from "../models/comment.model.js";
 //1. addComment
 //2. updateComment
 //3. deleteComment
-//4. getPostComments
+//4. getCommentsByPostId
 //5. getCommentsByUserId
 
 const addComment = asyncHandler(async (req, res, next) => {
@@ -70,7 +70,7 @@ const deleteComment = asyncHandler(async (req, res, next) => {
     .json(new ApiResponce("Comment deleted successfully", comment));
 });
 
-const getPostComments = asyncHandler(async (req, res, next) => {
+const getCommentsByPostId = asyncHandler(async (req, res, next) => {
   const { postId } = req.params;
   if (!postId) {
     throw new ApiError(400, "Post id is required");
@@ -96,6 +96,6 @@ export {
   addComment,
   updateComment,
   deleteComment,
-  getPostComments,
+  getCommentsByPostId,
   getCommentsByUserId,
 };

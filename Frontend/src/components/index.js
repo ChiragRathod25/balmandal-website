@@ -41,6 +41,10 @@ import UserDetails from "./Dashbord/UserDetails";
 import RTE from "./RTE";
 import PostForm from "./Forms/Post/PostForm";
 import PostCard from "./Post/PostCard";
+import CommentForm from "./Forms/Post/Comment/CommentForm";
+import CommentContainer from "./Post/Comment/CommentContainer";
+import CommentCard from "./Post/Comment/CommentCard"
+import PostInteractions from "./Post/PostInteractions";
 export {
   QueryHandler,
   UserDetailsForm,
@@ -85,4 +89,8 @@ export {
   RTE,
   PostForm,
   PostCard,
+  CommentForm,
+  CommentContainer,
+  CommentCard,
+  PostInteractions
 };

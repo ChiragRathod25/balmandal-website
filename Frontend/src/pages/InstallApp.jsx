@@ -33,13 +33,13 @@ function InstallApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white p-6">
-      <div className="max-w-lg w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-900 p-6">
+      <div className="max-w-lg w-full bg-white shadow-lg rounded-lg p-6 text-center border border-gray-200">
         {/* Page Title */}
         <h1 className="text-2xl font-bold mb-4">Install Our App</h1>
 
         {/* Description */}
-        <p className="text-gray-700 dark:text-gray-300 mb-6">
+        <p className="text-gray-600 mb-6">
           Get the best experience by installing our App. 
           <br />
           Enjoy fast access and offline support!
@@ -49,12 +49,12 @@ function InstallApp() {
         {showInstallButton ? (
           <button
             onClick={handleInstallClick}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
             Install App
           </button>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">App is already installed or not available for installation.</p>
+          <p className="text-sm text-gray-500">App is already installed or not available for installation.</p>
         )}
       </div>
     </div>
