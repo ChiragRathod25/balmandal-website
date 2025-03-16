@@ -13,7 +13,7 @@ const achievementSchema = new mongoose.Schema(
       ref: "User",
       required: true
     },
-    images: [
+    media: [
       {
         type: String,
       },

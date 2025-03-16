@@ -18,7 +18,7 @@ function UserAchievement() {
 
   // for Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
+  const [modalContent, setModalContent] = useState(null); 
   const [modalTitle, setModalTitle] = useState('');
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {

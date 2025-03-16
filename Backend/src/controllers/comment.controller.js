@@ -75,7 +75,8 @@ const getCommentsByPostId = asyncHandler(async (req, res, next) => {
   if (!postId) {
     throw new ApiError(400, "Post id is required");
   }
-  const comments = await Comment.find({ postId });
+
+  const comments = await Comment.find({ postId }).sort({ createdAt: -1 });
   res
     .status(200)
     .json(new ApiResponce("Post comments fetched successfully", comments));

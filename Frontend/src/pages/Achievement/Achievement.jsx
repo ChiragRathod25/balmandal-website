@@ -67,7 +67,7 @@ function Achievement({ id ,isUsedWithModal=false}) {
             </p>
 
             {/* Achievement Image */}
-            <FilesDisplayHelper cloudFiles={achievement?.images} />
+            <FilesDisplayHelper cloudFiles={achievement?.media} />
 
             {/* Action Buttons */}
             {/* display buttons if it is called as a page by the regular user, 
