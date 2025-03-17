@@ -1,10 +1,11 @@
-import { Home, Calendar, User } from "lucide-react";
-import { useLocation, Link } from "react-router-dom";
+import { Home, Calendar, User,Atom} from 'lucide-react';
+import { useLocation, Link } from 'react-router-dom';
 
 const tabs = [
-  { name: "Home", icon: Home, path: "/" },
-  { name: "Events", icon: Calendar, path: "/event" },
-  { name: "Profile", icon: User, path: "/profile" },
+  { name: 'Home', icon: Home, path: '/' },
+  { name: 'Post', icon: Atom, path: '/post'},
+  { name: 'Events', icon: Calendar, path: '/event' },
+  { name: 'Profile', icon: User, path: '/profile' },
 ];
 
 const BottomTabBar = () => {
@@ -19,7 +20,7 @@ const BottomTabBar = () => {
             key={name}
             to={path}
             className={`flex flex-col items-center ${
-              isActive ? "text-[#F2AE66]" : "text-white"
+              isActive ? 'text-[#F2AE66]' : 'text-white'
             } hover:text-[#F2AE66]`}
           >
             <Icon className="w-6 h-6" />

@@ -160,7 +160,7 @@ const getPostById = asyncHandler(async (req, res, next) => {
 });
 
 const getPosts = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find({ isApproved: true });
+  const posts = await Post.find({ isApproved: true }).sort({ approvedAt: -1, createdAt: -1 });
   res
     .status(200)
     .json(new ApiResponce(200, posts, "Posts found successfully !!"));
@@ -268,6 +268,9 @@ const toggleIsApproved = asyncHandler(async (req, res, next) => {
     postId,
     {
       isApproved: !post.isApproved,
+      status: post.isApproved ? "Draft" : "Published",
+      approvedBy: req.user._id,
+      approvedAt: new Date(),
     },
     { new: true }
   );

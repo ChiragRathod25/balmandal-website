@@ -1,22 +1,26 @@
 // this will display attendance of one event || display users list of one event || Registered + Unregistered users list of one event
 import React from 'react';
-import { EventAttendance,EventUnregisteredAttendace } from '../../../components';
+import { EventAttendance, EventUnregisteredAttendace } from '../../../components';
+
 function Attendance() {
   return (
-    <div>
-      <EventAttendance />
-      <hr  className='
-      border-t-2
-      border-gray-300
-      my-4
-      w-3/4
-      mx-auto
+    <div className="container mx-auto">
+      {/* Registered Attendees Section */}
+      <section className="mb-6">
       
-      '/>
-      <EventUnregisteredAttendace/>
-      
+        <EventAttendance />
+      </section>
+
+      {/* Divider */}
+      <hr className="border-t-2 border-gray-300 w-full md:w-3/4 mx-auto my-6" />
+
+      {/* Unregistered Attendees Section */}
+      <section>
+       
+        <EventUnregisteredAttendace />
+      </section>
     </div>
-  )
+  );
 }
 
-export default Attendance
+export default Attendance;

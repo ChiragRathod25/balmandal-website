@@ -20,7 +20,7 @@ function CommentForm({ comment, onCommentAdded }) {
 
   return (
     <div className="p-3">
-      <form onSubmit={handleSubmit(submit)} className="flex items-center gap-2">
+      <form onSubmit={handleSubmit(submit)} className="flex items-center gap-2 flex-col">
         <Input
           type="text"
           placeholder="Write a comment..."

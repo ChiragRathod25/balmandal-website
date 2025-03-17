@@ -62,6 +62,9 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    approvedAt: {
+      type: Date,
+    },
     meta: {
       title: {
         type: String,

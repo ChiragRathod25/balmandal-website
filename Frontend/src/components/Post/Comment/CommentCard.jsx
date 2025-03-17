@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
 function CommentCard({ comment }) {
   const authUser = useSelector((state) => state.auth.userData); // Get logged-in user
@@ -7,15 +7,27 @@ function CommentCard({ comment }) {
   const isUserComment = comment.createdBy === authUser._id;
 
   return (
-    <div className={`flex ${isUserComment ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex ${isUserComment ? "justify-end" : "justify-start"} my-2`}>
       <div
-        className={`p-3 rounded-lg shadow-md max-w-xs md:max-w-md ${
-          isUserComment ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'
-        }`}
+        className={`p-3 rounded-lg shadow-md max-w-xs md:max-w-md flex gap-3 
+        ${isUserComment ? "bg-blue-500 text-white flex-row-reverse" : "bg-gray-200 text-black"}
+      `}
       >
-        <p className="text-sm font-semibold">{comment.username}</p>
-        <p className="text-base">{comment.content}</p>
-        <p className="text-xs opacity-70 mt-1">{new Date(comment.createdAt).toLocaleString()}</p>
+        {/* Profile Picture */}
+        <img
+          src={comment.avatar || "https://www.gravatar.com/avatar"}
+          alt="Profile"
+          className="w-8 h-8 rounded-full object-cover"
+        />
+
+        {/* Comment Content */}
+        <div className="flex flex-col">
+          <p className="text-sm font-semibold">{isUserComment ? "You" : comment.createdBy}</p>
+          <p className="text-base break-words">{comment.content}</p>
+          {/* <p className="text-xs opacity-70 mt-1">
+            {new Date(comment.createdAt).toLocaleString()}
+          </p> */}
+        </div>
       </div>
     </div>
   );

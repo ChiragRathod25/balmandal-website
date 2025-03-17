@@ -16,6 +16,16 @@ function AllEvent() {
         {Array.isArray(events) && events.length > 0 && (
           <>
             <h2 className="text-3xl font-bold mb-6 text-center">Events</h2>
+            <div className="m-2 flex justify-center">
+              <Button
+                onClick={() => navigate('/event/add')}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+              >
+                Add Event
+              </Button>
+             
+            </div>
+
             <div className="w-full     grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
               {events.map((event) => (
                 <EventCard event={event} key={event?._id} />
@@ -23,15 +33,6 @@ function AllEvent() {
             </div>
           </>
         )}
-
-        <div className="mt-8 flex justify-center">
-          <Button
-            onClick={() => navigate('/event/add')}
-            className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition"
-          >
-            Add Event
-          </Button>
-        </div>
       </div>
     </QueryHandler>
   );

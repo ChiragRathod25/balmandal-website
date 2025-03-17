@@ -24,17 +24,19 @@ function UserAttendance() {
   }
 
   return (
-    <>
-      <div>UserAttendance</div>
-      {userAttendance && userAttendance.length === 0 && <div>No Attendance</div>}
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">User Attendance</h2>
 
-      {userAttendance &&
-        userAttendance.length > 0 &&
-        Array.isArray(userAttendance) &&
-        userAttendance.map((attendance) => {
-          return <UserAttendanceCard key={attendance._id} attendance={attendance} />;
-        })}
-    </>
+      {userAttendance?.length === 0 ? (
+        <div className="text-center text-gray-600">No Attendance Records Found</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {userAttendance?.map((attendance) => (
+            <UserAttendanceCard key={attendance._id} attendance={attendance} />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

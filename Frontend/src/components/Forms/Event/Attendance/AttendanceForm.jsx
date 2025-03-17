@@ -36,21 +36,20 @@ function AttendanceForm({ attendanceList }) {
     );
     setFilteredUsers(filteredUsers);
   };
-  const { register, handleSubmit,setValue } = useForm();
-  console.log('Re render')
+  const { register, handleSubmit, setValue } = useForm();
+  console.log('Re render');
 
   // update the default values of the form if attendanceList is present
-  if(attendanceList && attendanceList.length > 0){
+  if (attendanceList && attendanceList.length > 0) {
     let defaultValues = {};
-     attendanceList.forEach((attendance) => {
-      setValue(attendance.userId, attendance.status==='present' ? true : false);
+    attendanceList.forEach((attendance) => {
+      setValue(attendance.userId, attendance.status === 'present' ? true : false);
       // defaultValues[attendance.userId] = attendance.status==='present' ? true : false;
     });
   }
 
-
   const submit = async (data) => {
-    console.log("Submit",data);
+    console.log('Submit', data);
     const attendanceList = allUsers.map((user) => {
       return {
         userId: user._id,
@@ -58,17 +57,15 @@ function AttendanceForm({ attendanceList }) {
       };
     });
     console.log(attendanceList);
-    const response = await databaseService
-      .addAttendance({ eventId, attendanceList })
-      console.log("Response",response);
-    if (response.statusCode===200) {
+    const response = await databaseService.addAttendance({ eventId, attendanceList });
+    console.log('Response', response);
+    if (response.statusCode === 200) {
       console.log('Attendance added successfully');
-      navigate(`/event/${eventId}`);
-    }else{
+      navigate(`/event/attendance/${eventId}`);
+    } else {
       console.log('Error in adding attendance', response);
     }
   };
-
 
   if (loading) {
     return (
@@ -129,16 +126,22 @@ function AttendanceForm({ attendanceList }) {
               <input
                 type="checkbox"
                 name={user._id}
-                id={user._id}           
+                id={user._id}
                 {...register(user._id)}
                 className="mr-2 cursor-pointer  scale-150"
               />
             </div>
           ))}
-        <Button type="submit">Update</Button>
-        <Button onClick={() => navigate(`/event/${eventId}`)} className="bg-gray-500 text-white">
-          Cancel 
-        </Button>
+        <div className="flex gap-4 mt-4">
+          <Button type="submit">Update</Button>
+          <Button
+          type="button"
+            onClick={() => navigate(`/event/attendance/${eventId}`)}
+            className="bg-gray-500 text-white"
+          >
+            Cancel
+          </Button>
+        </div>
       </form>
     </div>
   );

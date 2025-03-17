@@ -35,7 +35,7 @@ function Layout({ children }) {
         <div>{children}</div>
 
         {isPWA ? (
-          <div className="sm:hidden z-200">
+          <div className="sm:hidden z-200 mt-10">
             <BottomTabBar />
           </div>
         ) : (
@@ -45,6 +45,8 @@ function Layout({ children }) {
             </div>
           </footer>
         )}
+
+       
       </div>
     </>
   );

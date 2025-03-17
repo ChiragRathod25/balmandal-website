@@ -11,82 +11,80 @@ function UnregisteredAttendanceForm({ UnregisteredAttendance }) {
       mobile: UnregisteredAttendance?.mobile || '',
       email: UnregisteredAttendance?.email || '',
       remark: UnregisteredAttendance?.remark || '',
-      status: UnregisteredAttendance?.status || '',
+      status: UnregisteredAttendance?.status || 'present',
     },
   });
+
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const submit = async (data) => {
-    console.log(data);
-    if(UnregisteredAttendance){
-        try {
-          const response = await databaseService.updateUnregisteredAttendance(data, UnregisteredAttendance._id);
-          if (response) {
-            console.log('Unregistered Attendance updated successfully');
-            navigate(`/event/${UnregisteredAttendance.eventId}`);
-          }
-        } catch (error) {
-          console.log('Error in updating unregistered attendance', error);
-          
-        }
-    }else{
 
-      try {
-        const response = await databaseService.addUnregisteredAttendance(data, eventId);
-        
-        if (response) {
-          console.log('Unregistered Attendance added successfully');
-          navigate(`/event/${eventId}`);
-        }
-      } catch (error) {
-        console.log('Error in adding unregistered attendance', error);
+  const submit = async (data) => {
+    try {
+      const response = UnregisteredAttendance
+        ? await databaseService.updateUnregisteredAttendance(data, UnregisteredAttendance._id)
+        : await databaseService.addUnregisteredAttendance(data, eventId);
+
+      if (response) {
+        console.log('Unregistered Attendance successfully saved');
+        navigate(`/event/attendance/${eventId || UnregisteredAttendance.eventId}`);
       }
+    } catch (error) {
+      console.log('Error saving unregistered attendance', error);
     }
-    };
+  };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
-        <Input
-          label="Full Name"
-          type="text"
-          name="name"
-          placeholder="Enter Full Name"
-          {...register('fullName', { required: true })}
-        />
-        <Input
-          label="Mobile"
-          type="text"
-          placeholder="Enter Mobile Number"
-          name="mobile"
-          {...register('mobile')}
-        />
-        <Input
-          label="Email"
-          type="email"
-          name="email"
-          placeholder="Enter Email"
-          {...register('email')}
-        />
-        <Input
-          label="Remark"
-          type="text"
-          name="remark"
-          placeholder="Enter Remark"
-          {...register('remark')}
-        />
-        <Select
-          label="Status"
-          type="text"
-          name="status"
-          options={['present', 'absent']}
-          placeholder="Enter Status"
-          {...register('status', { required: true })}
-        />
+    <form onSubmit={handleSubmit(submit)} className="space-y-4">
+      <Input
+        label="Full Name"
+        type="text"
+        placeholder="Enter full name"
+        {...register('fullName', { required: true })}
+        className="w-full"
+      />
+
+      <Input
+        label="Mobile"
+        type="text"
+        placeholder="Enter mobile number"
+        {...register('mobile')}
+        className="w-full"
+      />
+
+      <Input
+        label="Email"
+        type="email"
+        placeholder="Enter email"
+        {...register('email')}
+        className="w-full"
+      />
+
+      <Input
+        label="Remark"
+        type="text"
+        placeholder="Enter remark"
+        {...register('remark')}
+        className="w-full"
+      />
+
+      <Select
+        label="Status"
+        options={['present', 'absent']}
+        {...register('status', { required: true })}
+        className="w-full"
+      />
+
+      <div className="flex gap-4 mt-4">
         <Button type="submit">Submit</Button>
-        <Button onClick={() => navigate(`/event/${eventId || UnregisteredAttendance.eventId}`)}>Back</Button>
-      </form>
-    </>
+        <Button
+          type="button"
+          onClick={() => navigate(`/event/attendance/${eventId || UnregisteredAttendance.eventId}`)}
+          className="bg-gray-500 text-white"
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
   );
 }
 

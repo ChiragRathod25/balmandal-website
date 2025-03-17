@@ -219,6 +219,11 @@ const getAttendanceByUserId = asyncHandler(async (req, res, next) => {
       $addFields: {
         eventType: "$_id"
       }
+    },
+    {
+      $sort: {
+        eventType: 1
+      }
     }
   ]);
   if (!attendances) {

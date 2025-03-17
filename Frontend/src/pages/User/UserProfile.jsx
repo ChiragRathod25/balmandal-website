@@ -49,7 +49,7 @@ function UserProfile() {
 
         <div className="space-y-4 text-center">
           <Button
-            onClick={() => navigate('/')}
+            onClick={()=>navigate("/#features")}
             className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-transform transform hover:scale-105"
           >
             Edit My Profile Details
@@ -59,8 +59,7 @@ function UserProfile() {
             * You can manage your profile details like{' '}
             <span className="font-medium text-gray-800">Achievements</span>,{' '}
             <span className="font-medium text-gray-800">Talents</span>, and{' '}
-            <span className="font-medium text-gray-800">Parent Details</span> directly from the home
-            pages.
+            <span className="font-medium text-gray-800">Parent Details</span> directly from the side drawer.
           </p>
         </div>
       </div>
