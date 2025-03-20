@@ -191,6 +191,28 @@ export class DatabaseService {
       }
     );
   }
+
+  async forgetPassword({ email,username }) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/user/forgetPassword', {
+            email,
+            username,
+          }),
+        'forgetPassword'
+      ),
+      {
+        loading: 'Sending Email',
+        success: 'Reset Password Email Sent successfully to your email',
+        error: 'Error while sending email',
+      },
+      {
+        id: 'forgetPassword',
+      }
+    );
+    
+  }
   async getCurrentuser() {
     return handleApiRequest(
       () => axiosInstace.get('/api/v1/user/getCurrentuser'),

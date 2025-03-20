@@ -17,6 +17,7 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
+import ForgetPassword from './ForgetPassword';
 
 import AdminDashboard from './dashboard/AdminDashboard';
 import UserData from './dashboard/UserProfile';
@@ -86,5 +87,6 @@ export {
   UserPosts, 
   PendingApproval,
   InstallApp,
-  About
+  About,
+  ForgetPassword
 };

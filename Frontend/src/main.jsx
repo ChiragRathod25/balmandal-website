@@ -45,7 +45,8 @@ import {
   UserPosts,
   PendingApproval,
   InstallApp,
-  About
+  About,
+  ForgetPassword
 } from './pages/index.js';
 import { AuthLayout } from './components';
 
@@ -75,6 +76,12 @@ const router = createBrowserRouter([
         element:(
         
             <About />
+        )
+      },
+      {
+        path:'/forgetPassword',
+        element:(
+            <ForgetPassword />
         )
       },
       {

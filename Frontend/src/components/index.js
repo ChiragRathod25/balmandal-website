@@ -45,6 +45,10 @@ import CommentForm from "./Forms/Post/Comment/CommentForm";
 import CommentContainer from "./Post/Comment/CommentContainer";
 import CommentCard from "./Post/Comment/CommentCard"
 import PostInteractions from "./Post/PostInteractions";
+import ForgetPassword from "./Authentication/ForgetPassword";
+import Login  from "./Authentication/Login";
+import SignUp  from "./Authentication/SignUp";
+
 export {
   QueryHandler,
   UserDetailsForm,
@@ -92,5 +96,9 @@ export {
   CommentForm,
   CommentContainer,
   CommentCard,
-  PostInteractions
+  PostInteractions,
+  ForgetPassword,
+  Login,
+  SignUp,
+
 };
