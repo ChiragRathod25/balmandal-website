@@ -62,7 +62,7 @@ function PostForm({ post }) {
 
   return (
     <>
-      <div className="max-w-2xl mx-auto ">
+      <div className=" w-full">
         <form
           onSubmit={handleSubmit(submit)}
           className="space-y-4

@@ -6,6 +6,7 @@ import { Post } from "../models/post.model.js";
 import { createNotification } from "./notification.controller.js";
 
 //controllers list
+//0. UploadFilesToBucket
 //1. addPost
 //2. updatePost
 //3. deletePost
@@ -18,6 +19,50 @@ import { createNotification } from "./notification.controller.js";
 //10. toggleIsCommentsEnabled
 //11. toggleIsApproved
 //12. updatePostStatus
+const uploadFilesToBucket = asyncHandler(async (req, res,next) => {
+  let {content}=req.body;
+  if(!content){
+    throw new ApiError(400,"Content is required")
+  }
+  // go through the content and find the image src and upload it to cloudinary and replace the src with the cloudinary url
+  const regex = /<img[^>]+src="([^">]+)"/g;
+  const matches = content.match(regex);
+  if (matches) {
+    for (const match of matches) {
+      let src = match.match(/src="([^">]+)"/)[1];
+      let intialSrc=src;
+      console.log("Intial src: ", src);
+      //convert the server's public url to local url 
+      src=src.replace(process.env.API_BASE_URL,"public")
+       //convert '/' to '\' for windows
+      src=src.replace(/\//g,"\\")
+      console.log("Converted src: ", src);
+
+      if (!src) {
+        console.log("No src found in the image tag", match);
+        continue;
+      }
+      if(!src.includes("temp")){
+        console.log("Content: ", content);
+        console.log("Not a temp image, skipping upload", src);
+        continue;
+      }
+      try {
+
+        const result = await uploadOnCloudinary(src);
+        // console.log("Image uploaded to cloudinary", result);
+        // console.log(`Image scr: ${src} updated to ${result.secure_url}`);
+        console.log("Content before update", content);
+        req.body.content = content.replace(intialSrc, result.secure_url);
+        console.log("Content updated", req.body.content);
+      } catch (error) {
+        console.log("Error in uploading image to cloudinary", error);
+        throw new ApiError(500, "Error in uploading image to cloudinary");
+      }
+    }
+  }
+  next();
+})
 
 const addPost = asyncHandler(async (req, res, next) => {
   const { title, content, slug, status, tags, isCommentEnable } = req.body;
@@ -101,6 +146,8 @@ const updatePost = asyncHandler(async (req, res, next) => {
     }
   }
 
+
+  console.log("Saved Content: ", content);
   const updatedPost = await Post.findByIdAndUpdate(
     postId,
     {
@@ -328,4 +375,5 @@ export {
   toggleIsCommentsEnabled,
   toggleIsApproved,
   updatePostStatus,
+  uploadFilesToBucket
 };

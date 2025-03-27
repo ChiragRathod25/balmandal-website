@@ -74,6 +74,7 @@ import {
 import 'ckeditor5/ckeditor5.css';
 
 import './RTE.css';
+import config from '../conf/config';
 
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
@@ -328,7 +329,8 @@ function RTE({ control, name, label, defaultValue = '' }) {
           }
         },
         simpleUpload: {
-          uploadUrl: 'http://localhost:5000/api/v1/upload',
+          uploadUrl:config.uploadFileUrl,
+          // withCredentials: true,
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
           },

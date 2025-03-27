@@ -31,6 +31,19 @@ function Post() {
       console.error('Error while updating post status:', error);
     }
   };
+  const handleDelete = async (postId) => {
+    try {
+      const response = await databaseService.deletePost({ postId }).then((res) => res.data);
+      if (response) {
+        console.log('Post deleted successfully!');
+        navigate(`/post`);
+      } else {
+        console.log('Error deleting post.');
+      }
+    } catch (error) {
+      console.error('Error while deleting post:', error);
+    }
+  };
 
   return post ? (
     <QueryHandler queries={[{ loading, error }]}>
@@ -80,22 +93,41 @@ function Post() {
         {/* Action Buttons */}
         <div className="mt-6 flex justify-between">
           {post.createdBy === authUser._id ? (
-            <Button
-              onClick={() => navigate('/post/edit/' + postId)}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-            >
-              ✏️ Edit Post
-            </Button>
+            <>
+              <Button
+                onClick={() => navigate('/post/edit/' + postId)}
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              >
+                ✏️ Edit Post
+              </Button>
+              <Button
+                onClick={() => handleDelete(post?._id)}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg"
+              >
+                🗑️ Delete Post
+              </Button>
+            </>
           ) : null}
 
           {isAdmin && !post?.isApproved && (
-            <Button
-              onClick={() => handleApprove(post?._id)}
-              className="bg-green-500 text-white px-4 py-2 rounded-lg"
-            >
-              ✅ Approve Post
-            </Button>
+            <>
+              <Button
+                onClick={() => handleApprove(post?._id)}
+                className="bg-green-500 text-white px-4 py-2 rounded-lg"
+              >
+                ✅ Approve Post
+              </Button>
+            </>
           )}
+          {/*show delete button only if user is admin and post is not created by the user */}
+          {isAdmin && post.createdBy !== authUser._id ? (
+            <Button
+              onClick={() => handleDelete(post?._id)}
+              className="bg-red-500 text-white px-4 py-2 rounded-lg"
+            >
+              🗑️ Delete Post
+            </Button>
+          ) : null}
         </div>
       </div>
     </QueryHandler>

@@ -11,7 +11,7 @@ function EditPost() {
 
   return (
     <QueryHandler queries={[{ loading, error }]}>
-      <div className="max-w-2xl mx-auto p-4">
+      <div className=" mx-auto p-4">
         {/* Page Title */}
         <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">Edit Post</h1>
 
