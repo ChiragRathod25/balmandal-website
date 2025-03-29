@@ -2,6 +2,7 @@ import { ApiResponce } from "../utils/ApiResponce.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Comment } from "../models/comment.model.js";
+import mongoose from "mongoose";
 
 //controllers list
 //1. addComment
@@ -76,7 +77,42 @@ const getCommentsByPostId = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Post id is required");
   }
 
-  const comments = await Comment.find({ postId }).sort({ createdAt: -1 });
+  const comments = await Comment.aggregate([
+    {
+      $match: {
+        postId: new mongoose.Types.ObjectId(postId),
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "createdBy",
+        foreignField: "_id",
+        as: "user",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              avatar: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        user: {
+          $first: "$user",
+        },
+      },
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+  ]);
   res
     .status(200)
     .json(new ApiResponce("Post comments fetched successfully", comments));

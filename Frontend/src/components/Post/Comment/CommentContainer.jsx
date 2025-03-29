@@ -19,6 +19,7 @@ function CommentContainer() {
 
   
   const handleNewComment = (newComment) => {
+    
     setComments((prevComments) => [newComment, ...prevComments]);
   };
 
