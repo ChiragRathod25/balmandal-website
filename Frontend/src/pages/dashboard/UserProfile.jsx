@@ -1,25 +1,34 @@
 import React, { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import databaseService from '../../services/database.services';
-import UserAchievement from './UserAchievement';
-import UserTalent from './UserTalent';
-import UserParent from './UserParent';
-import UserDetails from './UserDetails';
+import {
+  UserDetails,
+  UserAchievement,
+  UserParent,
+  UserTalent,
+  UserAttendanceDashboard
+
+} from '../../components';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
-import { useDispatch,useSelector } from 'react-redux';
-import { setEditableUser, setEditableUserAchievement, setEditableUserParent, setEditableUserTalent } from '../../slices/dashboard/dashboardSlice';
-let i=0;
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setEditableUser,
+  setEditableUserAchievement,
+  setEditableUserParent,
+  setEditableUserTalent,
+} from '../../slices/dashboard/dashboardSlice';
+import UserAttendance from '../../components/Dashbord/UserAttendance';
+let i = 0;
 function UserData() {
-  console.log('Rendering UserData',i++);
+  console.log('Rendering UserData', i++);
   const { userId } = useParams();
   const fetchUser = useCallback(() => databaseService.getUserProfile(userId), [userId]);
   const { data: user, error, loading } = useCustomReactQuery(fetchUser);
   const dispatch = useDispatch();
   dispatch(setEditableUser(user));
-  dispatch(setEditableUserAchievement(user?.achievements))
-  dispatch(setEditableUserParent(user?.parents))
-  dispatch(setEditableUserTalent(user?.talents))
-
+  dispatch(setEditableUserAchievement(user?.achievements));
+  dispatch(setEditableUserParent(user?.parents));
+  dispatch(setEditableUserTalent(user?.talents));
 
   if (userId === undefined) {
     return (
@@ -39,12 +48,14 @@ function UserData() {
     <>
       <UserDetails user={user} />
       <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
-      <UserAchievement/>
+      <UserAchievement />
       <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
 
-      <UserTalent/>
+      <UserTalent />
       <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
-      <UserParent  />
+      <UserParent />
+      <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
+      <UserAttendanceDashboard />
     </>
   );
 }

@@ -49,6 +49,14 @@ function NotificationForm() {
           className="w-full"
         />
 
+        <Input 
+          label="Link"
+          type="text"
+          placeholder="Enter Custom Notification Link"
+          {...register('link')}
+          className="w-full"
+        />
+
         <Select
           label="Notification Type"
           options={['info', 'warning', 'error', 'success']}

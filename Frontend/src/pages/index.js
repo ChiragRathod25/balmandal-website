@@ -17,6 +17,7 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
+import ForgetPassword from './ForgetPassword';
 
 import AdminDashboard from './dashboard/AdminDashboard';
 import UserData from './dashboard/UserProfile';
@@ -32,6 +33,20 @@ import Notification from './Notification/Notification';
 import AllNotification from './Notification/AllNotifications';
 import AddNotification from './Notification/AddNotification';
 
+import EditAttendance from './Event/Attendance/EditAttendance';
+import Attendance from './Event/Attendance/Attendance';
+import AddUnregisteredAttendance from './Event/Unregistered_attendance/AddUnregisteredAttendance';
+import UnregisteredAttendance from './Event/Unregistered_attendance/UnregisteredAttendance';
+import EditUnregisteredAttendance from './Event/Unregistered_attendance/EditUnregisteredAttendance';
+
+import AddPost from './Post/AddPost';
+import AllPost from './Post/AllPost';
+import EditPost from './Post/EditPost';
+import Post from './Post/Post';
+import UserPosts from './Post/UserPosts';
+import PendingApproval from './Post/PendingApproval';
+import InstallApp from './InstallApp';
+import About from './About';
 export {
   AddAchievement,
   EditAchievement,
@@ -60,4 +75,18 @@ export {
   Notification,
   AddNotification,
   AllNotification,
+  EditAttendance,
+  Attendance,
+  AddUnregisteredAttendance,
+  UnregisteredAttendance,
+  EditUnregisteredAttendance,
+  AddPost,
+  AllPost,
+  EditPost,
+  Post,
+  UserPosts, 
+  PendingApproval,
+  InstallApp,
+  About,
+  ForgetPassword
 };

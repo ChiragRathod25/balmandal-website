@@ -51,7 +51,7 @@ function Home() {
 
       {/* Feature Sections */}
       {
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full max-w-5xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full max-w-5xl" id='features'>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
             <h3 className="text-xl font-semibold text-gray-700">Balak Profile</h3>
             <p className="mt-2 text-gray-600">

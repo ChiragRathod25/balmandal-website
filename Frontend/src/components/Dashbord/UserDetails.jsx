@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { UserDetails as UserDetailsComponent } from '../';
-import { UserDetailsForm } from '../../components';
+import { UserDetails as UserDetailsComponent } from '../../pages';
+import { UserDetailsForm } from '..';
 import { useSelector } from 'react-redux';
 
 const UserDetails = ({user}) => {

@@ -69,3 +69,23 @@ Modules to implement
 Attendance
 post
 Activity
+
+
+//like & Comment controller
+Enhance response for queires
+
+// Event
+Define Event Types for the event
+
+
+//attendance
+Enhance attendance addding, updating Functionality
+
+
+//post
+Enhance post status functionality for Post Status and Approved
+
+
+
+Password validation
+Media Limit

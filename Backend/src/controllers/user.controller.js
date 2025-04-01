@@ -89,7 +89,7 @@ const login = asyncHandler(async (req, res) => {
   if ([username, password].some((field) => (field?.trim() ?? "") === ""))
     throw new ApiError(404, `username and password are required`);
   const user = await User.findOne({
-    username: { $regex: new RegExp(username, "i") },
+    username: { $regex: new RegExp(`^${username}$`, "i") },
   });
 
   if (!user) throw new ApiError(404, `invalid user request`);
@@ -109,7 +109,7 @@ const login = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
   };
   res
     .status(200)
@@ -137,7 +137,8 @@ const logout = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
+
   };
 
   res
@@ -293,12 +294,18 @@ const forgetPassword = asyncHandler(async (req, res) => {
   const { username, email } = req.body;
   if (!username || !email)
     throw new ApiError(404, `Username and email are required`);
+
   const user = await User.findOne({
-    username: { $regex: new RegExp(username, "i") },
-    email: { $regex: new RegExp(email, "i") },
+    username: { $regex: new RegExp(`^${username}$`, "i") },
+    email: { $regex: new RegExp(`^${email}$`, "i") } 
   });
+  
   console.log("User", user);
-  if (!user) throw new ApiError(404, `Invalid user request`);
+  if (!user) throw new ApiError(404, `Invalid user request | Email or username are invalid`);
+  if(user.username !== username)
+    throw new ApiError(404, `Invalid username`);
+  if(user.email !== email)
+    throw new ApiError(404, `Invalid email`);
 
   const resetToken = user.generateResetToken();
   user.resetToken = resetToken;
@@ -316,7 +323,9 @@ const forgetPassword = asyncHandler(async (req, res) => {
     }),
     text: `Reset password link: ${process.env.WEBSITE_URL}/resetpassword/${resetToken}`,
   });
+  console.log("Email Response", response);
   if (!response) throw new ApiError(404, `Error while sending email`);
+  
 
   res
     .status(200)
@@ -341,6 +350,7 @@ const getCurrentuser = asyncHandler(async (req, res) => {
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
+  
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
   if (!incomingRefreshToken)
@@ -367,7 +377,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   );
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
   };
 
   res

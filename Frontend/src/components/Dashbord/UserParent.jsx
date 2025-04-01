@@ -3,10 +3,10 @@ import { X, Pencil, Trash } from 'lucide-react';
 import databaseService from '../../services/database.services';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ParentForm, Modal, Button } from '../../components';
+import { ParentForm, Modal, Button } from '..';
 import { setEditableUserParent } from '../../slices/dashboard/dashboardSlice';
-import { Parent } from '../index';
-import { UserParentCard } from '../../components/';
+import { Parent } from '../../pages/index';
+import { UserParentCard } from '..';
 
 function UserParent() {
   const { userId } = useParams();

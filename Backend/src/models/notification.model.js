@@ -24,7 +24,7 @@ const notificationSchema = new Schema(
     },
     notificationType: {
       type: String,
-      enum: ["info", "error", "warning", "success"],
+      enum: ["info", "error", "warning", "success","Approval"],
       default: "info",
     },
     targetGroup: {
@@ -60,6 +60,10 @@ const notificationSchema = new Schema(
         },
       },
     ],
+    link:{
+      type:String,
+      default:null
+    },
   },
   {
     timestamps: true,

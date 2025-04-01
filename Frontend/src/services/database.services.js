@@ -191,8 +191,29 @@ export class DatabaseService {
       }
     );
   }
-  async getCurrentuser() {
 
+  async forgetPassword({ email,username }) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/user/forgetPassword', {
+            email,
+            username,
+          }),
+        'forgetPassword'
+      ),
+      {
+        loading: 'Sending Email',
+        success: 'Reset Password Email Sent successfully to your email',
+        error: 'Error while sending email',
+      },
+      {
+        id: 'forgetPassword',
+      }
+    );
+    
+  }
+  async getCurrentuser() {
     return handleApiRequest(
       () => axiosInstace.get('/api/v1/user/getCurrentuser'),
       'getCurrentUser'
@@ -621,8 +642,8 @@ export class DatabaseService {
     return handleApiRequest(() => axiosInstace.get('/api/v1/talent'), 'getUserTalents');
   }
   async getTalentById({ talentId }, userId = null) {
-    console.log("userId", userId);
-    console.log("talentId", talentId);
+    console.log('userId', userId);
+    console.log('talentId', talentId);
     if (userId) {
       return handleApiRequest(
         () => axiosInstace.get(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
@@ -642,13 +663,11 @@ export class DatabaseService {
       return toast.promise(
         handleApiRequest(
           () =>
-            axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`,
-              formData, {
+            axiosInstace.post(`/api/v1/admin/talent?userId=${userId}`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
-            }
-            ),
+            }),
           'addTalent'
         ),
         {
@@ -776,9 +795,12 @@ export class DatabaseService {
       }
     );
   }
-  async getUserProfile(userId){
+  async getUserProfile(userId) {
     return toast.promise(
-      handleApiRequest(() => axiosInstace.get(`/api/v1/admin/user-profile/${userId}`), 'getUserProfile'),
+      handleApiRequest(
+        () => axiosInstace.get(`/api/v1/admin/user-profile/${userId}`),
+        'getUserProfile'
+      ),
       {
         loading: 'Fetching User',
         success: 'User Fetched successfully',
@@ -789,7 +811,7 @@ export class DatabaseService {
       }
     );
   }
-  async addEvent({ title, description, media, cloudMediaFiles, startAt, endAt, venue }) {
+  async addEvent({ title, description, media, cloudMediaFiles, startAt, endAt, venue, eventType }) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -799,6 +821,7 @@ export class DatabaseService {
     formData.append('cloudMediaFiles', cloudMediaFiles);
     formData.append('startAt', startAt);
     formData.append('endAt', endAt);
+    formData.append('eventType', eventType);
     formData.append('venue', venue);
 
     return toast.promise(
@@ -821,10 +844,11 @@ export class DatabaseService {
       }
     );
   }
-  async updateEvent({ title, description, media, cloudMediaFiles }, eventId) {
+  async updateEvent({ title, description, media, cloudMediaFiles, eventType }, eventId) {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
+    formData.append('eventType', eventType);
     if (media && media.length > 0) {
       Array.from(media).forEach((img) => formData.append('media', img));
     }
@@ -876,13 +900,13 @@ export class DatabaseService {
 
   async createNotification({
     createdFor,
-
     targetGroup,
     title,
     message,
     notificatinoType,
     poster,
     isReadBy,
+    link,
     deliveredTo,
   }) {
     const formData = new FormData();
@@ -890,6 +914,7 @@ export class DatabaseService {
 
     formData.append('targetGroup', targetGroup);
     formData.append('title', title);
+    formData.append('link', link);
 
     formData.append('message', message);
     formData.append('notificatinoType', notificatinoType);
@@ -967,6 +992,342 @@ export class DatabaseService {
       'createSubscription'
     );
   }
+
+  // attendance
+  // this addAttendance will be used by admin to add, update and delete attendance of the users
+  async addAttendance({ attendanceList, eventId }) {
+    console.log('attendanceList', attendanceList);
+    console.log('eventId', eventId);
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/attendance/${eventId}`, {
+            attendanceList,
+          }),
+        'addAttendance'
+      ),
+      {
+        loading: 'Marking Attendance',
+        success: 'Attendance Marked successfully',
+        error: 'Error while marking attendance',
+      },
+      {
+        id: 'addAttendance',
+      }
+    );
+  }
+  async getAttendanceByEventId({ eventId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.get(`/api/v1/attendance/event/${eventId}`),
+        'getAttendanceByEventId'
+      ),
+      {
+        loading: 'Fetching Attendance',
+        success: 'Attendance Fetched successfully',
+        error: 'Error while fetching attendance',
+      },
+      {
+        id: 'getAttendanceByEventId',
+      }
+    );
+  }
+
+  async getAttendanceByUserId({ userId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/attendance/user/${userId}`),
+      'getAttendanceByUserId'
+    );
+  }
+  async getAttendanceStatusByEventIdAndUserId({ eventId, userId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/attendance/status/${eventId}/${userId}`),
+      'getAttendanceStatusByEventIdAndUserId'
+    );
+  }
+
+  // unregistered attendance
+  async addUnregisteredAttendance({ fullName, mobile, email, remark, status }, eventId) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/unregisteredAttendance/event/${eventId}`, {
+            fullName,
+            mobile,
+            email,
+            remark,
+            status,
+          }),
+        'addUnregisteredAttendance'
+      ),
+      {
+        loading: 'Adding Unregistered Attendance',
+        success: 'Unregistered Attendance Added successfully',
+        error: 'Error while adding unregistered attendance',
+      },
+      {
+        id: 'addUnregisteredAttendance',
+      }
+    );
+  }
+
+  async updateUnregisteredAttendance(
+    { fullName, mobile, email, remark, status },
+    unregisteredAttendanceId
+  ) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`, {
+            fullName,
+            mobile,
+            email,
+            remark,
+            status,
+          }),
+        'updateUnregisteredAttendance'
+      ),
+      {
+        loading: 'Updating Unregistered Attendance',
+        success: 'Unregistered Attendance Updated successfully',
+        error: 'Error while updating unregistered attendance',
+      },
+      {
+        id: 'updateUnregisteredAttendance',
+      }
+    );
+  }
+
+  async deleteUnregisteredAttendance({ unregisteredAttendanceId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`),
+        'deleteUnregisteredAttendance'
+      ),
+      {
+        loading: 'Deleting Unregistered Attendance',
+        success: 'Unregistered Attendance Deleted successfully',
+        error: 'Error while deleting unregistered attendance',
+      },
+      {
+        id: 'deleteUnregisteredAttendance',
+      }
+    );
+  }
+  async getUnregisteredAttendanceById({ unregisteredAttendanceId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/unregisteredAttendance/${unregisteredAttendanceId}`),
+      'getUnregisteredAttendanceById'
+    );
+  }
+
+  async getUnregisteredAttendanceByEventId({ eventId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/unregisteredAttendance/event/${eventId}`),
+      'getUnregisteredAttendanceByEventId'
+    );
+  }
+
+  //POST
+  async addPost({ title, content, slug, status, tags, isCommentEnable }) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post('/api/v1/post', {
+            title,
+            content,
+            slug,
+            status,
+            tags,
+            isCommentEnable,
+          }),
+        'addPost'
+      ),
+      {
+        loading: 'Adding Post',
+        success: 'Post Added successfully',
+        error: 'Error while adding post',
+      },
+      {
+        id: 'addPost',
+      }
+    );
+  }
+  async updatePost({ title, content, slug, status, tags, isCommentEnable }, postId) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/post/${postId}`, {
+            title,
+            content,
+            slug,
+            status,
+            tags,
+            isCommentEnable,
+          }),
+        'updatePost'
+      ),
+      {
+        loading: 'Updating Post',
+        success: 'Post Updated successfully',
+        error: 'Error while updating post',
+      },
+      {
+        id: 'updatePost',
+      }
+    );
+  }
+  async deletePost({ postId }) {
+    return toast.promise(
+      handleApiRequest(() => axiosInstace.delete(`/api/v1/post/${postId}`), 'deletePost'),
+      {
+        loading: 'Deleting Post',
+        success: 'Post Deleted successfully',
+        error: 'Error while deleting post',
+      },
+      {
+        id: 'deletePost',
+      }
+    );
+  }
+  async getPostById({ postId }) {
+    return handleApiRequest(() => axiosInstace.get(`/api/v1/post/${postId}`), 'getPostById');
+  }
+  async getPosts() {
+    return handleApiRequest(() => axiosInstace.get('/api/v1/post'), 'getPosts');
+  }
+  async getPostsByUserId({ userId }) {
+    return handleApiRequest(
+      () => axiosInstace.get(`/api/v1/post/user/${userId}`),
+      'getPostsByUserId'
+    );
+  }
+  async togglePublishStatus({ postId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.put(`/api/v1/post/${postId}/publish`),
+        'togglePublishStatus'
+      ),
+      {
+        loading: 'Toggling Publish Status',
+        success: 'Publish Status Toggled successfully',
+        error: 'Error while toggling publish status',
+      },
+      {
+        id: 'togglePublishStatus',
+      }
+    );
+  }
+  async toggleIsCommentsEnabled({ postId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.put(`/api/v1/post/${postId}/comments`),
+        'toggleIsCommentsEnabled'
+      ),
+      {
+        loading: 'Toggling Comment Status',
+        success: 'Comment Status Toggled successfully',
+        error: 'Error while toggling comment status',
+      },
+      {
+        id: 'toggleIsCommentsEnabled',
+      }
+    );
+  }
+  async toggleIsApproved({ postId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.put(`/api/v1/post/${postId}/approval`),
+        'toggleIsApproved'
+      ),
+      {
+        loading: 'Toggling Approval Status',
+        success: 'Approval Status Toggled successfully',
+        error: 'Error while toggling approval status',
+      },
+      {
+        id: 'toggleIsApproved',
+      }
+    );
+  }
+  async getPendingPosts() {
+    return handleApiRequest(
+      () => axiosInstace.get('/api/v1/admin/pending-post'),
+      'getPendingPosts'
+    );
+  }
+
+  //Comment
+  async addPostComment({ content }, postId) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.post(`/api/v1/comment/${postId}`, {
+            content,
+          }),
+        'addPostComment'
+      ),
+      {
+        loading: 'Adding Comment',
+        success: 'Comment Added successfully',
+        error: 'Error while adding comment',
+      },
+      {
+        id: 'addPostComment',
+      }
+    );
+  }
+
+  async getCommentsByPostId({ postId }) {
+    return handleApiRequest(() => axiosInstace.get(`/api/v1/comment/${postId}`), 'getPostComment');
+  }
+  async updatePostComment({ content }, commentId) {
+    return toast.promise(
+      handleApiRequest(
+        () =>
+          axiosInstace.put(`/api/v1/comment/${commentId}`, {
+            content,
+          }),
+        'updatePostComment'
+      ),
+      {
+        loading: 'Updating Comment',
+        success: 'Comment Updated successfully',
+        error: 'Error while updating comment',
+      },
+      {
+        id: 'updatePostComment',
+      }
+    );
+  }
+
+  async deletePostComment({ commentId }) {
+    return toast.promise(
+      handleApiRequest(
+        () => axiosInstace.delete(`/api/v1/comment/${commentId}`),
+        'deletePostComment'
+      ),
+      {
+        loading: 'Deleting Comment',
+        success: 'Comment Deleted successfully',
+        error: 'Error while deleting comment',
+      },
+      {
+        id: 'deletePostComment',
+      }
+    );
+  }
+
+  //like
+  // togglePostLike,
+  // getLikesByPostId,
+  async togglePostLike(postId) {
+    return handleApiRequest(() => axiosInstace.post(`/api/v1/like/${postId}`), 'togglePostLike');
+  }
+  async getLikesByPostId(postId) {
+    return handleApiRequest(() => axiosInstace.get(`/api/v1/like/${postId}`), 'getLikesByPostId');
+  }
+
 }
 
 const databaseService = new DatabaseService();

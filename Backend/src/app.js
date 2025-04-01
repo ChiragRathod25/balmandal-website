@@ -27,19 +27,13 @@ app.use(
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.get('/',(req,res)=>{
-  console.log('hi')
-  res.
-  status(200)
-  .json({ message: "Hello from the server!" });
-})
-app.get("/api", (req, res) => {
-  res.
-  status(200)
-  .json({ message: "Hello from the server!" });
-
+app.get("/", (req, res) => {
+  console.log("hi");
+  res.status(200).json({ message: "Hello from the server!" });
 });
-
+app.get("/api", (req, res) => {
+  res.status(200).json({ message: "Hello from the server!" });
+});
 
 import userRoutes from "./routes/user.routes.js";
 import parentRoutes from "./routes/parent.routes.js";
@@ -48,7 +42,12 @@ import talentRoutes from "./routes/talent.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import eventRoutes from "./routes/event.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
-import subscriptionRoutes from "./routes/subscription.routes.js"
+import subscriptionRoutes from "./routes/subscription.routes.js";
+import attendanceRoutes from "./routes/attendance.routes.js";
+import unregisteredAttendanceRoutes from "./routes/unregistered_attendance.routes.js";
+import postRoutes from "./routes/post.routes.js";
+import likeRoutes from "./routes/like.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/parent", parentRoutes);
@@ -57,7 +56,14 @@ app.use("/api/v1/talent", talentRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/event", eventRoutes);
 app.use("/api/v1/notification", notificationRoutes);
-app.use("/api/v1/subscription",subscriptionRoutes)
-app.use(errorHandler)
+app.use("/api/v1/subscription", subscriptionRoutes);
+app.use("/api/v1/attendance", attendanceRoutes);
+app.use("/api/v1/unregisteredAttendance", unregisteredAttendanceRoutes);
+app.use("/api/v1/post", postRoutes);
+app.use("/api/v1/like", likeRoutes);
+app.use("/api/v1/comment", commentRoutes);
+
+
+app.use(errorHandler);
 
 export { app };

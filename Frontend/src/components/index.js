@@ -27,6 +27,28 @@ import UserAchievementCard from "./Profile/UserAchievementCard";
 import UserTalentCard from "./Profile/UserTalentCard";
 import UserParentCard from "./Profile/UserParentCard";
 import EventCard from "./Event/EventCard";
+import AttendanceForm from "./Forms/Event/Attendance/AttendanceForm";
+import UnregisteredAttendanceForm from "./Forms/Event/UnregisteredAttendance/UnregisteredAttendanceForm";
+import EventAttendance from "./Event/Attendance/EventAttendance";
+import EventUnregisteredAttendace from "./Event/Unregistered_attendance/EventUnregisteredAttendace";
+import UserAttendanceCard from "./Event/Attendance/UserAttendanceCard";
+import UserAchievement from "./Dashbord/UserAchievement";
+import UserAttendanceDashboard from "./Dashbord/UserAttendance";
+import UserAttendanceProfile from "./Profile/UserAttendance";
+import UserTalent from "./Dashbord/UserTalent";
+import UserParent from "./Dashbord/UserParent";
+import UserDetails from "./Dashbord/UserDetails";
+import RTE from "./RTE";
+import PostForm from "./Forms/Post/PostForm";
+import PostCard from "./Post/PostCard";
+import CommentForm from "./Forms/Post/Comment/CommentForm";
+import CommentContainer from "./Post/Comment/CommentContainer";
+import CommentCard from "./Post/Comment/CommentCard"
+import PostInteractions from "./Post/PostInteractions";
+import ForgetPassword from "./Authentication/ForgetPassword";
+import Login  from "./Authentication/Login";
+import SignUp  from "./Authentication/SignUp";
+
 export {
   QueryHandler,
   UserDetailsForm,
@@ -57,5 +79,26 @@ export {
   UserTalentCard,
   UserParentCard,
   EventCard,
+  AttendanceForm,
+  UnregisteredAttendanceForm,
+  EventAttendance,
+  EventUnregisteredAttendace,
+  UserAttendanceCard,
+  UserAchievement,
+  UserAttendanceDashboard,
+  UserAttendanceProfile,
+  UserTalent,
+  UserParent,
+  UserDetails,
+  RTE,
+  PostForm,
+  PostCard,
+  CommentForm,
+  CommentContainer,
+  CommentCard,
+  PostInteractions,
+  ForgetPassword,
+  Login,
+  SignUp,
 
 };

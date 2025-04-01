@@ -14,7 +14,7 @@ function Layout({ children }) {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col ">
         {!isPWA && (
           <header
             className={`bg-[#C30E59] text-white shadow-xl sticky top-0 z-50 backdrop-blur-lg `}
@@ -26,7 +26,7 @@ function Layout({ children }) {
         )}
 
         {isPWA && (
-          <div className="sm:hidden z-200">
+          <div className="sm:hidden z-200 sticky top-0">
             <TopBar onMenuClick={() => setIsDrawerOpen(true)} notificationsCount={3} />
             <SideDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
           </div>
@@ -35,7 +35,7 @@ function Layout({ children }) {
         <div>{children}</div>
 
         {isPWA ? (
-          <div className="sm:hidden z-200">
+          <div className="sm:hidden z-200 mt-10">
             <BottomTabBar />
           </div>
         ) : (
@@ -45,6 +45,8 @@ function Layout({ children }) {
             </div>
           </footer>
         )}
+
+       
       </div>
     </>
   );

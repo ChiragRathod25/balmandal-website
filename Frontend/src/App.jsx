@@ -9,19 +9,18 @@ import MyToaster from './MyToaster';
 import { registerAndSubscribe } from './utils/subscriptionHelper';
 import config from './conf/config';
 
-import {Layout} from './components';
+import { Layout, RTE } from './components';
 
 //socket io connection
 import { io } from 'socket.io-client';
 import socketClient from 'socket.io-client';
+import { InstallApp } from './pages';
 export const socket = socketClient(config.apiURL, {
   transports: ['websocket'],
-}); 
-
+});
 
 //App Component
 function App() {
- 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useScrollToTop();
@@ -89,9 +88,9 @@ function App() {
           if (response.data) {
             dispatch(login(response.data));
             //if the user is logged in then only create service worker
-            setTimeout(()=>{
+            setTimeout(() => {
               registerAndSubscribe();
-            },10000)
+            }, 10000);
           } else {
             dispatch(logout());
           }
@@ -101,22 +100,22 @@ function App() {
     getCurrentUser();
   }, []);
 
+ 
+
   if (loading) {
     return <h2>Loading...</h2>;
   }
   return (
     <div className="bg-gray-100 min-h-screen">
       <Layout>
-     
-      <main>
-        {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
-        <MyToaster />
+        <main>
+          {/* <Toaster position="sm:top-right top-center" duration={3000} reverseOrder={false} /> */}
+          <MyToaster />
 
-        <Outlet />
-      </main>
-        </Layout>
-      
-    
+          <Outlet />
+
+        </main>
+      </Layout>
     </div>
   );
 }

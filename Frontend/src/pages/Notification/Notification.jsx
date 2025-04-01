@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
 import { Button, QueryHandler } from '../../components';
 import { useSelector } from 'react-redux';
+import parse from 'html-react-parser';
 
 function Notification() {
   const [Notification, setNotification] = useState({});
@@ -32,7 +33,10 @@ function Notification() {
             <p className="font-semibold text-gray-800 mb-1">Message:</p>
           </div>
           <div className="whitespace-pre-wrap flex flex-row gap-2">
-            <p className="text-gray-700 text-sm sm:text-base">{Notification?.message}</p>
+          <p className="text-gray-700 text-sm sm:text-base">
+  {Notification?.message ? parse(Notification.message) : "No message available"}
+</p>
+
           </div>
         </div>
 

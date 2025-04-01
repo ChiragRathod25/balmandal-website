@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^9.5.0",
     "@reduxjs/toolkit": "^2.5.1",
     "@tailwindcss/vite": "^4.0.4",
-    "axios": "^1.7.9",
+    "axios": "^1.8.1",
     "bootstrap": "^5.3.3",
+    "ckeditor5": "^44.3.0",
     "framer-motion": "^12.4.7",
+    "html-react-parser": "^5.2.2",
     "lucide-react": "^0.475.0",
     "prettier": "^3.5.0",
     "primereact": "^10.9.2",
