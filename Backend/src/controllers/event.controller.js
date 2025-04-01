@@ -150,7 +150,7 @@ const deleteEvent = asyncHandler(async (req, res, next) => {
 });
 
 const getEvents = asyncHandler(async (req, res, next) => {
-  const events = await Event.find();
+  const events = await Event.find().sort({ createdAt: -1 });
   if (!events) {
     throw new ApiError(404, "No events found");
   }

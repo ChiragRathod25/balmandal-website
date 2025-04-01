@@ -2,12 +2,12 @@ import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import databaseService from '../../services/database.services';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const SideDrawer = ({ isOpen, onClose }) => {
   const user = useSelector((state) => state.auth.userData);
-
+  const navigate= useNavigate()
   const links = {
     section1: [
       {
@@ -44,7 +44,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
     ],
   };
 
-  return  (
+  return (
     <>
       {/* Backdrop */}
       {isOpen && (
@@ -64,57 +64,67 @@ const SideDrawer = ({ isOpen, onClose }) => {
         </button>
 
         {/* Profile */}
-        {
-          user ? (
-
-
-            <div className="flex items-center gap-4 mb-4  pb-4 flex-col">
-          <img
-            src={
-              user?.avatar ||
-              `https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png`
-            }
-            alt={user?.firstName}
-            className="w-12 h-12 rounded-full"
+        {user ? (
+          <div className="flex items-center mb-4  flex-col"
+          onClick={()=> {onClose(); navigate('/profile')}}
+          
+        >
+            <img
+              src={
+                user?.avatar ||
+                `/avatar.png` ||
+                'https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png'
+              }
+              alt={user?.firstName}
+              className="w-12 h-12 rounded-full"
             />
-          <div className="text-center">
-            <h2 className="text-lg font-semibold">
-              {user?.firstName} {user?.lastName}
-            </h2>
+            <p
+              className="text-sm text-center text-gray-300"
+            >
+              @{user?.username}
+            </p>
+            <div className="text-center">
+              <h2 className="text-lg font-semibold">
+                {user?.firstName} {user?.lastName}
+              </h2>
+            </div>
           </div>
-        </div>
-          ):(
-            <div className="flex items-center gap-4 mb-4 pb-4 flex-col">
-              <Link to="/login" onClick={onClose} className="text-lg font-semibold hover:text-[#F2AE66]">
-             Login to view profile
-              </Link>
-            </div>    
-          )
-          }
+        ) : (
+          <div className="flex items-center gap-4 mb-4 pb-4 flex-col">
+            <Link
+              to="/login"
+              onClick={onClose}
+              className="text-lg font-semibold hover:text-[#F2AE66]"
+            >
+              Login to view profile
+            </Link>
+          </div>
+        )}
 
         {/* Menu Items */}
         <nav className="flex flex-col gap-4">
-      
-       {
-    
-        links &&
-        Object.keys(links).map((section, index) => (
-          <div key={index} className="mb-4 space-y-2 flex flex-col"> 
-         <hr className="border-[#F2AE66] border-opacity-50" />
+          {links &&
+            Object.keys(links).map((section, index) => (
+              <div key={index} className="mb-4 space-y-2 flex flex-col">
+                <hr className="border-[#F2AE66] border-opacity-50" />
 
-            {links[section].map((link, index) => (
-              <Link
-                key={index}
-                to={link.to}
-                onClick={onClose}
-                className="text-lg font-semibold hover:text-[#F2AE66]"
-              >
-                {link.name}
-              </Link>
+                {links[section].map((link, index) => (
+                  <>
+                    {/* do not show logout btn if user is already loggedout */}
+                    {!user && link.name === 'Logout' ? null : (
+                      <Link
+                        key={index}
+                        to={link.to}
+                        onClick={onClose}
+                        className="text-lg font-semibold hover:text-[#F2AE66]"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                  </>
+                ))}
+              </div>
             ))}
-          </div>
-        ))
-       }
         </nav>
       </motion.div>
     </>
