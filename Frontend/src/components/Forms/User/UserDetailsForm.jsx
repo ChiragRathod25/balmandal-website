@@ -35,6 +35,11 @@ function UserDetailsForm({ user,setEditing }) {
       const response = await databaseService
         .updateUserDetails(data, userId)
         .then((response) => response.data)
+        .then((response) => {
+          console.log('Updated user details', response);
+          dispatch(setEditableUser(response));
+          return response;
+        })
         .catch((error) => console.log('error while updating user details', error));
       if (response) {
         console.log('Updated user details', response);

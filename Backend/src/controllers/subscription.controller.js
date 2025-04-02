@@ -2,11 +2,10 @@ import { ApiResponce } from "../utils/ApiResponce.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Subscription } from "../models/subscription.model.js";
-import webpush from "web-push";
 
 const createSubscription = asyncHandler(async (req, res) => {
   try {
-    console.log("Req.body", req.body);
+    // console.log("Req.body", req.body);
     const { subscription } = req.body;
     subscription.userId = req.user._id;
     const newSubscription = await Subscription.create({ ...subscription });
@@ -48,4 +47,23 @@ const createSubscription = asyncHandler(async (req, res) => {
   }
 });
 
-export { createSubscription };
+const checkRegistration = asyncHandler(async (req, res) => {
+  const { endPoint } = req.body;
+  console.log("endPoint", endPoint);
+
+  if (!endPoint) throw new ApiError(404, `EndPoint not found`);
+
+  const subscription = await Subscription.findOne({
+    endpoint:endPoint
+  });
+  console.log("Matching subscription:", subscription);
+
+  if (!subscription) throw new ApiError(404, `Subscription not found`);
+  res
+    .status(200)
+    .json(
+      new ApiResponce(200, subscription, `Subscription found successfully !!`)
+    );
+});
+
+export { createSubscription, checkRegistration };

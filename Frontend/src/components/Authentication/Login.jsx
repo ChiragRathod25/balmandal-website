@@ -27,6 +27,7 @@ function Login() {
         if (user) {
           dispatch(login(user.data));
           setTimeout(() => {
+            console.log('Registering and subscribing...');  
             registerAndSubscribe();
           }, 10000);
         }

@@ -16,24 +16,6 @@ export async function regSw() {
 }
 
 export const subscribeUser = async (serviceWorkerReg) => {
-  // //Unregister all Service Workers
-  // navigator.serviceWorker.getRegistrations().then((registrations) => {
-  //   registrations.forEach((reg) => {
-  //     reg.unregister().then(() => console.log('Service Worker unregistered:', reg));
-  //   });
-  // });
-
-  // // Remove old push subscriptions
-  // navigator.serviceWorker.ready.then((reg) => {
-  //   reg.pushManager.getSubscription().then((subscription) => {
-  //     if (subscription) {
-  //       subscription.unsubscribe().then(() => console.log('Old subscription removed.'));
-  //     } else {
-  //       console.log('No existing subscription found.');
-  //     }
-  //   });
-  // });
-  // return ;
 
   if (!serviceWorkerReg) {
     console.error('No Service Worker Registration available.', serviceWorkerReg);
@@ -44,8 +26,7 @@ export const subscribeUser = async (serviceWorkerReg) => {
     let subscription = await serviceWorkerReg.pushManager.getSubscription();
     console.log('Existing Subscription', subscription);
 
-
-    //if there is service worker exist, no need to re create it, it is already register
+    //if there is service worker doest not exist, create it and register it to database
     if (!subscription) {
       try {
         const appServerKey = urlBase64ToUint8Array(config.vapidPublicKey);
@@ -60,13 +41,26 @@ export const subscribeUser = async (serviceWorkerReg) => {
         // if there is a new service worker, register it to database
         const response = await databaseService.createSubscription({ subscription });
         console.log('Subscription response', response);
-      } 
-      catch (err) {
+      } catch (err) {
         if (err instanceof DOMException) {
           console.error(`DOMException during subscribe: ${err.name} - ${err.message}`);
         } else {
           console.error('Unexpected error during subscribe:', err);
         }
+      }
+    } else {
+      // if it is already subscribed, then check if it is already registered in the database
+      try {
+        console.log('Subscription endpoint:', subscription.endpoint);
+        const RegistrationStatus = await databaseService.getSubscription({
+          endPoint: subscription.endpoint,
+        });
+        console.log('RegistrationStatus', RegistrationStatus);
+      } catch (err) {
+        console.error('Error while checking subscription:', err);
+        // if it is not registered, register it to database
+        const response = await databaseService.createSubscription({ subscription });
+        console.log('Subscription response', response);
       }
     }
   } catch (err) {
@@ -87,8 +81,6 @@ export function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-
-
 //
 
 async function requestNotificationPermission() {
@@ -98,7 +90,7 @@ async function requestNotificationPermission() {
   }
 }
 
-//for service worker creation :: It is a Main Function, which will be called first, and this function will call other required functions 
+//for service worker creation :: It is a Main Function, which will be called first, and this function will call other required functions
 export const registerAndSubscribe = async () => {
   try {
     const serviceWorkerReg = await regSw();

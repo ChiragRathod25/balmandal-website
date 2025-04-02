@@ -993,6 +993,14 @@ export class DatabaseService {
     );
   }
 
+  async getSubscription({ endPoint }) {
+    console.log('Getting subscription in db', { endPoint });
+    return handleApiRequest(
+      () => axiosInstace.post(`/api/v1/subscription/checkRegistration`, { endPoint }),
+      'getSubscription'
+    )
+  }
+
   // attendance
   // this addAttendance will be used by admin to add, update and delete attendance of the users
   async addAttendance({ attendanceList, eventId }) {

@@ -17,7 +17,7 @@ import {
   setEditableUserParent,
   setEditableUserTalent,
 } from '../../slices/dashboard/dashboardSlice';
-import UserAttendance from '../../components/Dashbord/UserAttendance';
+
 let i = 0;
 function UserData() {
   console.log('Rendering UserData', i++);
@@ -46,7 +46,7 @@ function UserData() {
 
   return (
     <>
-      <UserDetails user={user} />
+      <UserDetails user={user}  />
       <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />
       <UserAchievement />
       <hr className="border-t-2 border-gray-300 mx-auto w-11/12" />

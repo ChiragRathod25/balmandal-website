@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserDetails as UserDetailsComponent } from '../../pages';
 import { UserDetailsForm } from '..';
 import { useSelector } from 'react-redux';
 
 const UserDetails = ({user}) => {
   const [isEditing, setEditing] = useState(false);
-  return (
+  return user?(
     <div>
       {isEditing ? (
         <>
@@ -19,7 +19,7 @@ const UserDetails = ({user}) => {
         <UserDetailsComponent user={user} setEditing={setEditing} />
       )}
     </div>
-  );
+  ):null
 };
 
 export default UserDetails;
