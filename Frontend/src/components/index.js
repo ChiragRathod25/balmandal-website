@@ -13,7 +13,7 @@ import QueryHandler from "./QueryHandler";
 import UserDetailsForm from "./Forms/User/UserDetailsForm";
 import UserCard from "./Dashbord/UserCard";
 import UserAvatar from "./Forms/User/UserAvatar";
-import CloudFilesManager from "./Forms/CloudeFilesManager";
+import CloudFilesManager from "./CloudeFilesManager";
 import FilesDisplayHelper from "./FilesDisplayHelper";
 import EventForm from "./Forms/Event/EventForm";
 import NotificationForm from "./Forms/Notification/NotificationForm";

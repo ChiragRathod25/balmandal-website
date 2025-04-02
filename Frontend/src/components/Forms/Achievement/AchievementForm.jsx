@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Input, Button, FileUploader } from '../../index';
+import { Input, Button, FileUploader,CloudFilesManager } from '../../index';
 import databaseService from '../../../services/database.services';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardSlice';
-import CloudeFilesManager from '../CloudeFilesManager';
+
 
 function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
@@ -135,7 +135,8 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
       />
 
       {cloudFiles && cloudFiles.length > 0 && (
-        <CloudeFilesManager cloudFiles={cloudFiles} handleDeleteFile={handleDeleteFile} />
+        
+        <CloudFilesManager cloudFiles={cloudFiles} handleDeleteFile={handleDeleteFile} />
       )}
 
       <FileUploader

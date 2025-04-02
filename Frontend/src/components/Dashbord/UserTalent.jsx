@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { X, Pencil, Trash } from 'lucide-react';
 import { TalentForm, Button, Modal, UserTalentCard } from '../index.js';
-import useCustomReactQuery from '../../utils/useCustomReactQuery.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserTalent } from '../../slices/dashboard/dashboardSlice.js';
 import databaseService from '../../services/database.services.js';
