@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +27,7 @@ function Login() {
         if (user) {
           dispatch(login(user.data));
           setTimeout(() => {
+            console.log('Registering and subscribing...');  
             registerAndSubscribe();
           }, 10000);
         }

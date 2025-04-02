@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import  { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import databaseService from "../../services/database.services";

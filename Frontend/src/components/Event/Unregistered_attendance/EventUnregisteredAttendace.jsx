@@ -2,7 +2,7 @@
 // if click on that redirect to the unregistered attendies details page 
 // where we can see the details of that unregistered attendies and we can also delete and edit that unregistered attendies 
 // and also we can add the new unregistered attendies
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Button } from '../../';
 import { useNavigate, useParams } from 'react-router-dom';
 import databaseService from '../../../services/database.services';

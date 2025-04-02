@@ -240,7 +240,6 @@ export class DatabaseService {
   }
 
   async deleteFile({ deleteUrl }, userId) {
-    console.log('Client Url', deleteUrl);
 
     const config = {
       headers: { 'Content-Type': 'application/json' }, // Ensure JSON is sent
@@ -380,8 +379,6 @@ export class DatabaseService {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
     formData.append('cloudFiles', cloudFiles);
-    console.log('Formdata', formData);
-    console.log('Images', image);
 
     if (userId) {
       return toast.promise(
@@ -629,8 +626,6 @@ export class DatabaseService {
   }
 
   async getUserTalents(userId = null) {
-    console.log('userId', userId);
-    console.log('userId', typeof userId);
 
     if (userId) {
       return handleApiRequest(
@@ -642,8 +637,6 @@ export class DatabaseService {
     return handleApiRequest(() => axiosInstace.get('/api/v1/talent'), 'getUserTalents');
   }
   async getTalentById({ talentId }, userId = null) {
-    console.log('userId', userId);
-    console.log('talentId', talentId);
     if (userId) {
       return handleApiRequest(
         () => axiosInstace.get(`/api/v1/admin/talent/${talentId}?userId=${userId}`),
@@ -709,7 +702,7 @@ export class DatabaseService {
       Array.from(image).forEach((img) => formData.append('image', img));
     }
     formData.append('cloudFiles', cloudFiles);
-    console.log('Images', image);
+
     if (userId) {
       return toast.promise(
         handleApiRequest(
@@ -965,7 +958,6 @@ export class DatabaseService {
     );
   }
   async getNotificationById({ notificationId }) {
-    console.log('notificationId', notificationId);
     return handleApiRequest(
       () => axiosInstace.get(`/api/v1/notification/${notificationId}`),
       'getNotificationById'
@@ -986,18 +978,22 @@ export class DatabaseService {
   }
 
   async createSubscription({ subscription }) {
-    console.log('Creating subscription in db', { subscription });
     return handleApiRequest(
       () => axiosInstace.post(`/api/v1/subscription/add`, { subscription }),
       'createSubscription'
     );
   }
 
+  async getSubscription({ endPoint }) {
+    return handleApiRequest(
+      () => axiosInstace.post(`/api/v1/subscription/checkRegistration`, { endPoint }),
+      'getSubscription'
+    )
+  }
+
   // attendance
   // this addAttendance will be used by admin to add, update and delete attendance of the users
   async addAttendance({ attendanceList, eventId }) {
-    console.log('attendanceList', attendanceList);
-    console.log('eventId', eventId);
     return toast.promise(
       handleApiRequest(
         () =>

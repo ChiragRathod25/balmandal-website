@@ -20,8 +20,7 @@ function EditTalent() {
     }
     if (data) {
       setTalent(data);
-    }
-    console.log('Edit Talent', talent);
+    }    
   }, [data,talentId]);
   return (
     <QueryHandler queries={[{ loading, error }]}>

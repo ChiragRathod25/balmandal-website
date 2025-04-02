@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import  { useCallback, useEffect, useState } from 'react';
 import databaseService from '../../services/database.services';
 import { useNavigate, useParams } from 'react-router-dom';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';

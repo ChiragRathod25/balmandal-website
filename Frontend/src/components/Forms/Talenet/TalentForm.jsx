@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import databaseService from '../../../services/database.services';
-import { Button, Input, FileUploader } from '../../';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Input, FileUploader, CloudFilesManager } from '../../';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEditableUserTalent } from '../../../slices/dashboard/dashboardSlice';
-import CloudeFilesManager from '../CloudeFilesManager';
 
 function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
-
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
@@ -33,7 +31,6 @@ function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
 
   const talents = useSelector((state) => state.dashboard.editableUserTalent);
   const updateStoreTalents = (newTalent) => {
-    console.log('Now updating store talents', newTalent);
     let updatedTalents;
     if (talent) {
       updatedTalents = talents.map((talent) => (talent._id === newTalent._id ? newTalent : talent));
@@ -41,28 +38,18 @@ function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
       updatedTalents = [...talents, newTalent];
     }
     dispatch(setEditableUserTalent(updatedTalents));
-    console.log('updatedTalents', updatedTalents);
   };
 
   let FinalCloudFiles = cloudFiles;
   const submit = async (data) => {
-    console.log('Submitting form...', data);
-    // // const uploaded=getValues('image');
-    // data.image=[...cloudFiles,...data.image];
-    // console.log("Submitting form...",data);
-    // console.log("cloudFiles",cloudFiles);
-    // console.log(JSON.stringify(cloudFiles));
-    
     data['cloudFiles'] = JSON.stringify(FinalCloudFiles);
-    console.log("Submitting form...",data);
-    // setValue('image', [...cloudFiles,...uploaded]); // Update form value
+
     if (isAdmin && userId) {
       if (talent) {
         const response = await databaseService
           .updateTalent(data, talent?._id, userId)
           .then((response) => response.data);
         if (response) {
-          console.log("Talent added response" ,response);
           updateStoreTalents(response);
           if (isUsedWithModal) {
             closeForm();
@@ -117,14 +104,12 @@ function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
   };
   const handleDeleteFile = async (index) => {
     const url = cloudFiles[index];
-    console.log('url', url);
+
     await databaseService.deleteFile({ deleteUrl: url }).then(() => {
       setCloudFiles((prev) => prev.filter((img, i) => i !== index));
     });
     const newFiles = cloudFiles.filter((img, i) => i !== index);
-    console.log('newFiles', newFiles);
 
-    // setCloudFiles((prev)=>newFiles);
     setFinalCloudFiles(newFiles);
     handleSubmit(submit)();
   };
@@ -148,7 +133,7 @@ function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
         />
 
         {cloudFiles && cloudFiles.length > 0 && (
-          <CloudeFilesManager
+          <CloudFilesManager
             cloudFiles={cloudFiles}
             setCloudFiles={setCloudFiles}
             handleDeleteFile={handleDeleteFile}

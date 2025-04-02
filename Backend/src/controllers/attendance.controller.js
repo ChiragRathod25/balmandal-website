@@ -180,6 +180,7 @@ const getAttendanceByUserId = asyncHandler(async (req, res, next) => {
   if (!userId) {
     throw new ApiError(400, "User Id is required");
   }
+  console.log("userId", userId);
   const attendances = await Attendance.aggregate([
     {
       $match: {

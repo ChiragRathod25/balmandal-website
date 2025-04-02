@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X, Pencil, Trash } from 'lucide-react';
 import databaseService from '../../services/database.services';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ParentForm, Modal, Button } from '..';
 import { setEditableUserParent } from '../../slices/dashboard/dashboardSlice';
@@ -52,7 +52,7 @@ function UserParent() {
   };
 
   const handleClick = (parent) => {
-    console.log('clicked');
+
     setModalTitle(parent.title);
     setModalContent(
       <>

@@ -25,11 +25,10 @@ function UnregisteredAttendanceForm({ UnregisteredAttendance }) {
         : await databaseService.addUnregisteredAttendance(data, eventId);
 
       if (response) {
-        console.log('Unregistered Attendance successfully saved');
         navigate(`/event/attendance/${eventId || UnregisteredAttendance.eventId}`);
       }
     } catch (error) {
-      console.log('Error saving unregistered attendance', error);
+      console.error('Error saving unregistered attendance', error);
     }
   };
 

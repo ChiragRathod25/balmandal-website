@@ -10,8 +10,7 @@ function UserAvatar({ avatar }) {
   // console.log('Editable user',useSelector((state)=>state.dashboard.editableUser))
   // console.log("userId:", userId);
   const isAdmin = useSelector((state) => state.auth.userData?.isAdmin);
-
-  console.log("userId:", userId);
+  
   const { register, handleSubmit, reset, watch } = useForm();
   const [isEditing, setEditing] = useState(false);
 
@@ -46,32 +45,30 @@ function UserAvatar({ avatar }) {
   };
 
   const submit = async (data) => {
-    console.log('submitting avatar');
+
     if (isAdmin) {
       databaseService
         .updateAvatar(data, userId)
         .then((response) => response.data)
         .then((data) => {
-          console.log('avatar updated', data);
           reset();
           setEditing(false);
           setAvatarUrl(data.avatar);
         })
         .catch((error) => {
-          console.log('error:', error);
+          console.error('Error while updating avatar', error);
         });
     } else {
       databaseService
         .updateAvatar(data)
         .then((response) => response.data)
         .then((data) => {
-          console.log('avatar updated', data);
           reset();
           setEditing(false);
           setAvatarUrl(data.avatar);
         })
         .catch((error) => {
-          console.log('error:', error);
+          console.error('Error while updating avatar', error);
         });
     }
   };

@@ -1,11 +1,10 @@
 // to get all notifications of the user ,
 // if user?='id', user notificatinos 
 // createdBy?='id' for getNotificationsByCreaterId
-import React, { useCallback, useEffect, useState } from 'react';
+import  { useCallback, useEffect, useState } from 'react';
 import databaseService from '../../services/database.services';
 import { useSelector } from 'react-redux';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';
-import { Loader, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button, QueryHandler } from '../../components';
 

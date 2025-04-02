@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Parse from "html-react-parser";
 import { Link } from "react-router-dom";
 function PostCard({ post }) {

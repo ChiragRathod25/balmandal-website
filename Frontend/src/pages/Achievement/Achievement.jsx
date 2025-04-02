@@ -9,9 +9,9 @@ import { FilesDisplayHelper } from '../../components';
 function Achievement({ id ,isUsedWithModal=false}) {
   // here id is a achievementId passed from the admin page to get the achievement details without using the useParams hook
   // hook is used to get the achievementId from the url by the regular user
-  console.log('Achievement Page');
-  console.log('isUsedWithModal:', isUsedWithModal);
-  console.log('id:', id);
+  // console.log('Achievement Page');
+  // console.log('isUsedWithModal:', isUsedWithModal);
+  // console.log('id:', id);
   const achievementId = useParams().achievementId || id;
 
   const navigate = useNavigate();
@@ -28,7 +28,6 @@ function Achievement({ id ,isUsedWithModal=false}) {
       navigate('/');
       return;
     }
-    console.log('Achievement:', achievement);
   }, [ achievementId, navigate]);
 
   // Handle delete action
@@ -43,7 +42,6 @@ function Achievement({ id ,isUsedWithModal=false}) {
 
       if (response) {
         navigate('/achievement');
-        console.log('Achievement Deleted');
       }
     } catch (error) {
       console.error('Error Deleting Achievement:', error);

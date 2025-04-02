@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserDetails from './UserDetails';
 
 import { useSelector } from 'react-redux';
 import { Button, UserDetailsForm,UserAttendanceProfile } from '../../components';
 import { useNavigate } from 'react-router-dom';
+
 function UserProfile() {
   const navigate = useNavigate();
   const [isEditing, setEditing] = useState(false);
   const user = useSelector((state) =>state.auth.userData);
-
   return (
     <div className="container mx-auto">
       {/* User Details or Edit Mode */}
@@ -28,25 +28,6 @@ function UserProfile() {
       }
       {/* Navigation Buttons */}
       <div className="flex flex-wrap gap-4 justify-center mb-6">
-        {/* <Button
-          onClick={() => navigate("/talent")}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition"
-        >
-          My Talents
-        </Button>
-        <Button
-          onClick={() => navigate("/achievement")}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition"
-        >
-          My Achievements
-        </Button>
-        <Button
-          onClick={() => navigate("/parent")}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition"
-        >
-          My Parent Details
-        </Button> */}
-
         <div className="space-y-4 text-center">
           <Button
             onClick={()=>navigate("/#features")}

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import  { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import databaseService from "../../services/database.services";
 import { PostForm, QueryHandler } from "../../components";

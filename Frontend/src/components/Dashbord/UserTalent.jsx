@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { X, Pencil, Trash } from 'lucide-react';
 import { TalentForm, Button, Modal, UserTalentCard } from '../index.js';
-import useCustomReactQuery from '../../utils/useCustomReactQuery.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserTalent } from '../../slices/dashboard/dashboardSlice.js';
 import databaseService from '../../services/database.services.js';
@@ -20,7 +18,6 @@ function UserTalent() {
   const [modalTitle, setModalTitle] = useState('');
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
-    console.log('closing modal');
     setIsModalOpen(false);
     document.body.style.overflow = 'auto';
   };
@@ -51,7 +48,6 @@ function UserTalent() {
     openModal();
   };
   const handleClick = (talent) => {
-    console.log('Talent clicked', talent);
     setModalTitle(talent?.heading);
     setModalContent(
       <>

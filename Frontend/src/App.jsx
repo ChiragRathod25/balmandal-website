@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import databaseService from './services/database.services';
 import { useDispatch } from 'react-redux';
 import { login, logout } from './slices/userSlice/authSlice';
-
 import useScrollToTop from './utils/useScrollToTop';
 import MyToaster from './MyToaster';
 import { registerAndSubscribe } from './utils/subscriptionHelper';
 import config from './conf/config';
 
-import { Layout, RTE } from './components';
+import { Layout } from './components';
 
 //socket io connection
-import { io } from 'socket.io-client';
 import socketClient from 'socket.io-client';
-import { InstallApp } from './pages';
 export const socket = socketClient(config.apiURL, {
   transports: ['websocket'],
 });
@@ -24,61 +21,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useScrollToTop();
-
-  //socket io connection and events
-  /*
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('new user is connected', socket.id);
-    });
-    socket.on('disconnect', () => {
-      console.log('User disconnect', socket.id); // undefined
-    });
-    socket.on('hello', (payload) => {
-      console.log('payload', payload);
-    });
-    socket.on('notify', (data) => {
-      Notification.requestPermission().then((perm) => {
-        if (perm === 'granted') {
-          navigator.serviceWorker.getRegistration().then((reg) => {
-            if (reg) {
-              reg.showNotification(data?.title, {
-                body: data?.message,
-                tag: data?._id,
-              });
-            }
-          });
-        }
-      });
-    });
-    // socket.on('event',(data)=>{
-
-    //   Notification.requestPermission().then((perm)=>{
-    //     if(perm==="granted"){
-    //       console.log(data)
-    //       new Notification("Hii",{
-    //         body:data?.title,
-    //         tag:data?.title
-    //       })
-    //     }
-    //   })
-    // })
-    socket.on('event', (data) => {
-      Notification.requestPermission().then((perm) => {
-        if (perm === 'granted') {
-          navigator.serviceWorker.getRegistration().then((reg) => {
-            if (reg) {
-              reg.showNotification(data.title, {
-                body: data.body,
-                tag: data.tag,
-              });
-            }
-          });
-        }
-      });
-    });
-  });
-*/
 
   useEffect(() => {
     const getCurrentUser = async () => {

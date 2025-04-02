@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   baseURL: config.baseUrl,
   withCredentials: true,
 });
-console.log('Axios instance created with base URL:', config.baseUrl);
+console.info('Axios instance created with base URL:', config.baseUrl);
 let isRefreshing = false; // Track ongoing refresh requests
 let failedQueue = []; // Store failed requests during refresh
 

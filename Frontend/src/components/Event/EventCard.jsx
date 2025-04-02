@@ -1,10 +1,9 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 function EventCard({ event }) {
     const navigate = useNavigate();
     const getHeroImage = (event) => {
-        let hero = 'https://plus.unsplash.com/premium_photo-1683749809341-23a70a91b195?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YWNoaWV2ZW1lbnR8ZW58MHx8MHx8fDA%3D';
-        // let hero='/event.png'/
+        // let hero = 'https://plus.unsplash.com/premium_photo-1683749809341-23a70a91b195?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YWNoaWV2ZW1lbnR8ZW58MHx8MHx8fDA%3D';
+        let hero='/eventDefault.png';
 
         const files = event?.media;
         if (files && files.length > 0) {
@@ -19,7 +18,7 @@ function EventCard({ event }) {
       };
 
     const hanleClick = () => { 
-        console.log('clicked');
+
         navigate(`/event/${event._id}`);
     }
 

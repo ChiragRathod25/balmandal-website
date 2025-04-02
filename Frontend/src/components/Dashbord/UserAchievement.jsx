@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { X, Pencil, Trash } from 'lucide-react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { AchievementForm, Modal, Button } from '../index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import UserAchievementCard from '../Profile/UserAchievementCard.jsx';
@@ -10,7 +9,6 @@ import { setEditableUserAchievement } from '../../slices/dashboard/dashboardSlic
 
 function UserAchievement() {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
 
   const achievements = useSelector((state) => state.dashboard.editableUserAchievement);
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
@@ -22,7 +20,6 @@ function UserAchievement() {
   const [modalTitle, setModalTitle] = useState('');
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
-    console.log('closing modal');
     setIsModalOpen(false);
     document.body.style.overflow = 'auto';
   };
@@ -56,7 +53,6 @@ function UserAchievement() {
     openModal();
   };
   const handleClick = (achievement) => {
-    console.log('clicked');
     setModalTitle(achievement.title);
     setModalContent(
       <>

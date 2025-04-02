@@ -1,5 +1,5 @@
 // this will display One unregistered attendance info
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import databaseService from '../../../services/database.services';
 import useCustomReactQuery from '../../../utils/useCustomReactQuery';

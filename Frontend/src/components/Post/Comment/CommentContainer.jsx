@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import  { useCallback, useEffect, useState } from 'react';
 import { CommentCard, CommentForm } from '../../index';
 import databaseService from '../../../services/database.services';
 import useCustomReactQuery from '../../../utils/useCustomReactQuery';

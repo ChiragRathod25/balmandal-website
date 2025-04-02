@@ -1,13 +1,11 @@
 import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import databaseService from '../../services/database.services';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const SideDrawer = ({ isOpen, onClose }) => {
   const user = useSelector((state) => state.auth.userData);
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const links = {
     section1: [
       {
@@ -65,10 +63,13 @@ const SideDrawer = ({ isOpen, onClose }) => {
 
         {/* Profile */}
         {user ? (
-          <div className="flex items-center mb-4  flex-col"
-          onClick={()=> {onClose(); navigate('/profile')}}
-          
-        >
+          <div
+            className="flex items-center mb-4  flex-col"
+            onClick={() => {
+              onClose();
+              navigate('/profile');
+            }}
+          >
             <img
               src={
                 user?.avatar ||
@@ -78,11 +79,7 @@ const SideDrawer = ({ isOpen, onClose }) => {
               alt={user?.firstName}
               className="w-12 h-12 rounded-full"
             />
-            <p
-              className="text-sm text-center text-gray-300"
-            >
-              @{user?.username}
-            </p>
+            <p className="text-sm text-center text-gray-300">@{user?.username}</p>
             <div className="text-center">
               <h2 className="text-lg font-semibold">
                 {user?.firstName} {user?.lastName}

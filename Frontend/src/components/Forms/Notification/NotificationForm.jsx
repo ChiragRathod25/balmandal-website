@@ -14,7 +14,7 @@ function NotificationForm() {
     if (!confirm('Are you sure you want to create notification?')) {
       return;
     }
-    console.log('Submitting form data', data);
+
     await databaseService
       .createNotification(data)
       .then((response) => response.data)
