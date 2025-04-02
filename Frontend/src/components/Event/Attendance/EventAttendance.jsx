@@ -1,6 +1,6 @@
 // this will display all the registered attendies of one event list view,
 // if click on that redirect to the user profile page where we can see the details of that user and we can also delete and edit that user
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import { Button } from '../../index';
 import { useNavigate, useParams } from 'react-router-dom';
 import databaseService from '../../../services/database.services';

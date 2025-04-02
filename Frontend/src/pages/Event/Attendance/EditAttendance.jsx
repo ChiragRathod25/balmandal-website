@@ -1,6 +1,5 @@
-import React from 'react'
 import { AttendanceForm } from '../../../components'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 import databaseService from '../../../services/database.services';
 import useCustomReactQuery from '../../../utils/useCustomReactQuery';
@@ -11,7 +10,7 @@ function EditAttendance() {
       () => databaseService.getAttendanceByEventId({ eventId }),
       [eventId]
     );
-    const navigate = useNavigate();
+
     const { loading, error, data: attendanceList } = useCustomReactQuery(fetchAttendance);
     if (loading) {
       return (

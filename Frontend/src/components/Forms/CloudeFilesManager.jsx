@@ -1,26 +1,22 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
   useEffect(() => {
     console.log('Rerendering for cloudFiles file manager', cloudFiles);
   }, [cloudFiles]);
 
-  const [isVisible, setIsVisible] = React.useState(null);
+  const [isMenuVisible, setIsMenuVisible] = React.useState(null);
   useEffect(() => {
-    console.log('isVisible', isVisible);
-  }, [isVisible]);
+    console.log('isMenuVisible', isMenuVisible);
+  }, [isMenuVisible]);
 
   const handleDelete = async (index) => {
-    console.log('Deleting file at index:', index);
-    if(!window.confirm('Are you sure you want to delete this file?'))  return;
+    if (!window.confirm('Are you sure you want to delete this file?')) return;
     await handleDeleteFile(index); // Use the function from props
   };
 
   const handleDownload = (index) => {
-    console.log('Downloading file at index:', index);
-    console.log('Downloading file at index:', cloudFiles[index]);
     async function downloadFileFromServer(fileUrl, fileName) {
-      console.log('fileUrl', fileUrl);
       const response = await fetch(fileUrl);
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -48,10 +44,12 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
     <>
       {/* View Modal */}
       {view && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black 
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black 
         min-h-screen
                      min-h-screen p-2 sm:p-10
-        bg-opacity-50 z-50">
+        bg-opacity-50 z-50"
+        >
           <div className="bg-white p-6 rounded-lg shadow-lg relative max-w-lg w-full">
             <button
               className="absolute top-2 right-2 text-gray-600 hover:text-black"
@@ -60,12 +58,16 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
               ✖
             </button>
             {view.includes('image') ? (
-              <img src={view} alt="
-              File Preview" className="w-full rounded-lg" />
+              <img
+                src={view}
+                alt="
+              File Preview"
+                className="w-full rounded-lg"
+              />
             ) : (
               <video src={view} controls className="w-full rounded-lg" />
             )}
-            </div>
+          </div>
         </div>
       )}
 
@@ -99,25 +101,25 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
                   className="absolute top-2 right-2 bg-gray-100 text-gray-600 p-2 rounded-full hover:bg-gray-300 transition"
                   onClick={(e) => {
                     e.preventDefault();
-                    setIsVisible(isVisible === index ? null : index);
+                    setIsMenuVisible(isMenuVisible === index ? null : index);
                   }}
-                  onMouseEnter={() => setIsVisible(index)}
+                  onMouseEnter={() => setIsMenuVisible(index)}
                 >
                   ⋮
                 </button>
               </div>
 
               {/* Dropdown Menu */}
-              {isVisible === index && (
+              {isMenuVisible === index && (
                 <div
                   className="absolute top-10 right-4 bg-white border border-gray-300 shadow-lg rounded-md p-2 w-32 z-10"
-                  onMouseLeave={() => setIsVisible(null)}
+                  onMouseLeave={() => setIsMenuVisible(null)}
                 >
                   <ul className="text-sm text-gray-700">
                     <li
                       className="hover:bg-gray-100 p-2 cursor-pointer"
                       onClick={() => {
-                        setIsVisible(null);
+                        setIsMenuVisible(null);
                         handleDelete(index);
                       }}
                     >
@@ -126,7 +128,7 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
                     <li
                       className="hover:bg-gray-100 p-2 cursor-pointer"
                       onClick={() => {
-                        setIsVisible(null);
+                        setIsMenuVisible(null);
                         handleDownload(index);
                       }}
                     >
@@ -135,7 +137,7 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
                     <li
                       className="hover:bg-gray-100 p-2 cursor-pointer"
                       onClick={() => {
-                        setIsVisible(null);
+                        setIsMenuVisible(null);
                         setView(file);
                       }}
                     >

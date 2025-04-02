@@ -1,4 +1,3 @@
-import React from 'react';
 import { EventForm, Container } from '../../components';
 
 function AddEvent() {

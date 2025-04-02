@@ -1,5 +1,3 @@
-import React from "react";
-
 function UserAttendanceCard({ attendance }) {
   // Function to calculate percentage safely
   const getPercentage = (total, present) => {

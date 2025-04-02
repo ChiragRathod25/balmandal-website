@@ -30,7 +30,6 @@ function Event() {
     try {
       await databaseService.deleteEvent({ eventId });
       navigate('/event');
-      console.log('Event Deleted');
     } catch (error) {
       console.error('Error deleting event:', error);
     }

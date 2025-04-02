@@ -22,10 +22,11 @@ function Post() {
     try {
       const response = await databaseService.toggleIsApproved({ postId }).then((res) => res.data);
       if (response?.isApproved) {
-        console.log('Approval status updated successfully!');
+        
         navigate(`/post`);
       } else {
-        console.log('Error updating post approval status.');
+        console.error('Error updating post approval status.');
+        throw new Error('Error updating post approval status.');
       }
     } catch (error) {
       console.error('Error while updating post status:', error);
@@ -35,10 +36,8 @@ function Post() {
     try {
       const response = await databaseService.deletePost({ postId }).then((res) => res.data);
       if (response) {
-        console.log('Post deleted successfully!');
+
         navigate(`/post`);
-      } else {
-        console.log('Error deleting post.');
       }
     } catch (error) {
       console.error('Error while deleting post:', error);

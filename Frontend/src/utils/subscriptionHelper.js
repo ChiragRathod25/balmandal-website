@@ -5,7 +5,6 @@ export async function regSw() {
     if ('serviceWorker' in navigator) {
       const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
       console.log('Service Worker Registered:', reg);
-      console.log('Registered reg', reg);
       return reg;
     } else {
       console.log('Service workers are not supported in this browser.');
@@ -16,7 +15,6 @@ export async function regSw() {
 }
 
 export const subscribeUser = async (serviceWorkerReg) => {
-
   if (!serviceWorkerReg) {
     console.error('No Service Worker Registration available.', serviceWorkerReg);
     return;
@@ -40,7 +38,7 @@ export const subscribeUser = async (serviceWorkerReg) => {
 
         // if there is a new service worker, register it to database
         const response = await databaseService.createSubscription({ subscription });
-        console.log('Subscription response', response);
+        console.info('Subscription registration response', response);
       } catch (err) {
         if (err instanceof DOMException) {
           console.error(`DOMException during subscribe: ${err.name} - ${err.message}`);
@@ -55,12 +53,16 @@ export const subscribeUser = async (serviceWorkerReg) => {
         const RegistrationStatus = await databaseService.getSubscription({
           endPoint: subscription.endpoint,
         });
-        console.log('RegistrationStatus', RegistrationStatus);
+        console.log('Registration Status:', RegistrationStatus);
       } catch (err) {
         console.error('Error while checking subscription:', err);
-        // if it is not registered, register it to database
-        const response = await databaseService.createSubscription({ subscription });
-        console.log('Subscription response', response);
+        try {
+          // if it is not registered, register it to database
+          const response = await databaseService.createSubscription({ subscription });
+          console.info('Subscription response', response);
+        } catch (error) {
+          console.error('Error while registering subscription:', error);
+        }
       }
     }
   } catch (err) {
@@ -81,8 +83,6 @@ export function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-//
-
 async function requestNotificationPermission() {
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') {
@@ -99,6 +99,6 @@ export const registerAndSubscribe = async () => {
     requestNotificationPermission();
     await subscribeUser(serviceWorkerReg);
   } catch (error) {
-    console.log(`Error while registerAndSubscribe `, error);
+    console.error(`Error while registerAndSubscribe `, error);
   }
 };

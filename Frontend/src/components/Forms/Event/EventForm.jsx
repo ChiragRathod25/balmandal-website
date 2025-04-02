@@ -5,7 +5,6 @@ import databaseService from '../../../services/database.services';
 import { useNavigate } from 'react-router-dom';
 
 function EventForm({ event }) {
-  if (event) console.log('calling for Edit form', event);
 
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: {

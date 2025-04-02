@@ -1,17 +1,14 @@
-import React, { use, useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import useCustomReactQuery from '../../../utils/useCustomReactQuery';
+import { useNavigate } from 'react-router-dom';
 import databaseService from '../../../services/database.services';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Input, Button, Select } from '../..';
 function UserDetailsForm({ user, setEditing, handleUserDetailsEditing }) {
-  console.log('UserDetailsForm Component', user);
-  const dispatch = useDispatch();
+  
   const navigate = useNavigate();
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
-  const editableUser = useSelector((state) => state.dashboard.editableUser);
+  const adminUserId = useSelector((state) => state.auth.userData._id);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -28,20 +25,18 @@ function UserDetailsForm({ user, setEditing, handleUserDetailsEditing }) {
   });
 
   const submit = async (data) => {
-    console.log('updating data', data);
 
     if (isAdmin && userId) {
       const response = await databaseService
         .updateUserDetails(data, userId)
         .then((response) => response.data)
         .then((response) => {
-          console.log('Updated user details', response);
+        
           handleUserDetailsEditing(response);
           return response;
         })
         .catch((error) => console.log('error while updating user details', error));
       if (response) {
-        console.log('Updated user details', response);
         setEditing(false);
         navigate(`/dashboard/user/${userId}`);
       }
@@ -51,7 +46,6 @@ function UserDetailsForm({ user, setEditing, handleUserDetailsEditing }) {
         .then((response) => response.data)
         .catch((error) => console.log('error while updating user details', error));
       if (response) {
-        console.log('Updated', response);
         setEditing(false);
         navigate(`/profile`);
       }
@@ -59,8 +53,7 @@ function UserDetailsForm({ user, setEditing, handleUserDetailsEditing }) {
   };
 
   const handleCancel = () => {
-    if (isAdmin && userId) {
-     
+    if (isAdmin && userId  && adminUserId !== user?._id) {
       setEditing(false);
       navigate(`/dashboard/user/${userId}`);
     } else {

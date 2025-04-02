@@ -18,29 +18,23 @@ function PostForm({ post }) {
 
   const navigate = useNavigate();
   const submit = async (data) => {
-    console.log('submitting form data(Post): ', data);
 
     if (post) {
       const response = await databaseService
         .updatePost(data, post._id)
         .then((response) => response.data);
-      console.log('Post Updated', response);
-      if (response) {
-        console.log('Navigating to post page', response);
+      if (response) { 
         navigate('/post/' + response._id);
       }
     } else {
       const response = await databaseService.addPost(data).then((response) => response.data);
-      console.log('Post Added', response);
       if (response) {
-        console.log('Navigating to post page', response);
         navigate('/post/' + response._id);
       }
     }
   };
   
   const slugTransform = useCallback((value) => {
-    //  console.log("Slug transform is called",value);
     if (value && typeof value === "string")
       return value
         .trim()

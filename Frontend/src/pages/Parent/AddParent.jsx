@@ -2,7 +2,6 @@ import { Container, ParentForm } from '../../components';
 
 function AddParent() {
     const role = new URLSearchParams(window.location.search).get('role');
-    console.log('role:', role);
   
   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8">

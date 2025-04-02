@@ -20,7 +20,6 @@ function UserTalent() {
   const [modalTitle, setModalTitle] = useState('');
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
-    console.log('closing modal');
     setIsModalOpen(false);
     document.body.style.overflow = 'auto';
   };
@@ -51,7 +50,6 @@ function UserTalent() {
     openModal();
   };
   const handleClick = (talent) => {
-    console.log('Talent clicked', talent);
     setModalTitle(talent?.heading);
     setModalContent(
       <>

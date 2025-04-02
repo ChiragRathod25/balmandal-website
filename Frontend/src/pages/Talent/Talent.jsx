@@ -9,9 +9,9 @@ import { FilesDisplayHelper } from '../../components';
 function Talent({ id, isUsedWithModal = false }) {
   // here id is a talentId passed from the admin page to get the talent details without using the useParams hook
   // hook is used to get the talentId from the url by the regular user
-  console.log('Talent Page');
-  console.log('isUsedWithModal:', isUsedWithModal);
-  console.log('id:', id);
+  // console.log('Talent Page');
+  // console.log('isUsedWithModal:', isUsedWithModal);
+  // console.log('id:', id);
   const talentId = useParams().talentId || id;
   const navigate = useNavigate();
 
@@ -31,9 +31,9 @@ function Talent({ id, isUsedWithModal = false }) {
     try {
       await databaseService.deleteTalent({ talentId });
       navigate('/talent');
-      console.log('Talent Deleted');
+
     } catch (error) {
-      console.log('Error Deleting Talent', error);
+      console.error('Error Deleting Talent', error);
     }
   };
 

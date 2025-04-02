@@ -20,24 +20,8 @@ function AllAchievement() {
     }
   }, [data]);
 
-  // Handle delete action
-  const handleDelete = async (achievementId) => {
-    if (!window.confirm('Are you sure you want to delete this achievement?')) {
-      return;
-    }
-    try {
-      await databaseService.deleteAchievement({ achievementId });
-      setAchievements((prev) => prev.filter((ach) => ach._id !== achievementId));
-      console.log('Achievement Deleted');
-    } catch (error) {
-      console.error('Error deleting achievement:', error);
-    }
-  };
-
   return (
-    <QueryHandler queries={[{ loading, error }]}>
-
-      
+    <QueryHandler queries={[{ loading, error }]}>      
       <div className="container mx-auto p-4">
         {Array.isArray(achievements) && achievements.length > 0 && (
           <>

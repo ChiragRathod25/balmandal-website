@@ -1,4 +1,3 @@
-import React from 'react';
 import { TalentForm, Container } from '../../components';
 
 function AddTalent() {

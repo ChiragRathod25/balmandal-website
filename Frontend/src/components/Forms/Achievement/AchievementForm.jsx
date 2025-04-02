@@ -11,7 +11,6 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
-
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       title: achievement?.title || '',
@@ -21,7 +20,7 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
   });
   const navigate = useNavigate();
 
-  const [cloudFiles, setCloudFiles] = React.useState(achievement?.images || []);
+  const [cloudFiles, setCloudFiles] = React.useState(achievement?.media || []);
 
   useEffect(() => {
     console.log('Achievement file manager', achievement);
@@ -41,13 +40,11 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
       updatedAchievements = [...achievements, newAchievement];
     }
     dispatch(setEditableUserAchievement(updatedAchievements));
-    console.log('updatedAchievements', updatedAchievements);
   };
 
   let FinalCloudFiles = cloudFiles;
   const submit = async (data) => {
     data['cloudFiles'] = JSON.stringify(FinalCloudFiles);
-    console.log('submitting form data', data);
 
     if (isAdmin && userId) {
       if (achievement) {
@@ -81,7 +78,6 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
           .updateAchievement(data, achievement?._id)
           .then((response) => response.data);
         if (response) {
-          console.log('here');
           navigate(`/achievement/${response._id}`);
         }
       } else {
@@ -110,12 +106,10 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
   };
   const handleDeleteFile = async (index) => {
     const url = cloudFiles[index];
-    console.log('url', url);
     await databaseService.deleteFile({ deleteUrl: url }).then(() => {
       setCloudFiles((prev) => prev.filter((img, i) => i !== index));
     });
     const newFiles = cloudFiles.filter((img, i) => i !== index);
-    console.log('newFiles', newFiles);
 
     // setCloudFiles((prev)=>newFiles);
     setFinalCloudFiles(newFiles);

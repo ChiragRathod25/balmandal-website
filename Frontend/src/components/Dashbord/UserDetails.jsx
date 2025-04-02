@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UserDetails as UserDetailsComponent } from '../../pages';
 import { UserDetailsForm } from '..';
 import { useSelector,useDispatch } from 'react-redux';
@@ -6,11 +6,10 @@ import { setEditableUser } from '../../slices/dashboard/dashboardSlice';
 
 const UserDetails = () => {
   const [isEditing, setEditing] = useState(false);
-  const [user,setUser]=useState(useSelector((state) => state.dashboard?.editableUser))
+  const user=useSelector((state) => state.dashboard?.editableUser);
   const dispatch = useDispatch();
   
   const handleUserDetailsEditing=(data)=>{
-    setUser(data) 
     setEditing(false)
     dispatch(setEditableUser(data))
   }

@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
 function UserTalentCard({ talent,handleClick,isUsedWithModal=false }) {
-  console.log('Rendering UserTalentCard',talent);
   const navigate=useNavigate()
   const handleCardClick = (talent) => {
     if (isUsedWithModal) {

@@ -5,7 +5,6 @@ import databaseService from '../../../../services/database.services';
 import useCustomReactQuery from '../../../../utils/useCustomReactQuery';
 import { useNavigate, useParams } from 'react-router-dom';
 function AttendanceForm({ attendanceList }) {
-  // console.log('Edit Attendance', attendanceList);
   const { eventId } = useParams();
   // here attendance is an array of objects which has name, status, and id
   const fetchAllUsers = useCallback(() => databaseService.fetchAllUsers(), []);
@@ -37,33 +36,30 @@ function AttendanceForm({ attendanceList }) {
     setFilteredUsers(filteredUsers);
   };
   const { register, handleSubmit, setValue } = useForm();
-  console.log('Re render');
 
   // update the default values of the form if attendanceList is present
   if (attendanceList && attendanceList.length > 0) {
-    let defaultValues = {};
     attendanceList.forEach((attendance) => {
       setValue(attendance.userId, attendance.status === 'present' ? true : false);
-      // defaultValues[attendance.userId] = attendance.status==='present' ? true : false;
     });
   }
 
   const submit = async (data) => {
-    console.log('Submit', data);
     const attendanceList = allUsers.map((user) => {
       return {
         userId: user._id,
         status: data[user._id],
       };
     });
-    console.log(attendanceList);
-    const response = await databaseService.addAttendance({ eventId, attendanceList });
-    console.log('Response', response);
-    if (response.statusCode === 200) {
-      console.log('Attendance added successfully');
-      navigate(`/event/attendance/${eventId}`);
-    } else {
-      console.log('Error in adding attendance', response);
+
+    try {
+      const response = await databaseService.addAttendance({ eventId, attendanceList });
+      if (response.statusCode === 200) {
+        navigate(`/event/attendance/${eventId}`);
+      }
+    } catch (error) {
+      console.error('Error while adding attendance', error);
+      console.error("Error message:", error.message);
     }
   };
 
@@ -135,7 +131,7 @@ function AttendanceForm({ attendanceList }) {
         <div className="flex gap-4 mt-4">
           <Button type="submit">Update</Button>
           <Button
-          type="button"
+            type="button"
             onClick={() => navigate(`/event/attendance/${eventId}`)}
             className="bg-gray-500 text-white"
           >

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Button, CommentContainer, QueryHandler } from '../index';
+import  { useCallback, useEffect, useState } from 'react';
+import {  CommentContainer, QueryHandler } from '../index';
 import databaseService from '../../services/database.services';
 import { useParams } from 'react-router-dom';
 import useCustomReactQuery from '../../utils/useCustomReactQuery';

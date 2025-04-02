@@ -12,7 +12,6 @@ function ParentForm({ parent, isUsedWithModal = false, closeForm}) {
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
 
   const role= new URLSearchParams(window.location.search).get('role');
-  console.log('role:', role);
   const { register, handleSubmit } = useForm({
     defaultValues: {
       role: parent?.role || role || '',
@@ -37,7 +36,6 @@ function ParentForm({ parent, isUsedWithModal = false, closeForm}) {
       updatedParent = [...parents, newParent];
     }
     dispatch(setEditableUserParent(updatedParent));
-    console.log('updatedParent', updatedParent);
   };
 
   const submit = async (data) => {
@@ -71,8 +69,10 @@ function ParentForm({ parent, isUsedWithModal = false, closeForm}) {
       if (parent) {
         const response = await databaseService
           .updateParentDetails(data, parent?._id)
-          .then((response) => response.data);
-        if (response) console.log(response);
+          .then((response) => response.data)
+          .catch((error) => {
+            console.error('Error while updating parent details', error);
+          })
       } else {
         const response = await databaseService
           .addParentDetails(data)

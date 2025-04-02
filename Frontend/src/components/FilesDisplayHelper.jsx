@@ -5,10 +5,10 @@ function FilesDisplayHelper({ cloudFiles }) {
     console.log('Rerendering for cloudFiles file manager', cloudFiles);
   }, [cloudFiles]);
 
-  const [isVisible, setIsVisible] = React.useState(null);
+  const [isMenuVisible, setIsMenuVisible] = React.useState(null);
   useEffect(() => {
-    console.log('isVisible', isVisible);
-  }, [isVisible]);
+    console.log('isMenuVisible', isMenuVisible);
+  }, [isMenuVisible]);
 
   const handleDownload = (index) => {
     console.log('Downloading file at index:', index);
@@ -101,26 +101,26 @@ function FilesDisplayHelper({ cloudFiles }) {
                   className="absolute top-2 right-2 bg-gray-100 text-gray-600 p-2 rounded-full hover:bg-gray-300 transition"
                   onClick={(e) => {
                     e.preventDefault();
-                    setIsVisible(isVisible === index ? null : index);
+                    setIsMenuVisible(isMenuVisible === index ? null : index);
                   }}
-                  onMouseOver={() => setIsVisible(index)}
-                  onMouseEnter={() => setIsVisible(index)}
+                  onMouseOver={() => setIsMenuVisible(index)}
+                  onMouseEnter={() => setIsMenuVisible(index)}
                 >
                   ⋮
                 </button>
               </div>
 
               {/* Dropdown Menu */}
-              {isVisible === index && (
+              {isMenuVisible === index && (
                 <div
                   className="absolute top-10 right-4 bg-white border border-gray-300 shadow-lg rounded-md p-2 w-32 z-10"
-                  onMouseLeave={() => setIsVisible(null)}
+                  onMouseLeave={() => setIsMenuVisible(null)}
                 >
                   <ul className="text-sm text-gray-700">
                     <li
                       className="hover:bg-gray-100 p-2 cursor-pointer"
                       onClick={() => {
-                        setIsVisible(null);
+                        setIsMenuVisible(null);
                         handleDownload(index);
                       }}
                     >
@@ -129,7 +129,7 @@ function FilesDisplayHelper({ cloudFiles }) {
                     <li
                       className="hover:bg-gray-100 p-2 cursor-pointer"
                       onClick={() => {
-                        setIsVisible(null);
+                        setIsMenuVisible(null);
                         setView(file);
                       }}
                     >

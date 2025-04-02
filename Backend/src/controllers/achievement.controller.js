@@ -64,10 +64,11 @@ const updateAchievement = asyncHandler(async (req, res) => {
       for (const file of FilesArray) {
         const path = file.path;
         try {
-          const file = await googleDrive.uploadFile(path);
+          // const file = await googleDrive.uploadFile(path);
+          const file=await uploadOnCloudinary(path);
           if (!file || !file.url)
             throw new ApiError(400, `Error while uploading file`);
-          newFiles.push(file);
+          newFiles.push(file.url);
         } catch (error) {
           console.error(`Error while uploading file`, error);
           throw new ApiError(400, `Error while uploading file`, error);
@@ -88,8 +89,6 @@ const updateAchievement = asyncHandler(async (req, res) => {
       else files = newFiles;
     }
 
-    // console.log("newFiles", newFiles);
-    // console.log("files", files);
     const updatedAchievement = await Achievement.findByIdAndUpdate(
       achievementId,
       {

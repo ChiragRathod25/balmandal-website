@@ -3,8 +3,8 @@ export const handleApiRequest = async (apiCall, functionName = 'API Call') => {
     const response = await apiCall();
     return response.data;
   } catch (error) {
-    console.log(error);
-    console.error(`Database Service :: ${functionName} :: error`, error.message);
+    console.error(`Database Service :: ${functionName} :: error`, error);
+    console.error("Error message:", error.message);
 
     // API Response Error
     if (error.response) {
