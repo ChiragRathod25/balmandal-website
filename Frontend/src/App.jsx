@@ -10,12 +10,6 @@ import config from './conf/config';
 
 import { Layout } from './components';
 
-//socket io connection
-import socketClient from 'socket.io-client';
-export const socket = socketClient(config.apiURL, {
-  transports: ['websocket'],
-});
-
 //App Component
 function App() {
   const [loading, setLoading] = useState(true);

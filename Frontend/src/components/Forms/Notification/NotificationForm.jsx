@@ -19,7 +19,7 @@ function NotificationForm() {
       .createNotification(data)
       .then((response) => response.data)
       .then((response) => {
-        // socket.emit('notify', response); // socket io real time notification
+      
         return response;
       })
       .then((response) => navigate(`/notification/${response._id}`));
