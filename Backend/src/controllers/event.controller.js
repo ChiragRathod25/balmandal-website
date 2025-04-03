@@ -27,7 +27,6 @@ import { io } from "../index.js";
         }
         mediaFiles.push(media.url);
       } catch (error) {
-        console.error(`Error while uploading media`, error);
         throw new ApiError(400, `Error while uploading media`, error);
       }
     }
@@ -85,7 +84,7 @@ const updateEvent = asyncHandler(async (req, res, next) => {
         }
         newMediaFiles.push(media.url);
       } catch (error) {
-        console.error(`Error while uploading media`, error);
+
         throw new ApiError(400, `Error while uploading media`, error);
       }
     }

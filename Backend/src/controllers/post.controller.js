@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Post } from "../models/post.model.js";
 import { createNotification } from "./notification.controller.js";
+import {logger} from "../utils/logger.js";
 
 //controllers list
 //0. UploadFilesToBucket
@@ -38,12 +39,12 @@ const uploadFilesToBucket = asyncHandler(async (req, res,next) => {
       src=src.replace(/\//g,"\\")
       
       if (!src) {
-        // console.log("No src found in the image tag", match);
+        // logger.log("No src found in the image tag", match);
         continue;
       }
       if(!src.includes("temp")){
-        // console.log("Content: ", content);
-        // console.log("Not a temp image, skipping upload", src);
+        // logger.log("Content: ", content);
+        // logger.log("Not a temp image, skipping upload", src);
         continue;
       }
       try {
@@ -53,7 +54,7 @@ const uploadFilesToBucket = asyncHandler(async (req, res,next) => {
         req.body.content = content.replace(intialSrc, result.secure_url);
         
       } catch (error) {
-        console.erorr("Error in uploading image to cloudinary", error);
+        logger.erorr("Error in uploading image to cloudinary", error);
         throw new ApiError(500, "Error in uploading image to cloudinary");
       }
     }
@@ -72,7 +73,7 @@ const addPost = asyncHandler(async (req, res, next) => {
       const result = await uploadOnCloudinary(req.file);
       featuredImage = result.secure_url;
     } catch (error) {
-      console.error(
+      logger.error(
         "Error in uploading post featured image to cloudinary",
         error
       );
@@ -135,7 +136,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
       const result = await uploadOnCloudinary(req.file);
       featuredImage = result.secure_url;
     } catch (error) {
-      console.error(
+      logger.error(
         "Error in uploading post featured image to cloudinary",
         error
       );

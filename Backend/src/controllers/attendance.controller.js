@@ -59,7 +59,6 @@ const addAttendance = asyncHandler(async (req, res, next) => {
         { new: true }
       );
       if (!updatedAttendance) {
-        console.error("Error in updating attendance of user", userId);
         throw new ApiError(500, "Error in updating attendance");
       }
     } else {

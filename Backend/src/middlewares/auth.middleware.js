@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import mongoose from "mongoose";
+import { logger } from "../utils/logger.js";
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
@@ -25,7 +26,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error(`verifyJWT Error`, error);
+    logger.error(`verifyJWT Error`, error);
     throw new ApiError(401, `Error while validating user`, error);
   }
 });
@@ -58,7 +59,7 @@ export const verifyAdmin = asyncHandler(async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.error(`verifyAdmin Error`, error);
+    logger.error(`verifyAdmin Error`, error);
     throw new ApiError(403, `Error while validating Admin`, error);
   }
 });

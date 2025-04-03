@@ -1,6 +1,7 @@
 import { ApiResponce } from "../utils/ApiResponce.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { logger } from "../utils/logger.js";
 import {
   uploadOnCloudinary,
   deleteFromCloudinary,
@@ -24,7 +25,6 @@ const generateRefreshAccessToken = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    console.error("Refreshing token error", error);
     throw new ApiError(
       500,
       "Something went wrong while refreshing tokens !!",
@@ -70,7 +70,7 @@ const register = asyncHandler(async (req, res) => {
     html: welcomeEmailTemplate(user.username),
     text: `Welcome to APC Bal Mandal\nThank you for joining us !!`,
   }).catch((error) => {
-    console.error("Error while sending email", error);
+    logger.error("Error while sending email", error);
   });
 
   res
@@ -185,7 +185,6 @@ const updateuserDetails = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    console.error("Error while updating user details", error);
     throw new ApiError(404, `Error while updating user details`, error);
   }
 });
@@ -211,7 +210,6 @@ const updateAvatar = asyncHandler(async (req, res) => {
       if (deleteExistingAvatar.result !== "ok")
         throw new ApiError(404, `Error while deleting old avatar`);
     } catch (error) {
-      console.error("Error while deleting old avatar", error);
       throw new ApiError(404, `Error while deleting old avatar`, error);
     }
   }
@@ -351,7 +349,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     if (user.refreshToken !== incomingRefreshToken)
       throw new ApiError(404, `Invalid refresh token or token is expired`);
   } catch (error) {
-    console.error("Error while refreshing access token", error);
     throw new ApiError(404, `Error while refreshing access token`, error);
   }
   const { accessToken, refreshToken } = await generateRefreshAccessToken(

@@ -2,6 +2,7 @@ import { google } from "googleapis";
 import fs from "fs";
 import "dotenv/config";
 import getMimeType from "mime-types";
+import { logger } from "./logger.js";
 
 const auth = new google.auth.OAuth2({
   clientId: process.env.CLIENT_ID,
@@ -85,7 +86,7 @@ class GoogleDrive {
 
       return await this.generatePublicUrl(response.data);
     } catch (error) {
-      console.error("Error uploading file: ", error);
+      logger.error("Error uploading file: ", error);
     }
   }
 
@@ -97,7 +98,7 @@ class GoogleDrive {
       });
    
     } catch (error) {
-      console.error("Error deleting file: ", error);
+      logger.error("Error deleting file: ", error);
     }
   }
 
@@ -121,7 +122,7 @@ class GoogleDrive {
         fileId,
       };
     } catch (error) {
-      console.error("Error generating public url: ", error);
+      logger.error("Error generating public url: ", error);
     }
   }
   async getFileId(url) {
@@ -129,7 +130,7 @@ class GoogleDrive {
       const fileId = url.split("/")[5];
       return fileId;
     } catch (error) {
-      console.error("Error getting file id: ", error);
+      logger.error("Error getting file id: ", error);
     }
   }
 }

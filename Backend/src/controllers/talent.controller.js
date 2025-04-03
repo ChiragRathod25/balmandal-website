@@ -23,7 +23,6 @@ const addTalent = asyncHandler(async (req, res) => {
           throw new ApiError(400, `Error while uploading image`);
         images.push(image.url);
       } catch (error) {
-        console.error(`Error while uploading image`, error);
         throw new ApiError(400, `Error while uploading image`, error);
       }
     }
@@ -62,7 +61,6 @@ const updateTalent = asyncHandler(async (req, res) => {
           throw new ApiError(400, `Error while uploading image`);
         newFiles.push(image.url);
       } catch (error) {
-        console.error(`Error while uploading image`, error);
         throw new ApiError(400, `Error while uploading image`, error);
       }
     }
