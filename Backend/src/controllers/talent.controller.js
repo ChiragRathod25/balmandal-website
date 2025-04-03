@@ -23,7 +23,6 @@ const addTalent = asyncHandler(async (req, res) => {
           throw new ApiError(400, `Error while uploading image`);
         images.push(image.url);
       } catch (error) {
-        console.error(`Error while uploading image`, error);
         throw new ApiError(400, `Error while uploading image`, error);
       }
     }
@@ -47,21 +46,12 @@ const updateTalent = asyncHandler(async (req, res) => {
   const talent = await Talent.findById(talentId);
   if (!talent) throw new ApiError(404, `Invalid talent request`);
 
-  // const existingImages = talent.images;
-  // console.log("existingImages", existingImages);
-  // const updatedImages= images;
-  // console.log("updatedImages", updatedImages);
-  // const currenImages=images;
-
-  // console.log("currenImages", currenImages);
-  console.log("cloudFiles", typeof cloudFiles, Array.isArray(cloudFiles));
-
   const newFiles = [];
   if (req.files) {
     const imageArray = Array.isArray(req.files)
       ? Array.from(req.files)
       : [req.files];
-    console.log("Image Array", imageArray);
+      
     
     for (const img of imageArray) {
       const path = img.path;
@@ -71,13 +61,12 @@ const updateTalent = asyncHandler(async (req, res) => {
           throw new ApiError(400, `Error while uploading image`);
         newFiles.push(image.url);
       } catch (error) {
-        console.error(`Error while uploading image`, error);
         throw new ApiError(400, `Error while uploading image`, error);
       }
     }
   }
   let cloudFilesArray = JSON.parse(cloudFiles);
-  console.log("cloudFilesArray", cloudFilesArray);
+  
   // cloudFiles=JSON.parse(cloudFiles);
   let files = [];
   if (cloudFilesArray.length > 0) {
@@ -108,7 +97,7 @@ const updateTalent = asyncHandler(async (req, res) => {
 
 const deleteTalent = asyncHandler(async (req, res) => {
   const talentId = req.params.id;
-  console.log(talentId);
+
 
   const talent = await Talent.findByIdAndDelete(
     talentId
@@ -120,7 +109,7 @@ const deleteTalent = asyncHandler(async (req, res) => {
 });
 
 const getUserTalents = asyncHandler(async (req, res) => {
-  console.log("get user talents called");
+
   const id = req.user._id;
   const talents = await Talent.find({ userId: id });
   if (!talents) throw new ApiError(404, `No talent found`);
@@ -131,7 +120,6 @@ const getUserTalents = asyncHandler(async (req, res) => {
 
 const getTalentById = asyncHandler(async (req, res) => {
   const talentId = req.params.id;
-  console.log("get talent by id called", talentId);
   const talent = await Talent.findById(talentId);
   if (!talent) throw new ApiError(404, `No talent found`);
   res

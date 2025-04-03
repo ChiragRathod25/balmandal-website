@@ -1,7 +1,5 @@
-// import databaseService from '../src/services/database.services';
 
 self.addEventListener('push', (event) => {
-  console.log('Notification will be displayed here');
   const data = event.data ? event.data.json() : {};
 
   if (Notification.permission !== 'granted') {
@@ -9,7 +7,6 @@ self.addEventListener('push', (event) => {
   }
 
   const { title, message, poster, _id, badge, link } = data;
-  console.log('Notification Data', data);
 
   const options = {
     body: message,
@@ -27,7 +24,6 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close(); // Close the notification popup
 
   const urlToOpen = event.notification.data?.url || 'https://your-default-url.com';
-  console.log('🔗 URL to open:', urlToOpen);
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
@@ -45,7 +41,6 @@ self.addEventListener('notificationclick', (event) => {
         console.log('Focusing existing PWA instance');
         return matchingClient.navigate(urlToOpen).then(() => matchingClient.focus());
       } else {
-        console.log('🆕 Opening new window');
         return clients.openWindow(urlToOpen).catch(() => {
           // As a fallback, open manually
           location.href = urlToOpen;

@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react';
 import { Modal } from './index';
+import log from '../utils/logger.js';
 
 function FilesDisplayHelper({ cloudFiles }) {
   useEffect(() => {
-    console.log('Rerendering for cloudFiles file manager', cloudFiles);
+    log.debug('Rerendering for cloudFiles file manager', cloudFiles);
   }, [cloudFiles]);
 
   const [isMenuVisible, setIsMenuVisible] = React.useState(null);
   useEffect(() => {
-    console.log('isMenuVisible', isMenuVisible);
+    log.debug('isMenuVisible', isMenuVisible);
   }, [isMenuVisible]);
 
   const handleDownload = (index) => {
-    console.log('Downloading file at index:', index);
-    console.log('Downloading file at index:', cloudFiles[index]);
     async function downloadFileFromServer(fileUrl, fileName) {
-      console.log('fileUrl', fileUrl);
+
       const response = await fetch(fileUrl);
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -62,7 +61,6 @@ function FilesDisplayHelper({ cloudFiles }) {
 
   return (
     <>
- 
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}

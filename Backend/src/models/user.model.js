@@ -73,10 +73,7 @@ userSchema.methods.generateAccessToken = function () {
     }
   );
 };
-userSchema.methods.generateRefreshToken = function () {
-  console.log(this?._id);
-  console.log(this?.id);
-  
+userSchema.methods.generateRefreshToken = function () {  
   return jwt.sign({ _id: this._id }, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
   });
@@ -92,7 +89,6 @@ userSchema.methods.isPasswordCorrect = async function (password) {
     if (!this.password) throw new Error("Password is missing");
     return await bcrypt.compare(password, this.password);
   } catch (error) {
-    console.error("Error comparing passwords:", error);
     return false;
   }
 };

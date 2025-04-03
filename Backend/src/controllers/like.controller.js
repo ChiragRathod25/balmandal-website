@@ -37,7 +37,7 @@ const getLikesByPostId = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "PostId is required");
   }
   const likes = await Like.find({ postId });
-  console.log("likes", likes);
+  
   res.status(200).json(new ApiResponce("Likes found", likes));
 });
 

@@ -4,6 +4,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { Achievement } from "../models/achievement.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { googleDrive } from "../utils/GoogleDriveMediaClound.js";
+import {logger} from "../utils/logger.js";
+
 
 const addAchievement = asyncHandler(async (req, res) => {
   const id = req?.user?._id || 500;
@@ -19,14 +21,14 @@ const addAchievement = asyncHandler(async (req, res) => {
     for (const file of FilesArray) {
       const path = file.path;
       try {
-        // const file = await googleDrive.uploadFile(path);
+   
         const file=await uploadOnCloudinary(path);
         if (!file || !file.url)
           throw new ApiError(400, `Error while uploading file`);
-        // console.log("File",file)
+      
         userFiles.push(file.url);
       } catch (error) {
-        console.error(`Error while uploading file`, error);
+        logger.error(`Error while uploading file`, error);
         throw new ApiError(400, `Error while uploading file`, error);
       }
     }
@@ -52,32 +54,27 @@ const updateAchievement = asyncHandler(async (req, res) => {
     const achievement = await Achievement.findById(achievementId);
     if (!achievement) throw new ApiError(404, `Invalid achievement request`);
 
-    // console.log("cloudFiles", typeof cloudFiles, Array.isArray(cloudFiles));
-    // console.log("req.files", req.files);
-    // console.log("cloudFiles", cloudFiles);
     const newFiles = [];
     if (req.files) {
       const FilesArray = Array.isArray(req.files)
         ? Array.from(req.files)
         : [req.files];
-      // console.log("Image Array", FilesArray);
+
       for (const file of FilesArray) {
         const path = file.path;
         try {
-          // const file = await googleDrive.uploadFile(path);
           const file=await uploadOnCloudinary(path);
           if (!file || !file.url)
             throw new ApiError(400, `Error while uploading file`);
           newFiles.push(file.url);
         } catch (error) {
-          console.error(`Error while uploading file`, error);
+          logger.error(`Error while uploading file`, error);
           throw new ApiError(400, `Error while uploading file`, error);
         }
       }
     }
     let cloudFilesArray = JSON.parse(cloudFiles);
-    // console.log("cloudFilesArray", cloudFilesArray);
-    // cloudFiles=JSON.parse(cloudFiles);
+  
     let files = [];
     if (cloudFilesArray.length > 0) {
       files = Array.isArray(cloudFilesArray)
@@ -102,7 +99,6 @@ const updateAchievement = asyncHandler(async (req, res) => {
       throw new ApiError(404, `Error while updating achievement`);
     }
 
-    console.log("here");
     res
       .status(200)
       .json(
@@ -113,7 +109,7 @@ const updateAchievement = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    console.error(`Error while updating achievement`, error);
+    logger.error(`Error while updating achievement`, error);
   }
 });
 

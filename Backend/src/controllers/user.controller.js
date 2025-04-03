@@ -1,11 +1,12 @@
 import { ApiResponce } from "../utils/ApiResponce.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { logger } from "../utils/logger.js";
 import {
   uploadOnCloudinary,
   deleteFromCloudinary,
 } from "../utils/cloudinary.js";
-import {sendEmail} from "../utils/mailer.js";
+import { sendEmail } from "../utils/mailer.js";
 import { User } from "../models/user.model.js";
 import resetPasswordEmailTemplate from "../EmailTemplates/resetPassword.js";
 import welcomeEmailTemplate from "../EmailTemplates/welcomeEmail.js";
@@ -15,7 +16,6 @@ import mongoose from "mongoose";
 const generateRefreshAccessToken = async (userId) => {
   const user = await User.findById(userId);
   if (!user) throw new ApiError(404, "user not exist");
-  console.log("User", user);
 
   try {
     const accessToken = user.generateAccessToken();
@@ -25,7 +25,6 @@ const generateRefreshAccessToken = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    console.error("Refreshing token error", error);
     throw new ApiError(
       500,
       "Something went wrong while refreshing tokens !!",
@@ -46,8 +45,7 @@ const register = asyncHandler(async (req, res) => {
   const existedUser = await User.findOne({
     username: { $regex: new RegExp(username, "i") },
   });
-  // console.log("Username", username);
-  // console.log("existedUser", existedUser);
+
   if (existedUser)
     throw new ApiError(
       404,
@@ -59,7 +57,7 @@ const register = asyncHandler(async (req, res) => {
     email,
     firstName,
     lastName,
-    mobile, 
+    mobile,
     password,
   });
   if (!user)
@@ -71,13 +69,9 @@ const register = asyncHandler(async (req, res) => {
     subject: "Welcome to APC Bal Mandal",
     html: welcomeEmailTemplate(user.username),
     text: `Welcome to APC Bal Mandal\nThank you for joining us !!`,
-  })
-    .then((response) => {
-      console.log("Email sent successfully !!", response);
-    })
-    .catch((error) => {
-      console.log("Error while sending email", error);
-    });
+  }).catch((error) => {
+    logger.error("Error while sending email", error);
+  });
 
   res
     .status(200)
@@ -97,8 +91,6 @@ const login = asyncHandler(async (req, res) => {
     const isPasswordValid = await user.isPasswordCorrect(password);
     if (!isPasswordValid) throw new ApiError(404, `Invalid user password !!`);
   } catch (error) {
-    console.log("password", password);
-    console.log(error);
     throw new ApiError(404, `Error while validating password`, error);
   }
   const { accessToken, refreshToken } = await generateRefreshAccessToken(
@@ -138,7 +130,6 @@ const logout = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-
   };
 
   res
@@ -194,7 +185,6 @@ const updateuserDetails = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    console.log("Error while updating user details", error);
     throw new ApiError(404, `Error while updating user details`, error);
   }
 });
@@ -215,14 +205,11 @@ const updateAvatar = asyncHandler(async (req, res) => {
   const oldAvatar = req.user.avatar;
   if (oldAvatar && oldAvatar.length > 0) {
     try {
-      console.log("Old avatar", oldAvatar);
       const deleteExistingAvatar = await deleteFromCloudinary(oldAvatar);
-      console.log("deleteExistingAvatar", deleteExistingAvatar);
 
       if (deleteExistingAvatar.result !== "ok")
         throw new ApiError(404, `Error while deleting old avatar`);
     } catch (error) {
-      console.log("Error while deleting old avatar", error);
       throw new ApiError(404, `Error while deleting old avatar`, error);
     }
   }
@@ -233,9 +220,7 @@ const updateAvatar = asyncHandler(async (req, res) => {
 });
 
 const deleteFile = asyncHandler(async (req, res) => {
-  console.log("Delete file", req.body);
   const { url } = req.body;
-  console.log("Url", url);
   if (!url) throw new ApiError(404, `Url is required to delete file`);
   const deleteFile = await deleteFromCloudinary(url);
   if (deleteFile.result !== "ok")
@@ -259,7 +244,6 @@ const resetPassword = asyncHandler(async (req, res) => {
     process.env.RESET_TOKEN_SECRET
   );
   if (!decodeToken) throw new ApiError(404, `Invalid token`);
-  console.log("decodeToken", decodeToken._id);
 
   const user = await User.findOne({
     $and: [
@@ -297,22 +281,22 @@ const forgetPassword = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({
     username: { $regex: new RegExp(`^${username}$`, "i") },
-    email: { $regex: new RegExp(`^${email}$`, "i") } 
+    email: { $regex: new RegExp(`^${email}$`, "i") },
   });
-  
-  console.log("User", user);
-  if (!user) throw new ApiError(404, `Invalid user request | Email or username are invalid`);
-  if(user.username !== username)
-    throw new ApiError(404, `Invalid username`);
-  if(user.email !== email)
-    throw new ApiError(404, `Invalid email`);
+
+  if (!user)
+    throw new ApiError(
+      404,
+      `Invalid user request | Email or username are invalid`
+    );
+  if (user.username !== username) throw new ApiError(404, `Invalid username`);
+  if (user.email !== email) throw new ApiError(404, `Invalid email`);
 
   const resetToken = user.generateResetToken();
   user.resetToken = resetToken;
 
   await user.save({ validateBeforeSave: false });
-  console.log("Reset token", resetToken);
-  console.log("User", user);
+
   //send email to the user with the reset token
   const response = await sendEmail({
     to: user.email,
@@ -323,9 +307,8 @@ const forgetPassword = asyncHandler(async (req, res) => {
     }),
     text: `Reset password link: ${process.env.WEBSITE_URL}/resetpassword/${resetToken}`,
   });
-  console.log("Email Response", response);
+
   if (!response) throw new ApiError(404, `Error while sending email`);
-  
 
   res
     .status(200)
@@ -350,7 +333,6 @@ const getCurrentuser = asyncHandler(async (req, res) => {
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
-  
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
   if (!incomingRefreshToken)
@@ -361,15 +343,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   );
 
   try {
-    // console.log("Incoming refresh token", incomingRefreshToken);
     const user = await User.findById(decodeToken._id);
-    // console.log("User", user);
 
     if (!user) throw new ApiError(404, `Invalid refresh token`);
     if (user.refreshToken !== incomingRefreshToken)
       throw new ApiError(404, `Invalid refresh token or token is expired`);
   } catch (error) {
-    console.log("Error while refreshing access token", error);
     throw new ApiError(404, `Error while refreshing access token`, error);
   }
   const { accessToken, refreshToken } = await generateRefreshAccessToken(
@@ -394,8 +373,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 });
 
 const getUserById = asyncHandler(async (req, res) => {
-  console.log("getUserById :: User id", req.params.id);
-  console.log(req.params);
   const user = await User.findById(req.params.id).select(
     "-password -refreshToken"
   );

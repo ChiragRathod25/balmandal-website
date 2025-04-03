@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import log from "../utils/logger.js"
 
 function AuthLayout({ children, authentication = true }) {
   const [loading, setLoading] = useState(true);
@@ -9,10 +10,8 @@ function AuthLayout({ children, authentication = true }) {
   const authStatus = useSelector((state) => state.auth.status);  
   useEffect(() => {
     if (authentication === false) {
-      console.log("Authentication is not required!");
+      log.debug("Authentication is not required!");
     } else if (authentication && authStatus !== authentication) {
-      console.log("AuthLayout authStatus: ", authStatus);
-      console.log("Authentication ", authentication);
       navigate("/login");
     } 
     setLoading(false);

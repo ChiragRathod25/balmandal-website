@@ -4,6 +4,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Post } from "../models/post.model.js";
 import { createNotification } from "./notification.controller.js";
+import {logger} from "../utils/logger.js";
 
 //controllers list
 //0. UploadFilesToBucket
@@ -31,32 +32,29 @@ const uploadFilesToBucket = asyncHandler(async (req, res,next) => {
     for (const match of matches) {
       let src = match.match(/src="([^">]+)"/)[1];
       let intialSrc=src;
-      console.log("Intial src: ", src);
+      
       //convert the server's public url to local url 
       src=src.replace(process.env.API_BASE_URL,"public")
        //convert '/' to '\' for windows
       src=src.replace(/\//g,"\\")
-      console.log("Converted src: ", src);
-
+      
       if (!src) {
-        console.log("No src found in the image tag", match);
+        // logger.log("No src found in the image tag", match);
         continue;
       }
       if(!src.includes("temp")){
-        console.log("Content: ", content);
-        console.log("Not a temp image, skipping upload", src);
+        // logger.log("Content: ", content);
+        // logger.log("Not a temp image, skipping upload", src);
         continue;
       }
       try {
 
         const result = await uploadOnCloudinary(src);
-        // console.log("Image uploaded to cloudinary", result);
-        // console.log(`Image scr: ${src} updated to ${result.secure_url}`);
-        console.log("Content before update", content);
+     
         req.body.content = content.replace(intialSrc, result.secure_url);
-        console.log("Content updated", req.body.content);
+        
       } catch (error) {
-        console.log("Error in uploading image to cloudinary", error);
+        logger.erorr("Error in uploading image to cloudinary", error);
         throw new ApiError(500, "Error in uploading image to cloudinary");
       }
     }
@@ -75,7 +73,7 @@ const addPost = asyncHandler(async (req, res, next) => {
       const result = await uploadOnCloudinary(req.file);
       featuredImage = result.secure_url;
     } catch (error) {
-      console.log(
+      logger.error(
         "Error in uploading post featured image to cloudinary",
         error
       );
@@ -138,7 +136,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
       const result = await uploadOnCloudinary(req.file);
       featuredImage = result.secure_url;
     } catch (error) {
-      console.log(
+      logger.error(
         "Error in uploading post featured image to cloudinary",
         error
       );
@@ -146,8 +144,6 @@ const updatePost = asyncHandler(async (req, res, next) => {
     }
   }
 
-
-  console.log("Saved Content: ", content);
   const updatedPost = await Post.findByIdAndUpdate(
     postId,
     {

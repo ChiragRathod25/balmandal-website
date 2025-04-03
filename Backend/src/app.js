@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/errorHandler.middleware.js";
+import { logger } from "./utils/logger.js";
 
 const app = express();
 
@@ -27,13 +28,32 @@ app.use(
 app.use(express.static("public"));
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  logger.info("Incoming Request", {
+      method: req.method,
+      url: req.originalUrl,
+      params: req.params,
+      body: req.body,
+      ip: req.ip,
+  });
+  next();
+});
+
+
+
 app.get("/", (req, res) => {
-  console.log("hi");
   res.status(200).json({ message: "Hello from the server!" });
 });
 app.get("/api", (req, res) => {
   res.status(200).json({ message: "Hello from the server!" });
+}); 
+app.post("/api/v1/logs", (req, res) => {
+  console.log("Received log:", req.body);
+  const { level, message, timestamp } = req.body;
+  logger[level](message, { timestamp });
+  res.status(200).json({ message: "Log received" });
 });
+
 
 import userRoutes from "./routes/user.routes.js";
 import parentRoutes from "./routes/parent.routes.js";
@@ -62,7 +82,6 @@ app.use("/api/v1/unregisteredAttendance", unregisteredAttendanceRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/like", likeRoutes);
 app.use("/api/v1/comment", commentRoutes);
-
 
 app.use(errorHandler);
 

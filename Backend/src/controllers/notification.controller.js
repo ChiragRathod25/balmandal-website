@@ -5,6 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Notification } from "../models/notification.model.js";
 import { Subscription } from "../models/subscription.model.js";
 import webpush from "web-push";
+import { logger } from "../utils/logger.js";
 
 const pushNotification = asyncHandler(
   async (notification, targetGroup, createdFor) => {
@@ -66,15 +67,6 @@ const pushNotification = asyncHandler(
       },
     };
 
-    console.log(
-      "Link to be sent",
-      notification?.link?.trim() !== "" &&
-        notification?.link?.includes("http") &&
-        notification?.link !== null
-        ? notification?.link
-        : process.env.VITE_BASE_URL + "/notification/" + notification?._id
-    );
-
     try {
       subscriptions.forEach(async (subscription) => {
         await webpush
@@ -102,20 +94,19 @@ const pushNotification = asyncHandler(
             options
           )
           .catch((err) =>
-            // console.log(`Error while sending push notification\n It may expired or unsubscribed by user`,err)
-            // do nothing
-            console.log("Notification sent")
+            logger.error(
+              "Error while sending notification to subscription",
+              err
+            )
           );
       });
     } catch (error) {
-      // throw new ApiError(404, `Error while sending push notifications`, error);
+      throw new ApiError(404, `Error while sending push notifications`, error);
     }
   }
 );
 
 const createNotification = asyncHandler(async (req, res) => {
-  // createdBy -> from req.user._id
-
   const { createdFor, targetGroup, title, message, notificationType, link } =
     req.body;
 
@@ -153,9 +144,7 @@ const createNotification = asyncHandler(async (req, res) => {
 
     if (!notification)
       throw new ApiError(404, "Error while creating new notification");
-    else {
-      console.log("New Notification created successfully !!", notification);
-    }
+
     //send notification to the user
     pushNotification(notification, targetGroup);
     // TODO: Set user specific notification, as of now it is only broadcast notification
@@ -263,7 +252,7 @@ const getNotificationsByCreaterId = asyncHandler(async (req, res) => {
 });
 const getNotificationById = asyncHandler(async (req, res) => {
   const { notificationId } = req.params;
-  console.log(req.params);
+
   if (!notificationId) throw new ApiError(404, `Notification Id is required`);
   try {
     const notifiacation = await Notification.findById(notificationId);

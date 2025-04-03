@@ -1,13 +1,14 @@
 import config from '../conf/config';
 import databaseService from '../services/database.services';
+import log from './logger.js';
 export async function regSw() {
   try {
     if ('serviceWorker' in navigator) {
       const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
-      console.log('Service Worker Registered:', reg);
+      log.debug('Service Worker Registered:', reg);
       return reg;
     } else {
-      console.log('Service workers are not supported in this browser.');
+      log.debug('Service workers are not supported in this browser.');
     }
   } catch (error) {
     console.error('Service Worker Registration Failed:', error);
@@ -22,7 +23,6 @@ export const subscribeUser = async (serviceWorkerReg) => {
 
   try {
     let subscription = await serviceWorkerReg.pushManager.getSubscription();
-    console.log('Existing Subscription', subscription);
 
     //if there is service worker doest not exist, create it and register it to database
     if (!subscription) {
@@ -34,11 +34,11 @@ export const subscribeUser = async (serviceWorkerReg) => {
           applicationServerKey: appServerKey,
         });
 
-        console.log('Subscription successful:', subscription);
+        log.debug('Subscription successful:', subscription);
 
         // if there is a new service worker, register it to database
         const response = await databaseService.createSubscription({ subscription });
-        console.info('Subscription registration response', response);
+        console.info('Subscription response', response);
       } catch (err) {
         if (err instanceof DOMException) {
           console.error(`DOMException during subscribe: ${err.name} - ${err.message}`);
@@ -49,11 +49,11 @@ export const subscribeUser = async (serviceWorkerReg) => {
     } else {
       // if it is already subscribed, then check if it is already registered in the database
       try {
-        console.log('Subscription endpoint:', subscription.endpoint);
+
         const RegistrationStatus = await databaseService.getSubscription({
           endPoint: subscription.endpoint,
         });
-        console.log('Registration Status:', RegistrationStatus);
+        log.debug('Registration Status:', RegistrationStatus);
       } catch (err) {
         console.error('Error while checking subscription:', err);
         try {
@@ -95,7 +95,7 @@ export const registerAndSubscribe = async () => {
   try {
     const serviceWorkerReg = await regSw();
     const readyReg = await navigator.serviceWorker.ready;
-    console.log('Service Worker Ready:', readyReg);
+    log.debug('Service Worker Ready:', readyReg);
     requestNotificationPermission();
     await subscribeUser(serviceWorkerReg);
   } catch (error) {

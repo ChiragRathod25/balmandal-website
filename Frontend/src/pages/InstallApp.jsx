@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import log from '../utils/logger.js';
 
 function InstallApp() {
   // PWA Install Prompt
@@ -24,7 +25,7 @@ function InstallApp() {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('PWA installed');
+          log.debug('PWA installed');
         }
         setDeferredPrompt(null);
         setShowInstallButton(false);

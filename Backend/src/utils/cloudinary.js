@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import 'dotenv/config'
 import { extractPublicId } from 'cloudinary-build-url';
+import {logger} from "./logger.js";
 
 
 cloudinary.config({
@@ -13,7 +14,6 @@ cloudinary.config({
 
 const uploadOnCloudinary = async (uploadFilePath) => {
   try {
-    console.log(uploadFilePath);
     
     if (!uploadFilePath) return null;
     const responce = await cloudinary.uploader
@@ -21,12 +21,12 @@ const uploadOnCloudinary = async (uploadFilePath) => {
         resource_type: "auto",
       })     
       .catch((error) =>
-        console.log("Error while uploading !!\nError: ", error)
+        logger.error("Error while uploading !!\nError: ", error)
       );
     fs.unlinkSync(uploadFilePath);
     return responce;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error while uploading file to cloudinary !!\nError: ",
       error
     );
@@ -41,7 +41,7 @@ const deleteFromCloudinary = async (deleteFileURL) => {
       const publicId = extractPublicId(
         deleteFileURL
       );
-      console.log("publicId: ", publicId);
+      
       const reourseType=deleteFileURL.includes("image")?"image":"video"
       const responce = await cloudinary.uploader
         .destroy(publicId,
@@ -51,16 +51,16 @@ const deleteFromCloudinary = async (deleteFileURL) => {
           }
         )
         .catch((error) =>
-          console.log("Error while deleting !!\nError: ", error)
+          logger.error("Error while deleting !!\nError: ", error)
         );
         if(responce.result !== "ok"){
-          console.error("Error while deleting file from cloudinary !!\nError: ", responce)
+          logger.error("Error while deleting file from cloudinary !!\nError: ", responce)
           return null
         }
       return responce;
       
     } catch (error) {
-      console.error(
+      logger.error(
         "Error while deleting file from cloudinary !!\nError: ",
         error
       );
