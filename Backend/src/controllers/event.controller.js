@@ -3,7 +3,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponce } from "../utils/ApiResponce.js";
 import { Event } from "../models/event.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { io } from "../index.js";
 
  const addEvent = asyncHandler(async (req, res, next) => {
   const { title, description, status, startAt, endAt,venue,eventType } = req.body;
@@ -42,7 +41,7 @@ import { io } from "../index.js";
     eventType,
     media: mediaFiles,
   });
-  io.emit('event',event)
+
   res
     .status(200)
     .json(new ApiResponce(200, event, `Event added successfully !!`));
