@@ -5,6 +5,7 @@ import { Button, Input, FileUploader, CloudFilesManager } from '../../';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEditableUserTalent } from '../../../slices/dashboard/dashboardSlice';
+import log from '../../../utils/logger.js';
 
 function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
   const isAdmin = useSelector((state) => state.auth.userData.isAdmin);
@@ -24,8 +25,7 @@ function TalentForm({ talent, closeForm, isUsedWithModal = false }) {
   const [cloudFiles, setCloudFiles] = React.useState(talent?.images || []);
 
   useEffect(() => {
-    console.log('talent file manager', talent);
-    console.log('Rerendering for cloudFiles file manager', cloudFiles);
+    log.debug('Rerendering for cloudFiles file manager', cloudFiles);
     setFinalCloudFiles(cloudFiles);
   }, [cloudFiles]);
 

@@ -8,9 +8,6 @@ import { QueryHandler } from '../../components';
 function Parent({ id, isUsedWithModal = false }) {
   // here id is a parentId passed from the admin page to get the parent details without using the useParams hook
   // hook is used to get the parentId from the url by the regular user
-  // console.log('Parent Page');
-  // console.log('isUsedWithModal:', isUsedWithModal);
-  // console.log('id:', id);
   const parentId = useParams().parentId || id;
   const navigate = useNavigate();
 

@@ -7,13 +7,12 @@ function useCustomReactQuery(apiCall) {
   const [data, setData] = useState(null);
   
   const fetchData = async () => {
-    // console.log('useCustomReactQuery API called');
+    
     try {
       setLoading(true);
       setError('');
       const response = await apiCall();
       setData(response.data);
-      console.log('Received Data: ', response.data);
     } catch (error) {
       setError(error.message);
     } finally{

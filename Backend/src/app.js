@@ -46,6 +46,12 @@ app.get("/", (req, res) => {
 });
 app.get("/api", (req, res) => {
   res.status(200).json({ message: "Hello from the server!" });
+}); 
+app.post("/api/v1/logs", (req, res) => {
+  console.log("Received log:", req.body);
+  const { level, message, timestamp } = req.body;
+  logger[level](message, { timestamp });
+  res.status(200).json({ message: "Log received" });
 });
 
 

@@ -4,5 +4,6 @@ const config = {
     apiURL:String(import.meta.env.VITE_API_BACKEND_URL),
     uploadFileUrl:`${String(import.meta.env.VITE_API_BACKEND_URL)}/api/v1/post/uploadFile`,
     deleteFileUrl:`${String(import.meta.env.VITE_API_BACKEND_URL)}/api/v1/post/deleteFile`,
+    nodeEnvironment:String(import.meta.env.NODE_ENV),
 };
 export default config;

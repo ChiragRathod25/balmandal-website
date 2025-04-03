@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from './index';
+import log from '../utils/logger.js';
 
 function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
   useEffect(() => {
-    console.log('Rerendering for cloudFiles file manager', cloudFiles);
+    log.debug('Rerendering for cloudFiles file manager', cloudFiles);
   }, [cloudFiles]);
 
   const [isMenuVisible, setIsMenuVisible] = React.useState(null);
   useEffect(() => {
-    console.log('isMenuVisible', isMenuVisible);
+    log.debug('isMenuVisible', isMenuVisible);
   }, [isMenuVisible]);
 
   const handleDelete = async (index) => {

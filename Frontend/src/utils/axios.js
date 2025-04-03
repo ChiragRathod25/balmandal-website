@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../conf/config';
 import databaseService from "../services/database.services";
-
+import log from './logger.js';
 const axiosInstance = axios.create({
   baseURL: config.baseUrl,
   withCredentials: true,
@@ -41,14 +41,13 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        console.log('Token expired, refreshing...');
+        log.debug('Token expired, refreshing...');
         const { accessToken } = await databaseService.refreshAccessToken().then(response=>response.data);
 
         isRefreshing = false;
         processQueue(null, accessToken); // Resolve all waiting requests
 
-        console.log('Token refreshed, retrying request...');
-        // console.log('Original request:', accessToken);
+        log.debug('Token refreshed, retrying request...');
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return axiosInstance(originalRequest); // Retry failed request
       } catch (refreshError) {

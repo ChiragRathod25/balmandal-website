@@ -6,6 +6,7 @@ import { Input, Button } from '../../components';
 import databaseService from '../../services/database.services';
 import { login } from '../../slices/userSlice/authSlice';
 import { registerAndSubscribe } from '../../utils/subscriptionHelper';
+import log from '../../utils/logger.js';
 function Login() {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState(null);
@@ -27,7 +28,7 @@ function Login() {
         if (user) {
           dispatch(login(user.data));
           setTimeout(() => {
-            console.log('Registering and subscribing...');  
+            log.debug('Registering and subscribing...');  
             registerAndSubscribe();
           }, 10000);
         }

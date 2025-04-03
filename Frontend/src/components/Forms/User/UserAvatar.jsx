@@ -5,10 +5,9 @@ import databaseService from '../../../services/database.services';
 import { useSelector } from 'react-redux';
 
 function UserAvatar({ avatar }) {
-  // console.log("Initial User avatar:", avatar);
+ 
   const userId = useSelector((state) => state.dashboard.editableUser?._id);
-  // console.log('Editable user',useSelector((state)=>state.dashboard.editableUser))
-  // console.log("userId:", userId);
+
   const isAdmin = useSelector((state) => state.auth.userData?.isAdmin);
   
   const { register, handleSubmit, reset, watch } = useForm();

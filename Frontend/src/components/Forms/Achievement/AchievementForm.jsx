@@ -5,6 +5,7 @@ import databaseService from '../../../services/database.services';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditableUserAchievement } from '../../../slices/dashboard/dashboardSlice';
+import log from '../../../utils/logger.js';
 
 
 function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
@@ -23,8 +24,7 @@ function AchievementForm({ achievement, isUsedWithModal = false, closeForm }) {
   const [cloudFiles, setCloudFiles] = React.useState(achievement?.media || []);
 
   useEffect(() => {
-    console.log('Achievement file manager', achievement);
-    console.log('Rerendering for cloudFiles file manager', cloudFiles);
+    log.debug('Rerendering for cloudFiles file manager', cloudFiles);
     setFinalCloudFiles(cloudFiles);
   }, [cloudFiles]);
 

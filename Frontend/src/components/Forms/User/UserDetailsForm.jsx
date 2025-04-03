@@ -35,7 +35,7 @@ function UserDetailsForm({ user, setEditing, handleUserDetailsEditing }) {
           handleUserDetailsEditing(response);
           return response;
         })
-        .catch((error) => console.log('error while updating user details', error));
+        .catch((error) => console.error('error while updating user details', error));
       if (response) {
         setEditing(false);
         navigate(`/dashboard/user/${userId}`);
@@ -44,7 +44,7 @@ function UserDetailsForm({ user, setEditing, handleUserDetailsEditing }) {
       const response = await databaseService
         .updateUserDetails(data)
         .then((response) => response.data)
-        .catch((error) => console.log('error while updating user details', error));
+        .catch((error) => console.error('error while updating user details', error));
       if (response) {
         setEditing(false);
         navigate(`/profile`);

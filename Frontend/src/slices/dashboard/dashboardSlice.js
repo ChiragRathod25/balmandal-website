@@ -16,7 +16,6 @@ const dashboardSlice = createSlice({
       state.editableUser = action.payload;
     },
     setEditableUserAchievement: (state, action) => {
-      console.log(action.payload, " is set for edit ");
       state.editableUserAchievement = action.payload;
     },
     setEditableUserParent: (state, action) => {

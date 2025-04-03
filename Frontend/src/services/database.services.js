@@ -1324,6 +1324,15 @@ export class DatabaseService {
     return handleApiRequest(() => axiosInstace.get(`/api/v1/like/${postId}`), 'getLikesByPostId');
   }
 
+
+  // save logs
+  async saveLogs({ level, message, timestamp }) {
+    return handleApiRequest(
+      () => axiosInstace.post('/api/v1/logs', { level, message, timestamp }),
+      'saveLogs'
+    );
+  }
+
 }
 
 const databaseService = new DatabaseService();

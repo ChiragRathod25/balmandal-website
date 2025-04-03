@@ -59,7 +59,6 @@ function AttendanceForm({ attendanceList }) {
       }
     } catch (error) {
       console.error('Error while adding attendance', error);
-      console.error("Error message:", error.message);
     }
   };
 
