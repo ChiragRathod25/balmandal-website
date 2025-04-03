@@ -7,7 +7,6 @@ import mongoose from "mongoose";
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
     // if admin is already logged in then no need to verify the user
-    console.log(req.admin);
     if (req.admin) {
       return next();
     }
@@ -36,21 +35,16 @@ export const verifyAdmin = asyncHandler(async (req, res, next) => {
     //mongoose doc to regular object conversion is required to access the properties of the user object
     //why => because the user object is a mongoose document and we can't access properties directly from it
 
-    // console.log(typeof req.user);
     req.user = req.user.toObject();
-    // console.log(req.user);
-    // console.log(req.user["isAdmin"]);
-    // console.log("Admin Status: ",req.user.toObject().isAdmin);
-    // console.log("Admin user: ",req.user);
+
     const isAdmin=req.user?.isAdmin;
     if (!isAdmin)
       throw new ApiError(403, `Not authorized as Admin`);
 
     // update req.user if userId is given
     const { userId } = req.query;
-    console.log(req.query);
+
     if (userId) {
-      console.log("userId", userId);
       const user = await User.findById(
         new mongoose.Types.ObjectId(userId)
       ).select("-password -refreshToken");

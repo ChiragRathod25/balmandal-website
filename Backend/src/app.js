@@ -28,7 +28,6 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-  console.log("hi");
   res.status(200).json({ message: "Hello from the server!" });
 });
 app.get("/api", (req, res) => {

@@ -95,9 +95,7 @@ class GoogleDrive {
       const response = await this.drive.files.delete({
         fileId,
       });
-      console.log("File deleted successfully");
-      console.log(response.status);
-      console.log(response.data);
+   
     } catch (error) {
       console.error("Error deleting file: ", error);
     }
@@ -114,7 +112,7 @@ class GoogleDrive {
           type: "anyone",
         },
       });
-      console.log("Making Public Url", response.data);
+      
 
       return {
         // url: `https://drive.google.com/uc?export=download&id=${fileId}`,

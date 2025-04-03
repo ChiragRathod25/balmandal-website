@@ -92,7 +92,6 @@ const updateEvent = asyncHandler(async (req, res, next) => {
   }
 
   let cloudMediaFilesArray = JSON.parse(cloudMediaFiles);
-  console.log("cloudMediaFilesArray", cloudMediaFilesArray);
 
   let files = [];
   if (cloudMediaFilesArray && cloudMediaFilesArray.length > 0) {
@@ -106,8 +105,7 @@ const updateEvent = asyncHandler(async (req, res, next) => {
       files = [...files, ...newMediaFiles];
     } else files = [...newMediaFiles];
   }
-  console.log("newMediaFiles", newMediaFiles);
-  console.log("files", files);
+
   const updatedEvent = await Event.findByIdAndUpdate(
     eventId,
     {

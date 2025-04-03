@@ -13,7 +13,7 @@ const justCheck=asyncHandler(async(req,res,next)=>{
 }
 )
 const getAllUsers=asyncHandler(async(req,res,next)=>{
-    console.log("get all users");
+    // console.log("get all users");
     // get all users
     const users=await User.find().select("-password -refreshToken");  
     if(!users)

@@ -102,7 +102,6 @@ const updateAchievement = asyncHandler(async (req, res) => {
       throw new ApiError(404, `Error while updating achievement`);
     }
 
-    console.log("here");
     res
       .status(200)
       .json(

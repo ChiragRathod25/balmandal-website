@@ -62,7 +62,6 @@ function FilesDisplayHelper({ cloudFiles }) {
 
   return (
     <>
- 
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}

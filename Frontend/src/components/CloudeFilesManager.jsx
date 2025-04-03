@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Modal} from './index';
+import { Modal } from './index';
 
 function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
   useEffect(() => {
@@ -59,9 +59,7 @@ function CloudFilesManager({ cloudFiles, handleDeleteFile }) {
       </div>
     );
     openModal();
-  }
-
-
+  };
 
   return (
     <>

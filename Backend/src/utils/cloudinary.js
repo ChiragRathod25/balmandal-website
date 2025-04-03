@@ -13,7 +13,6 @@ cloudinary.config({
 
 const uploadOnCloudinary = async (uploadFilePath) => {
   try {
-    console.log(uploadFilePath);
     
     if (!uploadFilePath) return null;
     const responce = await cloudinary.uploader
@@ -21,7 +20,7 @@ const uploadOnCloudinary = async (uploadFilePath) => {
         resource_type: "auto",
       })     
       .catch((error) =>
-        console.log("Error while uploading !!\nError: ", error)
+        console.error("Error while uploading !!\nError: ", error)
       );
     fs.unlinkSync(uploadFilePath);
     return responce;
@@ -41,7 +40,7 @@ const deleteFromCloudinary = async (deleteFileURL) => {
       const publicId = extractPublicId(
         deleteFileURL
       );
-      console.log("publicId: ", publicId);
+      
       const reourseType=deleteFileURL.includes("image")?"image":"video"
       const responce = await cloudinary.uploader
         .destroy(publicId,
@@ -51,7 +50,7 @@ const deleteFromCloudinary = async (deleteFileURL) => {
           }
         )
         .catch((error) =>
-          console.log("Error while deleting !!\nError: ", error)
+          console.error("Error while deleting !!\nError: ", error)
         );
         if(responce.result !== "ok"){
           console.error("Error while deleting file from cloudinary !!\nError: ", responce)

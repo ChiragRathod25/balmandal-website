@@ -59,7 +59,7 @@ const addAttendance = asyncHandler(async (req, res, next) => {
         { new: true }
       );
       if (!updatedAttendance) {
-        console.log("Error in updating attendance of user", userId);
+        console.error("Error in updating attendance of user", userId);
         throw new ApiError(500, "Error in updating attendance");
       }
     } else {
@@ -74,15 +74,12 @@ const addAttendance = asyncHandler(async (req, res, next) => {
   }
   let attendance = null;
   if (createdAttendances.length > 0) {
-    console.log("Before inserting attendances", createdAttendances);
     attendance = await Attendance.insertMany(createdAttendances);
-    console.log("After inserting attendances", attendance);
     if (!attendance) {
       throw new ApiError(500, "Error in marking attendance");
     }
   }
 
-  console.log("Attendance marked successfully", attendance);
   res
     .status(200)
     .json(new ApiResponce(200, attendance, "Attendance marked successfully"));
@@ -167,7 +164,7 @@ const getAttendanceByEventId = asyncHandler(async (req, res, next) => {
   if(!attendances){
     throw new ApiError(404, "Attendances not found");
   }
-  // console.log('attendances', attendances);
+
   res
     .status(200)
     .json(
@@ -180,7 +177,7 @@ const getAttendanceByUserId = asyncHandler(async (req, res, next) => {
   if (!userId) {
     throw new ApiError(400, "User Id is required");
   }
-  console.log("userId", userId);
+
   const attendances = await Attendance.aggregate([
     {
       $match: {
